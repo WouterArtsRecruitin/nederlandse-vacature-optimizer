@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nederlandse Vacature Optimizer - RecruitIn Professional</title>
+    <meta name="description" content="Optimaliseer je technische vacatures voor de Nederlandse arbeidsmarkt met AI. Verhoog je respons met 40-60% door slimme analyse en verbeterpunten.">
+    <meta name="keywords" content="vacature optimalisatie, Nederlandse recruitment, AI recruitment tool, vacature verbeteren, technische recruitment">
+    
+    <!-- Favicon & PWA -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23ef7d00'/%3E%3Ctext x='50' y='50' font-family='Arial' font-size='50' font-weight='bold' text-anchor='middle' dominant-baseline='middle' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#ef7d00">
+    
+    <!-- SEO & Social -->
+    <meta property="og:title" content="Nederlandse Vacature Optimizer - RecruitIn Professional">
+    <meta property="og:description" content="Optimaliseer je technische vacatures voor de Nederlandse arbeidsmarkt. Verhoog response rates met AI-powered analyse.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nederlandse-vacature-optimizer.netlify.app">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">R</div>
+                    <div class="logo-text">
+                        <span class="logo-name">RecruitIn</span>
+                        <span class="logo-tagline">Vacature Optimizer</span>
+                    </div>
+                </div>
+                <nav class="nav">
+                    <a href="#" class="nav-link">Home</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#process" class="nav-link">Hoe het werkt</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">⚡</span>
+                    <span class="badge-text">AI-Powered Recruitment Tool</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Optimaliseer je technische vacatures
+                    <span class="title-highlight">voor maximaal resultaat</span>
+                </h1>
+                
+                <p class="hero-subtitle">
+                    Verhoog je sollicitaties met <strong>40-60%</strong> door AI-analyse 
+                    speciaal ontwikkeld voor de Nederlandse technische arbeidsmarkt
+                </p>
+                
+                <div class="hero-cta">
+                    <a href="#tool" class="btn btn-primary">
+                        <span class="btn-icon">🚀</span>
+                        Start Direct
+                    </a>
+                    <a href="#demo" class="btn btn-secondary">
+                        <span class="btn-icon">📊</span>
+                        Bekijk Demo
+                    </a>
+                </div>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-value">180%</div>
+                        <div class="stat-label">Meer Reacties</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-value">2 min</div>
+                        <div class="stat-label">Analyse Tijd</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <div class="stat-value">95%</div>
+                        <div class="stat-label">Tevredenheid</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <!-- Video 1: Transformatie Effect -->
+                <div class="hero-video-container">
+                    <video class="hero-video" autoplay muted loop playsinline>
+                        <source src="assets/videos/text-transformation.mp4" type="video/mp4">
+                        <!-- Fallback voor browsers zonder video support -->
+                        <div class="video-fallback">
+                            <div class="hero-shape hero-shape-1"></div>
+                            <div class="hero-shape hero-shape-2"></div>
+                            <div class="hero-shape hero-shape-3"></div>
+                        </div>
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Probeer met voorbeelden</h2>
+                <p class="section-subtitle">Test de tool direct met deze demo vacatures</p>
+            </div>
+            
+            <div class="demo-grid">
+                <button onclick="loadDemoVacature('slecht')" class="demo-card demo-card-bad">
+                    <div class="demo-icon">📉</div>
+                    <h3 class="demo-title">Basis Vacature</h3>
+                    <p class="demo-description">Typische vacature met verbeterpotentieel</p>
+                    <div class="demo-score">Score: 3.2/10</div>
+                </button>
+                
+                <button onclick="loadDemoVacature('gemiddeld')" class="demo-card demo-card-average">
+                    <div class="demo-icon">📊</div>
+                    <h3 class="demo-title">Gemiddelde Vacature</h3>
+                    <p class="demo-description">Solide basis met ruimte voor optimalisatie</p>
+                    <div class="demo-score">Score: 6.5/10</div>
+                </button>
+                
+                <button onclick="loadDemoVacature('goed')" class="demo-card demo-card-good">
+                    <div class="demo-icon">📈</div>
+                    <h3 class="demo-title">Top Vacature</h3>
+                    <p class="demo-description">Best practice voorbeeld voor technische rollen</p>
+                    <div class="demo-score">Score: 8.8/10</div>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tool Section -->
+    <section id="tool" class="tool-section">
+        <div class="container">
+            <div class="tool-container">
+                <div class="tool-header">
+                    <h2 class="tool-title">Analyseer je vacature</h2>
+                    <p class="tool-subtitle">
+                        Plak je vacaturetekst en ontvang binnen 60 seconden een complete analyse
+                    </p>
+                </div>
+
+                <div class="input-area">
+                    <div class="input-controls">
+                        <label for="vacatureInput" class="input-label">
+                            Vacaturetekst
+                            <span class="char-counter">
+                                <span id="charCount">0</span> / 8000
+                            </span>
+                        </label>
+                        
+                        <div class="input-actions">
+                            <button onclick="clearInput()" class="action-btn">
+                                <span class="action-icon">✕</span>
+                                Wissen
+                            </button>
+                            <button onclick="pasteFromClipboard()" class="action-btn">
+                                <span class="action-icon">📋</span>
+                                Plakken
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <textarea 
+                        id="vacatureInput" 
+                        class="input-textarea"
+                        placeholder="Plak hier je complete vacaturetekst...
+
+Bijvoorbeeld:
+Senior Engineer bij TechCompany BV
+Wij zoeken een ervaren engineer voor ons groeiende team..."
+                        maxlength="8000"
+                        oninput="updateCharCounter()"
+                    ></textarea>
+                    
+                    <div class="input-indicators">
+                        <div class="indicator" id="lengthIndicator">
+                            <span class="indicator-icon">📏</span>
+                            <span class="indicator-text">Lengte: Te kort</span>
+                        </div>
+                        <div class="indicator" id="structureIndicator">
+                            <span class="indicator-icon">🏗️</span>
+                            <span class="indicator-text">Structuur: Controleren...</span>
+                        </div>
+                        <div class="indicator" id="keywordIndicator">
+                            <span class="indicator-icon">🔑</span>
+                            <span class="indicator-text">Keywords: Analyseren...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="analyzeBtn" onclick="analyzeVacature()" class="analyze-button">
+                    <span class="btn-content">
+                        <span class="btn-icon">🚀</span>
+                        <span class="btn-text">Analyseer Vacature</span>
+                    </span>
+                    <span class="btn-loading" style="display: none;">
+                        <span class="spinner"></span>
+                        <span class="btn-text">Analyseren...</span>
+                    </span>
+                </button>
+
+                <!-- Results Section -->
+                <div id="results" class="results" style="display: none;">
+                    <!-- Results will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Waarom RecruitIn Vacature Optimizer?</h2>
+                <p class="section-subtitle">Speciaal ontwikkeld voor technische recruitment in Nederland</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-shape">🎯</div>
+                    </div>
+                    <h3 class="feature-title">Technische Focus</h3>
+                    <p class="feature-description">
+                        Geoptimaliseerd voor engineering, IT en industriële vacatures
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-shape">⚡</div>
+                    </div>
+                    <h3 class="feature-title">Direct Resultaat</h3>
+                    <p class="feature-description">
+                        Complete analyse in minder dan 60 seconden
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-shape">📈</div>
+                    </div>
+                    <h3 class="feature-title">Bewezen Effect</h3>
+                    <p class="feature-description">
+                        40-60% meer sollicitaties door optimalisatie
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-shape">🇳🇱</div>
+                    </div>
+                    <h3 class="feature-title">Nederlandse Markt</h3>
+                    <p class="feature-description">
+                        Afgestemd op Nederlandse arbeidsmarkt en cultuur
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-shape">🔒</div>
+                    </div>
+                    <h3 class="feature-title">Privacy First</h3>
+                    <p class="feature-description">
+                        AVG-compliant, geen opslag van data
+                    </p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div class="icon-shape">🎓</div>
+                    </div>
+                    <h3 class="feature-title">AI Expertise</h3>
+                    <p class="feature-description">
+                        Powered by Claude AI met recruitment expertise
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="process-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Hoe het werkt</h2>
+                <p class="section-subtitle">In 4 simpele stappen naar betere vacatures</p>
+            </div>
+            
+            <!-- Video 2: Process Flow Animatie -->
+            <div class="process-video-container">
+                <video class="process-video" autoplay muted loop playsinline>
+                    <source src="assets/videos/process-flow.mp4" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">📝</div>
+                    <h3 class="step-title">Plak Vacature</h3>
+                    <p class="step-description">
+                        Kopieer je volledige vacaturetekst
+                    </p>
+                </div>
+                
+                <div class="process-connector"></div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">🤖</div>
+                    <h3 class="step-title">AI Analyse</h3>
+                    <p class="step-description">
+                        Claude AI analyseert op 10+ criteria
+                    </p>
+                </div>
+                
+                <div class="process-connector"></div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">📊</div>
+                    <h3 class="step-title">Ontvang Score</h3>
+                    <p class="step-description">
+                        Krijg score en verbeterpunten
+                    </p>
+                </div>
+                
+                <div class="process-connector"></div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-icon">✨</div>
+                    <h3 class="step-title">Implementeer</h3>
+                    <p class="step-description">
+                        Pas verbeteringen toe voor resultaat
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Klaar om je vacatures te verbeteren?</h2>
+                <p class="cta-subtitle">Start direct met optimaliseren en zie het verschil</p>
+                <a href="#tool" class="btn btn-primary btn-large">
+                    <span class="btn-icon">🚀</span>
+                    Start Nu Gratis
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">R</div>
+                        <span class="logo-name">RecruitIn</span>
+                    </div>
+                    <p class="footer-description">
+                        Professionele recruitment oplossingen voor de technische sector
+                    </p>
+                    <div class="footer-contact">
+                        <a href="tel:+31883006300" class="contact-link">
+                            📞 088 300 6300
+                        </a>
+                        <a href="mailto:info@recruitin.nl" class="contact-link">
+                            ✉️ info@recruitin.nl
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4 class="footer-title">Product</h4>
+                        <ul>
+                            <li><a href="#features">Features</a></li>
+                            <li><a href="#process">Hoe het werkt</a></li>
+                            <li><a href="#demo">Demo</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 class="footer-title">RecruitIn</h4>
+                        <ul>
+                            <li><a href="https://recruitin.nl">Website</a></li>
+                            <li><a href="https://recruitin.nl/over-ons">Over Ons</a></li>
+                            <li><a href="https://recruitin.nl/contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4 class="footer-title">Legal</h4>
+                        <ul>
+                            <li><a href="#">Privacy</a></li>
+                            <li><a href="#">Voorwaarden</a></li>
+                            <li><a href="#">AVG/GDPR</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">
+                    © 2025 RecruitIn • Recruitment Excellence voor Technische Professionals
+                </p>
+                <div class="footer-socials">
+                    <a href="#" class="social-link" title="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

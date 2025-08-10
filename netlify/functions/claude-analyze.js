@@ -42,6 +42,13 @@ exports.handler = async (event, context) => {
         // Get Claude API key from environment variables
         const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
         
+        // Debug logging
+        console.log('🔍 Environment variables check:');
+        console.log('- NODE_ENV:', process.env.NODE_ENV);
+        console.log('- CLAUDE_API_KEY exists:', !!CLAUDE_API_KEY);
+        console.log('- CLAUDE_API_KEY length:', CLAUDE_API_KEY ? CLAUDE_API_KEY.length : 'undefined');
+        console.log('- All env vars:', Object.keys(process.env).filter(key => key.includes('CLAUDE')));
+        
         if (!CLAUDE_API_KEY) {
             console.error('❌ CLAUDE_API_KEY not found in environment variables');
             return {
@@ -49,7 +56,11 @@ exports.handler = async (event, context) => {
                 headers,
                 body: JSON.stringify({ 
                     error: 'Server configuration error',
-                    details: 'API key not configured'
+                    details: 'API key not configured',
+                    debug: {
+                        hasApiKey: !!CLAUDE_API_KEY,
+                        envKeys: Object.keys(process.env).filter(key => key.includes('CLAUDE'))
+                    }
                 }),
             };
         }
