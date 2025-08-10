@@ -2433,26 +2433,9 @@ async function analyzeVacature() {
         const analysisTime = (Date.now() - startTime) / 1000;
         console.log(`✅ Analysis completed in ${analysisTime.toFixed(1)}s`);
         
-        // Store current analysis
-        currentAnalysis = analysis;
-        
-        // Display results
-        displayResults(analysis);
-        
-        // Show upgrade section after results
-        showUpgradeSection();
-        
-        // Track successful analysis
-        trackEvent('analysis_completed', {
-            event_category: 'analysis',
-            average_score: analysis.gemiddelde_score,
-            analysis_time: analysisTime,
-            text_length: vacatureText.length
-        });
-        
             // Store analysis result
             currentAnalysis = analysis;
-            displayAnalysisResults(analysis);
+            displayResults(analysis);
             
             // Show upgrade section after analysis
             const upgradeSection = document.getElementById('upgradeSection');
