@@ -1675,44 +1675,6 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                             </button>
                         </div>
                             
-                            <!-- TypeForm Embed Container -->
-                            <div id="uploadNotification" style="display: none; margin-top: 2rem; background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative;">
-                                <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10;">
-                                    <button onclick="hideUploadNotification()" style="background: rgba(0,0,0,0.5); border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; width: 2.5rem; height: 2.5rem;">✕</button>
-                                </div>
-                                
-                                <!-- Success Header -->
-                                <div style="text-align: center; padding: 1rem 0 2rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.5rem; margin-bottom: 1rem; color: white;">
-                                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉</div>
-                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.3rem;">TypeForm Geladen!</h3>
-                                    <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Upload je vacature document hieronder</p>
-                                </div>
-                                
-                                <!-- TypeForm Embed - Enhanced Configuration -->
-                                <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94" 
-                                     data-tf-opacity="100"
-                                     data-tf-iframe-props="title=Nederlandse Vacature Optimizer Upload"
-                                     data-tf-transitive-search-params 
-                                     data-tf-medium="snippet"
-                                     data-tf-hidden="utm_source=website,utm_medium=embed"
-                                     style="width: 100%; height: 500px; border: none; border-radius: 0.5rem; overflow: hidden;"></div>
-                                
-                                <!-- Loading Fallback -->
-                                <div id="typeformFallback" style="display: none; text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 0.5rem; margin-top: 1rem;">
-                                    <h4 style="margin-bottom: 1rem; color: #1f2937;">📄 Direct Link</h4>
-                                    <p style="margin-bottom: 1.5rem; color: #6b7280;">Als het formulier niet laadt, gebruik deze directe link:</p>
-                                    <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" target="_blank" style="
-                                        display: inline-block;
-                                        background: #4f46e5;
-                                        color: white;
-                                        padding: 1rem 2rem;
-                                        border-radius: 0.5rem;
-                                        text-decoration: none;
-                                        font-weight: 600;
-                                        transition: all 0.3s ease;
-                                    ">📄 Open TypeForm</a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -3415,27 +3377,6 @@ try {
 // SIMPLIFIED UPLOAD NOTIFICATION SYSTEM
 // ===============================================
 
-// This function is now defined later with privacy functionality
-
-function showTypeFormFallback() {
-    const fallback = document.getElementById('typeformFallback');
-    if (fallback) {
-        fallback.style.display = 'block';
-        trackEvent('typeform_fallback_shown', {
-            event_category: 'conversion'
-        });
-    }
-}
-
-function hideUploadNotification() {
-    const notification = document.getElementById('uploadNotification');
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateY(-20px)';
-    
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 300);
-}
 
 // ===============================================
 // PRIVACY CHECKBOX FUNCTIONALITY
@@ -3483,7 +3424,7 @@ function initializePrivacyCheckbox() {
     }
 }
 
-// Enhanced showUploadNotification with privacy check
+// Direct TypeForm launch with privacy check
 function showUploadNotification() {
     const checkbox = document.getElementById('privacyAcceptance');
     
@@ -3510,8 +3451,6 @@ function showUploadNotification() {
         return;
     }
     
-    const notification = document.getElementById('uploadNotification');
-    
     // Track click
     trackEvent('upload_clicked', {
         event_category: 'conversion',
@@ -3519,52 +3458,60 @@ function showUploadNotification() {
         privacy_accepted: true
     });
     
-    // Show notification with smooth animation
-    notification.style.display = 'block';
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateY(20px)';
-    notification.style.transition = 'all 0.5s ease';
+    // Direct TypeForm launch - no intermediate step
+    console.log('🚀 Launching TypeForm directly...');
     
-    setTimeout(() => {
-        notification.style.opacity = '1';
-        notification.style.transform = 'translateY(0)';
-        notification.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
-    
-    // Load TypeForm script if not already loaded
+    // Load TypeForm script and launch immediately
     if (!document.querySelector('script[src*="embed.typeform.com"]')) {
         console.log('🔍 Loading TypeForm embed script...');
         const script = document.createElement('script');
         script.src = '//embed.typeform.com/next/embed.js';
         script.onload = () => {
-            console.log('✅ TypeForm script loaded successfully');
-            trackEvent('typeform_script_loaded', {
-                event_category: 'conversion'
-            });
+            console.log('✅ TypeForm script loaded, launching form...');
+            launchTypeForm();
         };
         script.onerror = () => {
-            console.error('❌ TypeForm script failed to load');
-            showTypeFormFallback();
+            console.error('❌ TypeForm script failed to load, using fallback');
+            fallbackToDirectLink();
         };
         document.head.appendChild(script);
-        
-        // Fallback after 8 seconds if TypeForm doesn't load
-        setTimeout(() => {
-            const typeformEmbed = document.querySelector('[data-tf-live]');
-            if (typeformEmbed && typeformEmbed.children.length === 0) {
-                console.warn('⚠️ TypeForm embed appears empty, showing fallback');
-                showTypeFormFallback();
-            }
-        }, 8000);
     } else {
-        console.log('✅ TypeForm script already loaded');
+        console.log('✅ TypeForm script already loaded, launching form...');
+        launchTypeForm();
     }
     
-    // Track successful show
-    trackEvent('upload_notification_shown', {
-        event_category: 'conversion',
-        privacy_accepted: true
-    });
+    function launchTypeForm() {
+        // Use TypeForm's direct popup API
+        if (window.tf && window.tf.load) {
+            window.tf.load('01K25SKWYTKZ05DAHER9D52J94', {
+                popup: true,
+                hideHeaders: true,
+                hideFooter: true,
+                opacity: 100
+            });
+        } else {
+            // Fallback to direct link
+            fallbackToDirectLink();
+        }
+        
+        trackEvent('typeform_launched', {
+            event_category: 'conversion',
+            method: 'popup'
+        });
+    }
+    
+    function fallbackToDirectLink() {
+        // Open TypeForm in new tab as fallback
+        const formUrl = 'https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94';
+        window.open(formUrl, '_blank', 'width=800,height=600,resizable=yes,scrollbars=yes');
+        
+        showToast('TypeForm Geopend', 'Het formulier is geopend in een nieuw tabblad.', 'success');
+        
+        trackEvent('typeform_fallback_used', {
+            event_category: 'conversion',
+            method: 'new_tab'
+        });
+    }
 }
     </script>
 </body>
