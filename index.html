@@ -1689,11 +1689,29 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                             <div id="typeformSuccessMessage" style="display: none; text-align: center; padding: 2rem; background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 1rem; margin-top: 1rem;">
                                 <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
                                 <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">Formulier Succesvol Verzonden!</h3>
-                                <p style="margin: 0; opacity: 0.9; line-height: 1.6;">
+                                <p style="margin: 0 0 2rem 0; opacity: 0.9; line-height: 1.6;">
                                     Bedankt voor je upload! We gaan direct aan de slag met de optimalisatie van je vacature. 
                                     Je ontvangt binnen 24 uur een professioneel geoptimaliseerde versie per email.
                                 </p>
-                                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.3);">
+                                
+                                <!-- Calendly Book Meeting Section -->
+                                <div style="background: rgba(255,255,255,0.15); padding: 1.5rem; border-radius: 0.8rem; margin-bottom: 1.5rem;">
+                                    <h4 style="margin: 0 0 1rem 0; font-size: 1.1rem;">📅 Plan een Persoonlijk Gesprek</h4>
+                                    <p style="margin: 0 0 1.5rem 0; opacity: 0.9; font-size: 0.95rem;">
+                                        Wil je persoonlijk sparren over je recruitment strategie? 
+                                        Plan een gratis 30-minuten adviesgesprek.
+                                    </p>
+                                    <a href="https://calendly.com/recruitin/30min" 
+                                       target="_blank" 
+                                       onclick="trackEvent('calendly_clicked', {event_category: 'conversion', event_label: 'post_typeform'});"
+                                       style="display: inline-block; background: white; color: #059669; padding: 1rem 2rem; border-radius: 0.5rem; text-decoration: none; font-weight: 600; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.2);"
+                                       onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.3)';"
+                                       onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.2)';">
+                                        🚀 Boek Gratis Adviesgesprek
+                                    </a>
+                                </div>
+                                
+                                <div style="padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.3);">
                                     <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">
                                         ✅ Upload voltooid • ✅ Analyse gestart • ✅ Email onderweg
                                     </p>
