@@ -1873,11 +1873,18 @@ Wij zoeken een ervaren developer voor ons groeiende team...
 // TalentFlow Pro MVP - Complete Functionality
 // ===============================================
 
+// ===============================================
+// BASIC FUNCTIONALITY TEST
+// ===============================================
+console.log('🧪 JavaScript loading test - START');
+
 // Global Variables - Enhanced with race condition protection
 let isAnalyzing = false;
 let currentAnalysis = null;
 let currentAnalysisPromise = null;
 let eventListenersSetup = false;
+
+console.log('🧪 JavaScript loading test - Variables declared successfully');
 
 // ===============================================
 // SECURITY FUNCTIONS - XSS Protection
@@ -2076,16 +2083,30 @@ Acquisitie naar aanleiding van deze vacature wordt niet gewaardeerd.`
 
 function initializeApp() {
     console.log('🚀 Nederlandse Vacature Optimizer MVP wordt geïnitialiseerd...');
+    console.log('🔍 DOM readyState:', document.readyState);
+    
+    // Debug: Check if critical elements exist
+    const loadingScreen = document.getElementById('loadingScreen');
+    const app = document.getElementById('app');
+    const textarea = document.getElementById('vacatureInput');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    
+    console.log('🧩 Found elements:', {
+        loadingScreen: loadingScreen ? 'YES' : 'NO',
+        app: app ? 'YES' : 'NO', 
+        textarea: textarea ? 'YES' : 'NO',
+        analyzeBtn: analyzeBtn ? 'YES' : 'NO'
+    });
     
     // Hide loading screen after 2 seconds
     setTimeout(() => {
-        const loadingScreen = document.getElementById('loadingScreen');
-        const app = document.getElementById('app');
-        
         if (loadingScreen && app) {
+            console.log('✅ Hiding loading screen, showing app');
             loadingScreen.style.display = 'none';
             app.style.display = 'block';
             app.style.animation = 'fadeIn 0.5s ease-out';
+        } else {
+            console.error('❌ Missing critical elements:', { loadingScreen: !!loadingScreen, app: !!app });
         }
     }, 2000);
     
@@ -2109,11 +2130,16 @@ function setupEventListeners() {
     if (eventListenersSetup) return;
     eventListenersSetup = true;
     
+    console.log('🔧 Setting up event listeners...');
+    
     // Textarea input events
     const textarea = document.getElementById('vacatureInput');
     if (textarea) {
+        console.log('✅ Textarea found, adding listeners');
         textarea.addEventListener('input', updateCharCounter);
         textarea.addEventListener('paste', handlePaste);
+    } else {
+        console.error('❌ Textarea not found!');
     }
     
     // Cleanup on page unload
@@ -2207,7 +2233,13 @@ function updateCharCounter() {
     const structureIndicator = document.getElementById('structureIndicator');
     const keywordIndicator = document.getElementById('keywordIndicator');
     
-    if (!textarea || !charCountSpan) return;
+    if (!textarea || !charCountSpan) {
+        console.warn('⚠️ updateCharCounter: Missing required elements', {
+            textarea: !!textarea,
+            charCountSpan: !!charCountSpan
+        });
+        return;
+    }
     
     const text = textarea.value;
     const charCount = text.length;
@@ -2245,7 +2277,7 @@ function updateCharCounter() {
     
     // Update structure indicator
     if (structureIndicator && text.length > 50) {
-        const hasTitle = /^[A-Z][^\\n]{10,}$/m.test(text);
+        const hasTitle = /^[A-Z][^\n]{10,}$/m.test(text);
         const hasBullets = /[•·\-\*]/.test(text);
         const hasSections = text.split('\n\n').length > 2;
         
@@ -2379,11 +2411,20 @@ function handlePaste(event) {
 // ===============================================
 
 async function analyzeVacature() {
+    console.log('🎯 analyzeVacature function called');
+    
     const textarea = document.getElementById('vacatureInput');
     const vacatureText = textarea ? textarea.value.trim() : '';
     
+    console.log('📝 Input validation:', {
+        textarea: !!textarea,
+        textLength: vacatureText.length,
+        hasText: !!vacatureText
+    });
+    
     // Enhanced Input Validation
     if (!vacatureText) {
+        console.log('⚠️ No text provided');
         showToast('Geen Tekst', 'Voer eerst een vacaturetekst in om te analyseren.', 'warning');
         if (textarea) textarea.focus();
         return;
@@ -3304,7 +3345,15 @@ if (document.readyState === 'loading') {
     initializeApp();
 }
 
+console.log('🧪 JavaScript loading test - All functions declared successfully');
 console.log('🇳🇱 Nederlandse Vacature Optimizer geladen - Ready for analysis!');
+
+// Final syntax test
+try {
+    console.log('🧪 Final syntax test - SUCCESS');
+} catch (error) {
+    console.error('🧪 Final syntax test - ERROR:', error);
+}
     </script>
 </body>
 </html>
