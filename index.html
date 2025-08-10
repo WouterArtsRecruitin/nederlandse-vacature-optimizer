@@ -1674,6 +1674,16 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                                 <span>Upload Document - Gratis Professionele Optimalisatie</span>
                             </button>
                         </div>
+                        
+                        <!-- TypeForm Embed Container -->
+                        <div id="typeformContainer" style="display: none; margin-top: 2rem; background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative;">
+                            <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10;">
+                                <button onclick="hideTypeForm()" style="background: rgba(0,0,0,0.5); border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; width: 2.5rem; height: 2.5rem;">✕</button>
+                            </div>
+                            
+                            <!-- TypeForm Embed -->
+                            <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+                        </div>
                             
                         </div>
                     </div>
@@ -3424,7 +3434,7 @@ function initializePrivacyCheckbox() {
     }
 }
 
-// Direct TypeForm launch with privacy check
+// Show TypeForm embed with privacy check
 function showUploadNotification() {
     const checkbox = document.getElementById('privacyAcceptance');
     
@@ -3451,6 +3461,8 @@ function showUploadNotification() {
         return;
     }
     
+    const container = document.getElementById('typeformContainer');
+    
     // Track click
     trackEvent('upload_clicked', {
         event_category: 'conversion',
@@ -3458,60 +3470,77 @@ function showUploadNotification() {
         privacy_accepted: true
     });
     
-    // Direct TypeForm launch - no intermediate step
-    console.log('🚀 Launching TypeForm directly...');
+    // Show TypeForm container with smooth animation
+    container.style.display = 'block';
+    container.style.opacity = '0';
+    container.style.transform = 'translateY(20px)';
+    container.style.transition = 'all 0.5s ease';
     
-    // Load TypeForm script and launch immediately
+    setTimeout(() => {
+        container.style.opacity = '1';
+        container.style.transform = 'translateY(0)';
+        container.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+    
+    console.log('🚀 Loading TypeForm embed...');
+    
+    // Load TypeForm script if not already loaded
     if (!document.querySelector('script[src*="embed.typeform.com"]')) {
         console.log('🔍 Loading TypeForm embed script...');
         const script = document.createElement('script');
         script.src = '//embed.typeform.com/next/embed.js';
         script.onload = () => {
-            console.log('✅ TypeForm script loaded, launching form...');
-            launchTypeForm();
+            console.log('✅ TypeForm script loaded successfully');
+            trackEvent('typeform_script_loaded', {
+                event_category: 'conversion'
+            });
         };
         script.onerror = () => {
-            console.error('❌ TypeForm script failed to load, using fallback');
-            fallbackToDirectLink();
+            console.error('❌ TypeForm script failed to load');
+            showFallbackLink();
         };
         document.head.appendChild(script);
     } else {
-        console.log('✅ TypeForm script already loaded, launching form...');
-        launchTypeForm();
+        console.log('✅ TypeForm script already loaded');
     }
     
-    function launchTypeForm() {
-        // Use TypeForm's direct popup API
-        if (window.tf && window.tf.load) {
-            window.tf.load('01K25SKWYTKZ05DAHER9D52J94', {
-                popup: true,
-                hideHeaders: true,
-                hideFooter: true,
-                opacity: 100
-            });
-        } else {
-            // Fallback to direct link
-            fallbackToDirectLink();
-        }
-        
-        trackEvent('typeform_launched', {
-            event_category: 'conversion',
-            method: 'popup'
-        });
-    }
+    // Track successful show
+    trackEvent('typeform_embed_shown', {
+        event_category: 'conversion',
+        privacy_accepted: true
+    });
+}
+
+function hideTypeForm() {
+    const container = document.getElementById('typeformContainer');
+    container.style.opacity = '0';
+    container.style.transform = 'translateY(-20px)';
     
-    function fallbackToDirectLink() {
-        // Open TypeForm in new tab as fallback
-        const formUrl = 'https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94';
-        window.open(formUrl, '_blank', 'width=800,height=600,resizable=yes,scrollbars=yes');
-        
-        showToast('TypeForm Geopend', 'Het formulier is geopend in een nieuw tabblad.', 'success');
-        
-        trackEvent('typeform_fallback_used', {
-            event_category: 'conversion',
-            method: 'new_tab'
-        });
-    }
+    setTimeout(() => {
+        container.style.display = 'none';
+    }, 300);
+}
+
+function showFallbackLink() {
+    const container = document.getElementById('typeformContainer');
+    const embed = container.querySelector('[data-tf-live]');
+    
+    embed.innerHTML = `
+        <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 0.5rem;">
+            <h4 style="margin-bottom: 1rem; color: #1f2937;">📄 Direct Link</h4>
+            <p style="margin-bottom: 1.5rem; color: #6b7280;">Het formulier kon niet worden geladen. Gebruik deze directe link:</p>
+            <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" target="_blank" style="
+                display: inline-block;
+                background: #FF6B35;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 0.5rem;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            ">🚀 Open Upload Formulier</a>
+        </div>
+    `;
 }
     </script>
 </body>
