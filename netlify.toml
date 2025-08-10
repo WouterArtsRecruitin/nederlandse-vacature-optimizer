@@ -14,7 +14,7 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()"
+    Permissions-Policy = "geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), microphone=(self), camera=(self)"
     Content-Security-Policy = """
       default-src 'self';
       script-src 'self' 'unsafe-inline' *.typeform.com embed.typeform.com *.googletagmanager.com *.google-analytics.com;
