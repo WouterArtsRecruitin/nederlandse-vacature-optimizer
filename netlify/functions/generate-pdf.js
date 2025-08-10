@@ -39,14 +39,14 @@ exports.handler = async (event, context) => {
             };
         }
 
-        // Get PDF Monkey API key from environment variables
+        // Get PDF Monkey configuration from environment variables
         const PDFMONKEY_API_KEY = process.env.PDFMONKEY_API_KEY;
-        const WORKSPACE_ID = '729854cd-a86a-44ee-9a52-1f3febd94af0';
+        const WORKSPACE_ID = process.env.PDFMONKEY_WORKSPACE_ID || '729854cd-a86a-44ee-9a52-1f3febd94af0';
         
-        // Debug logging
+        // Secure debug logging
         console.log('🔍 PDF Monkey Environment check:');
         console.log('- PDFMONKEY_API_KEY exists:', !!PDFMONKEY_API_KEY);
-        console.log('- WORKSPACE_ID:', WORKSPACE_ID);
+        console.log('- WORKSPACE_ID configured:', !!WORKSPACE_ID);
         
         if (!PDFMONKEY_API_KEY) {
             console.error('❌ PDFMONKEY_API_KEY not found in environment variables');

@@ -42,19 +42,14 @@ exports.handler = async (event, context) => {
         // Get Claude API key from environment variables
         const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
         
-        // Enhanced debug logging
-        console.log('🔍 Environment variables check:');
+        // Secure debug logging (no sensitive data)
+        console.log('🔍 Environment check:');
         console.log('- NODE_ENV:', process.env.NODE_ENV);
-        console.log('- CLAUDE_API_KEY exists:', !!CLAUDE_API_KEY);
-        console.log('- CLAUDE_API_KEY length:', CLAUDE_API_KEY ? CLAUDE_API_KEY.length : 'undefined');
-        console.log('- CLAUDE_API_KEY starts with sk-ant:', CLAUDE_API_KEY ? CLAUDE_API_KEY.startsWith('sk-ant-') : false);
-        console.log('- All env vars with CLAUDE:', Object.keys(process.env).filter(key => key.includes('CLAUDE')));
-        console.log('- All env vars count:', Object.keys(process.env).length);
+        console.log('- API key configured:', !!CLAUDE_API_KEY);
         
         if (!CLAUDE_API_KEY || !CLAUDE_API_KEY.startsWith('sk-ant-')) {
-            console.error('❌ CLAUDE_API_KEY not found or invalid format in environment variables');
-            console.error('Available env vars:', Object.keys(process.env).slice(0, 10)); // Limit for security
-            console.error('Expected format: sk-ant-api03-...');
+            console.error('❌ CLAUDE_API_KEY not configured properly');
+            console.error('Please check environment variables configuration');
             
             // Temporary fallback - return mock response format
             return {

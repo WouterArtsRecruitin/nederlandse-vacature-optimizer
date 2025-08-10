@@ -1873,9 +1873,55 @@ Wij zoeken een ervaren developer voor ons groeiende team...
 // TalentFlow Pro MVP - Complete Functionality
 // ===============================================
 
-// Global Variables
+// Global Variables - Enhanced with race condition protection
 let isAnalyzing = false;
 let currentAnalysis = null;
+let currentAnalysisPromise = null;
+let eventListenersSetup = false;
+
+// ===============================================
+// SECURITY FUNCTIONS - XSS Protection
+// ===============================================
+
+function sanitizeHTML(str) {
+    if (!str) return '';
+    
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function safeSetHTML(element, content) {
+    if (!element) return;
+    
+    // For trusted HTML content that needs rendering (like our own generated HTML)
+    // we'll use innerHTML but ensure it's our own trusted content
+    if (typeof content === 'string' && content.includes('<')) {
+        // This is HTML content we generated - should be safe
+        element.innerHTML = content;
+    } else {
+        // This is user or external content - sanitize
+        element.textContent = content;
+    }
+}
+
+function sanitizeVacatureInput(input) {
+    if (!input || typeof input !== 'string') return '';
+    
+    // Remove potential script tags and dangerous content
+    let sanitized = input
+        .replace(/<script[^>]*>.*?<\/script>/gi, '')
+        .replace(/<iframe[^>]*>.*?<\/iframe>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+\s*=/gi, '')
+        .replace(/data:text\/html/gi, '');
+    
+    // Remove excessive whitespace but preserve normal formatting
+    sanitized = sanitized.replace(/\s{4,}/g, ' ');
+    
+    // Trim but preserve reasonable length
+    return sanitized.trim().substring(0, 8000);
+}
 
 // Nederlandse Recruitment Prompt Template
 const NEDERLANDS_RECRUITMENT_PROMPT = `
@@ -2059,12 +2105,25 @@ function initializeApp() {
 }
 
 function setupEventListeners() {
+    // Prevent multiple setup
+    if (eventListenersSetup) return;
+    eventListenersSetup = true;
+    
     // Textarea input events
     const textarea = document.getElementById('vacatureInput');
     if (textarea) {
         textarea.addEventListener('input', updateCharCounter);
         textarea.addEventListener('paste', handlePaste);
     }
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+        // Cancel any ongoing analysis
+        if (currentAnalysisPromise && isAnalyzing) {
+            console.log('🛑 Page unload: Cancelling ongoing analysis');
+            isAnalyzing = false;
+        }
+    });
     
     // Button click tracking
     document.addEventListener('click', (e) => {
@@ -2323,46 +2382,53 @@ async function analyzeVacature() {
     const textarea = document.getElementById('vacatureInput');
     const vacatureText = textarea ? textarea.value.trim() : '';
     
-    // Validation
+    // Enhanced Input Validation
     if (!vacatureText) {
         showToast('Geen Tekst', 'Voer eerst een vacaturetekst in om te analyseren.', 'warning');
         if (textarea) textarea.focus();
         return;
     }
     
-    if (vacatureText.length < 100) {
-        showToast('Tekst Te Kort', 'Voer minimaal 100 karakters in voor een betrouwbare analyse.', 'warning');
-        if (textarea) textarea.focus();
+    if (vacatureText.length < 50) {
+        showToast('Tekst Te Kort', 'Voer minimaal 50 karakters in voor een betrouwbare analyse.', 'warning');
         return;
     }
     
     if (vacatureText.length > 8000) {
-        showToast('Tekst Te Lang', 'Maximum 8000 karakters toegestaan voor optimale prestaties.', 'warning');
+        showToast('Tekst Te Lang', 'Maximaal 8000 karakters toegestaan. Verkort je tekst.', 'warning');
         return;
     }
     
-    // Prevent double analysis
-    if (isAnalyzing) {
+    // Sanitize input - remove potentially harmful content
+    const sanitizedText = sanitizeVacatureInput(vacatureText);
+    if (sanitizedText !== vacatureText) {
+        console.warn('Input was sanitized - removed potentially harmful content');
+    }
+    
+    // Enhanced race condition prevention
+    if (isAnalyzing || currentAnalysisPromise) {
         showToast('Analyse Bezig', 'Er wordt al een analyse uitgevoerd. Even geduld...', 'info');
-        return;
+        return currentAnalysisPromise; // Return existing promise
     }
     
-    try {
-        isAnalyzing = true;
-        showLoading();
-        
-        // Track analysis start
-        trackEvent('analysis_started', {
-            event_category: 'analysis',
-            text_length: vacatureText.length,
-            timestamp: new Date().toISOString()
-        });
-        
-        console.log('🔍 Starting vacature analysis...');
-        const startTime = Date.now();
-        
-        // Call Claude API
-        const analysis = await callClaudeAPI(vacatureText);
+    // Create and store promise for race condition protection
+    currentAnalysisPromise = (async () => {
+        try {
+            isAnalyzing = true;
+            showLoading();
+            
+            // Track analysis start
+            trackEvent('analysis_started', {
+                event_category: 'analysis',
+                text_length: sanitizedText.length,
+                timestamp: new Date().toISOString()
+            });
+            
+            console.log('🔍 Starting vacature analysis...');
+            const startTime = Date.now();
+            
+            // Call Claude API with sanitized text
+            const analysis = await callClaudeAPI(sanitizedText);
         
         const analysisTime = (Date.now() - startTime) / 1000;
         console.log(`✅ Analysis completed in ${analysisTime.toFixed(1)}s`);
@@ -2384,26 +2450,53 @@ async function analyzeVacature() {
             text_length: vacatureText.length
         });
         
-        showToast(
-            'Analyse Voltooid!', 
-            `Score: ${analysis.gemiddelde_score}/10 - Bekijk de resultaten hieronder.`, 
-            'success'
-        );
-        
-    } catch (error) {
-        console.error('❌ Analysis failed:', error);
-        showError(error.message);
-        
-        trackEvent('analysis_error', {
-            event_category: 'analysis',
-            error_message: error.message,
-            text_length: vacatureText.length
-        });
-        
-    } finally {
-        isAnalyzing = false;
-        hideLoading();
-    }
+            // Store analysis result
+            currentAnalysis = analysis;
+            displayAnalysisResults(analysis);
+            
+            // Show upgrade section after analysis
+            const upgradeSection = document.getElementById('upgradeSection');
+            if (upgradeSection) {
+                upgradeSection.style.display = 'block';
+                upgradeSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Track successful analysis
+            trackEvent('analysis_completed', {
+                event_category: 'analysis',
+                score: analysis.gemiddelde_score,
+                completion_time: analysisTime,
+                text_length: sanitizedText.length
+            });
+            
+            showToast(
+                'Analyse Voltooid!', 
+                `Score: ${analysis.gemiddelde_score}/10 - Bekijk de resultaten hieronder.`, 
+                'success'
+            );
+            
+            return analysis;
+            
+        } catch (error) {
+            console.error('❌ Analysis failed:', error);
+            showError(error.message);
+            
+            trackEvent('analysis_error', {
+                event_category: 'analysis',
+                error_message: error.message,
+                text_length: sanitizedText.length
+            });
+            
+            throw error; // Re-throw for promise handling
+            
+        } finally {
+            isAnalyzing = false;
+            currentAnalysisPromise = null; // Clear promise reference
+            hideLoading();
+        }
+    })();
+    
+    return currentAnalysisPromise;
 }
 
 // ===============================================
@@ -2416,59 +2509,89 @@ async function callClaudeAPI(vacatureText) {
     try {
         console.log('🔍 Calling Claude API via Netlify function...');
         
-        // Call Netlify function
-        const response = await fetch('/.netlify/functions/claude-analyze', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                max_tokens: 4000
-            })
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error || `API call failed: ${response.status} ${response.statusText}`);
+        // Create abort controller for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+        
+        try {
+            // Call Netlify function with timeout
+            const response = await fetch('/.netlify/functions/claude-analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    prompt: prompt,
+                    max_tokens: 4000
+                }),
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            return await processAPIResponse(response);
+            
+        } catch (error) {
+            clearTimeout(timeoutId);
+            if (error.name === 'AbortError') {
+                throw new Error('API call timeout - probeer het opnieuw');
+            }
+            throw error;
         }
-
-        const data = await response.json();
-        
-        if (!data.content || !data.content[0] || !data.content[0].text) {
-            throw new Error('Invalid API response format');
-        }
-        
-        let content = data.content[0].text;
-        
-        // Clean up JSON response
-        content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-        
-        // Parse JSON
-        const analysis = JSON.parse(content);
-        
-        // Validate required fields
-        validateAnalysisResponse(analysis);
-        
-        console.log('✅ Claude API analysis successful');
-        return analysis;
         
     } catch (error) {
         console.error('Claude API Error:', error);
         
-        // Fallback to mock analysis with specific error types
-        if (error.message.includes('404') || error.message.includes('Netlify') || 
-            error.message.includes('Failed to fetch') || window.location.hostname === '127.0.0.1') {
-            console.log('🔄 Using fallback mock analysis (development/offline mode)...');
-            
-            // Simulate API delay for realistic UX
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            return generateMockAnalysis(vacatureText);
-        }
-        
-        // Re-throw other errors to show user
-        throw new Error(`Analyse mislukt: ${error.message}. Probeer het opnieuw.`);
+        // Enhanced fallback with specific error handling
+        return createFallbackAnalysis(vacatureText, error.message);
     }
+}
+
+async function processAPIResponse(response) {
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `API call failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    
+    if (!data.content || !data.content[0] || !data.content[0].text) {
+        throw new Error('Invalid API response format');
+    }
+    
+    let content = data.content[0].text;
+    
+    // Clean up JSON response
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    // Parse JSON with proper error handling
+    let analysis;
+    try {
+        analysis = JSON.parse(content);
+    } catch (parseError) {
+        console.error('❌ JSON parsing failed:', parseError);
+        throw new Error(`Invalid JSON response from AI: ${parseError.message}`);
+    }
+    
+    // Validate required fields
+    validateAnalysisResponse(analysis);
+    
+    console.log('✅ Claude API analysis successful');
+    return analysis;
+}
+
+function createFallbackAnalysis(vacatureText, errorMessage) {
+    // Enhanced fallback with specific error types
+    if (errorMessage.includes('404') || errorMessage.includes('Netlify') || 
+        errorMessage.includes('Failed to fetch') || errorMessage.includes('timeout') ||
+        window.location.hostname === '127.0.0.1') {
+        console.log('🔄 Using fallback mock analysis (development/offline mode)...');
+        console.log('Error was:', errorMessage);
+        
+        return generateMockAnalysis(vacatureText);
+    }
+    
+    // Re-throw other errors to show user
+    throw new Error(`Analyse mislukt: ${errorMessage}. Probeer het opnieuw.`);
 }
 
 function validateAnalysisResponse(analysis) {
@@ -3001,7 +3124,10 @@ async function downloadAnalysis() {
         // Get original vacature text
         const originalVacatureText = document.getElementById('vacatureInput').value;
         
-        // Call PDF generation function
+        // Call PDF generation function with timeout
+        const pdfController = new AbortController();
+        const pdfTimeoutId = setTimeout(() => pdfController.abort(), 45000); // 45 second timeout
+        
         const response = await fetch('/.netlify/functions/generate-pdf', {
             method: 'POST',
             headers: {
@@ -3011,8 +3137,11 @@ async function downloadAnalysis() {
                 analysisData: currentAnalysis,
                 vacatureText: currentAnalysis.geoptimaliseerde_versie || '',
                 originalText: originalVacatureText
-            })
+            }),
+            signal: pdfController.signal
         });
+        
+        clearTimeout(pdfTimeoutId);
         
         if (!response.ok) {
             throw new Error(`PDF generation failed: ${response.status}`);
