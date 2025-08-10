@@ -7,6 +7,11 @@
     <meta name="description" content="Optimaliseer je vacatures voor de Nederlandse arbeidsmarkt met AI. Verhoog je respons met 40-60% door slimme analyse en verbeterpunten.">
     <meta name="keywords" content="vacature optimalisatie, Nederlandse recruitment, AI recruitment tool, vacature verbeteren">
     
+    <!-- Preload TypeForm resources for faster loading -->
+    <link rel="preconnect" href="https://embed.typeform.com">
+    <link rel="dns-prefetch" href="//embed.typeform.com">
+    <link rel="preload" href="//embed.typeform.com/next/embed.js" as="script">
+    
     <!-- Favicon & PWA -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🇳🇱%3C/text%3E%3C/svg%3E">
     <link rel="manifest" href="manifest.json">
@@ -1669,20 +1674,31 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                                 </label>
                             </div>
                             
-                            <button id="loadTypeFormBtn" class="upgrade-btn" onclick="showUploadNotification()" disabled style="opacity: 0.5; cursor: not-allowed;">
-                                <span>📄</span>
-                                <span>Upload Document - Gratis Professionele Optimalisatie</span>
-                            </button>
-                        </div>
-                        
-                        <!-- TypeForm Embed Container -->
-                        <div id="typeformContainer" style="display: none; margin-top: 2rem; background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative;">
-                            <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10;">
-                                <button onclick="hideTypeForm()" style="background: rgba(0,0,0,0.5); border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; width: 2.5rem; height: 2.5rem;">✕</button>
+                            <!-- Separate TypeForm Button -->
+                            <div id="typeformButtonContainer">
+                                <button id="openTypeFormBtn" class="upgrade-btn" onclick="openTypeForm()" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                    <span>📄</span>
+                                    <span>Upload Document - Open Formulier</span>
+                                </button>
+                                <p style="font-size: 0.9rem; color: #6b7280; margin-top: 0.5rem; text-align: center;">
+                                    Klik hier om het upload formulier te openen
+                                </p>
                             </div>
                             
-                            <!-- TypeForm Embed -->
-                            <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+                            <!-- Success Message (shown after TypeForm completion) -->
+                            <div id="typeformSuccessMessage" style="display: none; text-align: center; padding: 2rem; background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 1rem; margin-top: 1rem;">
+                                <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                                <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">Formulier Succesvol Verzonden!</h3>
+                                <p style="margin: 0; opacity: 0.9; line-height: 1.6;">
+                                    Bedankt voor je upload! We gaan direct aan de slag met de optimalisatie van je vacature. 
+                                    Je ontvangt binnen 24 uur een professioneel geoptimaliseerde versie per email.
+                                </p>
+                                <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.3);">
+                                    <p style="margin: 0; font-size: 0.9rem; opacity: 0.8;">
+                                        ✅ Upload voltooid • ✅ Analyse gestart • ✅ Email onderweg
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                             
                         </div>
@@ -1888,6 +1904,47 @@ Wij zoeken een ervaren developer voor ons groeiende team...
 // Nederlandse Vacature Optimizer - JavaScript
 // TalentFlow Pro MVP - Complete Functionality
 // ===============================================
+
+// Preload TypeForm script for faster loading
+let typeformScriptLoaded = false;
+let typeformScriptLoading = false;
+
+function preloadTypeFormScript() {
+    if (typeformScriptLoaded || typeformScriptLoading || document.querySelector('script[src*="embed.typeform.com"]')) {
+        return Promise.resolve();
+    }
+    
+    return new Promise((resolve, reject) => {
+        typeformScriptLoading = true;
+        console.log('🔄 Preloading TypeForm script...');
+        
+        const script = document.createElement('script');
+        script.src = '//embed.typeform.com/next/embed.js';
+        script.async = true;
+        script.onload = () => {
+            console.log('✅ TypeForm script preloaded successfully');
+            typeformScriptLoaded = true;
+            typeformScriptLoading = false;
+            resolve();
+        };
+        script.onerror = () => {
+            console.error('❌ TypeForm script preload failed');
+            typeformScriptLoading = false;
+            reject();
+        };
+        document.head.appendChild(script);
+    });
+}
+
+// Start preloading when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Preload TypeForm script in background
+    setTimeout(() => {
+        preloadTypeFormScript().catch(() => {
+            console.warn('TypeForm preload failed, will try again on demand');
+        });
+    }, 1000); // Wait 1 second after page load
+});
 
 // ===============================================
 // BASIC FUNCTIONALITY TEST
@@ -3394,7 +3451,7 @@ try {
 
 function initializePrivacyCheckbox() {
     const checkbox = document.getElementById('privacyAcceptance');
-    const button = document.getElementById('loadTypeFormBtn');
+    const button = document.getElementById('openTypeFormBtn');
     
     if (!checkbox || !button) {
         console.warn('Privacy checkbox or upload button not found');
@@ -3434,8 +3491,8 @@ function initializePrivacyCheckbox() {
     }
 }
 
-// Show TypeForm embed with privacy check
-function showUploadNotification() {
+// Open TypeForm in popup with privacy check
+function openTypeForm() {
     const checkbox = document.getElementById('privacyAcceptance');
     
     // Double check privacy acceptance
@@ -3461,87 +3518,130 @@ function showUploadNotification() {
         return;
     }
     
-    const container = document.getElementById('typeformContainer');
-    
     // Track click
-    trackEvent('upload_clicked', {
+    trackEvent('typeform_popup_clicked', {
         event_category: 'conversion',
         analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown',
         privacy_accepted: true
     });
     
-    // Show TypeForm container with smooth animation
-    container.style.display = 'block';
-    container.style.opacity = '0';
-    container.style.transform = 'translateY(20px)';
-    container.style.transition = 'all 0.5s ease';
+    console.log('🚀 Opening TypeForm in popup...');
+    
+    // Use TypeForm's popup API if available
+    if (typeformScriptLoaded && window.tf && window.tf.load) {
+        window.tf.load('01K25SKWYTKZ05DAHER9D52J94', {
+            popup: true,
+            hideHeaders: true,
+            hideFooter: true,
+            opacity: 100,
+            onSubmit: function() {
+                console.log('✅ TypeForm submitted successfully');
+                handleTypeFormCompletion();
+            },
+            onClose: function() {
+                console.log('TypeForm closed by user');
+                trackEvent('typeform_popup_closed', {
+                    event_category: 'conversion'
+                });
+            }
+        });
+        
+        trackEvent('typeform_popup_opened', {
+            event_category: 'conversion',
+            method: 'popup_api'
+        });
+    } else {
+        // Fallback: Open in new tab/window
+        const formUrl = 'https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94';
+        const popup = window.open(formUrl, 'typeform_popup', 'width=800,height=700,scrollbars=yes,resizable=yes,centerscreen=yes');
+        
+        if (popup) {
+            showToast('Formulier Geopend', 'Het upload formulier is geopend in een nieuw venster.', 'success');
+            
+            // Monitor for popup close (basic detection)
+            const checkClosed = setInterval(() => {
+                if (popup.closed) {
+                    clearInterval(checkClosed);
+                    console.log('TypeForm popup was closed');
+                    
+                    // Show completion dialog after delay (assuming form was submitted)
+                    setTimeout(() => {
+                        if (confirm('Heb je het formulier succesvol ingevuld en verzonden?')) {
+                            handleTypeFormCompletion();
+                        }
+                    }, 1000);
+                }
+            }, 1000);
+            
+            trackEvent('typeform_popup_opened', {
+                event_category: 'conversion',
+                method: 'new_window'
+            });
+        } else {
+            // Popup blocked, show direct link
+            showToast('Popup Geblokkeerd', 'Popup werd geblokkeerd. Klik hieronder om het formulier te openen.', 'warning');
+            showDirectLink();
+        }
+    }
+}
+
+// Handle TypeForm completion
+function handleTypeFormCompletion() {
+    const buttonContainer = document.getElementById('typeformButtonContainer');
+    const successMessage = document.getElementById('typeformSuccessMessage');
+    
+    // Hide button and show success message
+    buttonContainer.style.display = 'none';
+    successMessage.style.display = 'block';
+    
+    // Smooth fade in animation
+    successMessage.style.opacity = '0';
+    successMessage.style.transform = 'translateY(20px)';
+    successMessage.style.transition = 'all 0.5s ease';
     
     setTimeout(() => {
-        container.style.opacity = '1';
-        container.style.transform = 'translateY(0)';
-        container.scrollIntoView({ behavior: 'smooth' });
+        successMessage.style.opacity = '1';
+        successMessage.style.transform = 'translateY(0)';
+        successMessage.scrollIntoView({ behavior: 'smooth' });
     }, 100);
     
-    console.log('🚀 Loading TypeForm embed...');
+    // Show toast notification
+    showToast('Formulier Verzonden!', 'Je upload is succesvol ontvangen. Check je email binnen 24 uur.', 'success');
     
-    // Load TypeForm script if not already loaded
-    if (!document.querySelector('script[src*="embed.typeform.com"]')) {
-        console.log('🔍 Loading TypeForm embed script...');
-        const script = document.createElement('script');
-        script.src = '//embed.typeform.com/next/embed.js';
-        script.onload = () => {
-            console.log('✅ TypeForm script loaded successfully');
-            trackEvent('typeform_script_loaded', {
-                event_category: 'conversion'
-            });
-        };
-        script.onerror = () => {
-            console.error('❌ TypeForm script failed to load');
-            showFallbackLink();
-        };
-        document.head.appendChild(script);
-    } else {
-        console.log('✅ TypeForm script already loaded');
-    }
-    
-    // Track successful show
-    trackEvent('typeform_embed_shown', {
+    trackEvent('typeform_completed', {
         event_category: 'conversion',
-        privacy_accepted: true
+        event_label: 'form_submitted'
     });
 }
 
-function hideTypeForm() {
-    const container = document.getElementById('typeformContainer');
-    container.style.opacity = '0';
-    container.style.transform = 'translateY(-20px)';
+// Show direct link fallback
+function showDirectLink() {
+    const buttonContainer = document.getElementById('typeformButtonContainer');
     
-    setTimeout(() => {
-        container.style.display = 'none';
-    }, 300);
+    // Add direct link below button
+    const linkElement = document.createElement('div');
+    linkElement.style.textAlign = 'center';
+    linkElement.style.marginTop = '1rem';
+    linkElement.style.padding = '1rem';
+    linkElement.style.background = '#f8f9fa';
+    linkElement.style.borderRadius = '0.5rem';
+    linkElement.innerHTML = `
+        <p style="margin: 0 0 1rem 0; color: #6b7280;">Popup werd geblokkeerd? Gebruik deze directe link:</p>
+        <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" target="_blank" style="
+            display: inline-block;
+            background: #FF6B35;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        ">🚀 Open Upload Formulier</a>
+    `;
+    
+    buttonContainer.appendChild(linkElement);
 }
 
-function showFallbackLink() {
-    const container = document.getElementById('typeformContainer');
-    const embed = container.querySelector('[data-tf-live]');
-    
-    embed.innerHTML = `
-        <div style="text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 0.5rem;">
-            <h4 style="margin-bottom: 1rem; color: #1f2937;">📄 Direct Link</h4>
-            <p style="margin-bottom: 1.5rem; color: #6b7280;">Het formulier kon niet worden geladen. Gebruik deze directe link:</p>
-            <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" target="_blank" style="
-                display: inline-block;
-                background: #FF6B35;
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 0.5rem;
-                text-decoration: none;
-                font-weight: 600;
-                transition: all 0.3s ease;
-            ">🚀 Open Upload Formulier</a>
-        </div>
-    `;
-}
     </script>
 </body>
 </html>
