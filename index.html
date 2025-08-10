@@ -1644,18 +1644,32 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                 <!-- TypeForm Upgrade Section - Only shows after analysis -->
                 <div id="upgradeSection" class="upgrade-section" style="display: none;">
                     <div class="upgrade-content">
-                        <h3 class="upgrade-title">🚀 Wil je een Volledig Geoptimaliseerde Versie?</h3>
+                        <h3 class="upgrade-title">🚀 Professionele Vacature Service</h3>
                         <p class="upgrade-description">
                             Upload je huidige vacature document en ontvang binnen 24 uur een volledig 
-                            geoptimaliseerde versie met Nederlandse markt best practices.
+                            professioneel geoptimaliseerde versie met Nederlandse markt best practices en 
+                            employer branding advies.
                         </p>
-                        <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" 
-                           target="_blank" 
-                           class="upgrade-btn"
-                           onclick="trackTypeFormClick()">
-                            <span>📄</span>
-                            <span>Ga naar Upload Document voor Gratis Volledige Verbeterde Vacature Tekst</span>
-                        </a>
+                        
+                        <!-- Improved TypeForm Integration -->
+                        <div id="typeformContainer" style="margin-top: 2rem;">
+                            <button id="loadTypeFormBtn" class="upgrade-btn" onclick="loadImprovedTypeForm()">
+                                <span>📄</span>
+                                <span>Upload Document - Gratis Professionele Optimalisatie</span>
+                            </button>
+                            
+                            <!-- TypeForm Embed Container -->
+                            <div id="typeformEmbed" style="display: none; margin-top: 2rem; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+                                <div data-tf-widget="01K25SKWYTKZ05DAHER9D52J94" data-tf-opacity="100" data-tf-iframe-props="title=Nederlandse Vacature Optimizer Upload" data-tf-transitive-search-params data-tf-medium="snippet" style="width:100%;height:600px;"></div>
+                            </div>
+                            
+                            <!-- Loading State -->
+                            <div id="typeformLoading" style="display: none; text-align: center; padding: 2rem;">
+                                <div style="width: 50px; height: 50px; border: 4px solid #f3f4f6; border-top: 4px solid #FF6B35; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+                                <h4 style="color: #1f2937; margin-bottom: 0.5rem;">TypeForm wordt geladen...</h4>
+                                <p style="color: #6b7280;">Even geduld terwijl we het formulier voorbereiden.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2759,13 +2773,9 @@ function displayResults(analysis) {
                 Geoptimaliseerde Vacaturetekst
             </h4>
             <div class="optimized-text">${analysis.geoptimaliseerde_versie}</div>
-            <button onclick="copyOptimizedText()" class="copy-btn">
-                <span>📋</span>
-                Kopieer Geoptimaliseerde Versie
-            </button>
             <button onclick="downloadAnalysis()" class="copy-btn" style="background: var(--primary-blue);">
                 <span>📄</span>
-                Download Analyse (PDF)
+                Download Volledige Analyse (PDF)
             </button>
         </div>
     `;
@@ -2806,17 +2816,83 @@ function showUpgradeSection() {
     }
 }
 
-function trackTypeFormClick() {
+// Improved TypeForm Integration
+function loadImprovedTypeForm() {
+    const button = document.getElementById('loadTypeFormBtn');
+    const loading = document.getElementById('typeformLoading');
+    const embed = document.getElementById('typeformEmbed');
+    
+    // Track click
     trackEvent('typeform_clicked', {
         event_category: 'conversion',
         analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown'
     });
     
-    showToast(
-        'TypeForm Openen...', 
-        'Je wordt doorgestuurd naar het upload formulier in een nieuw tabblad.', 
-        'info'
-    );
+    // Show loading
+    button.style.display = 'none';
+    loading.style.display = 'block';
+    
+    // Load TypeForm script if not already loaded
+    if (!document.querySelector('script[src*="embed.typeform.com"]')) {
+        const script = document.createElement('script');
+        script.src = '//embed.typeform.com/next/embed.js';
+        script.onload = () => {
+            console.log('✅ TypeForm script loaded');
+            showTypeForm();
+        };
+        script.onerror = () => {
+            console.error('❌ TypeForm script failed to load');
+            fallbackToDirectLink();
+        };
+        document.head.appendChild(script);
+        
+        // Timeout fallback
+        setTimeout(() => {
+            if (loading.style.display !== 'none') {
+                fallbackToDirectLink();
+            }
+        }, 5000);
+    } else {
+        showTypeForm();
+    }
+    
+    function showTypeForm() {
+        loading.style.display = 'none';
+        embed.style.display = 'block';
+        
+        // Scroll to form
+        embed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        showToast('TypeForm Geladen!', 'Upload je vacature document hieronder.', 'success');
+    }
+    
+    function fallbackToDirectLink() {
+        loading.style.display = 'none';
+        
+        // Create direct link
+        const linkContainer = document.createElement('div');
+        linkContainer.style.textAlign = 'center';
+        linkContainer.style.padding = '2rem';
+        linkContainer.style.background = 'white';
+        linkContainer.style.borderRadius = '1rem';
+        linkContainer.style.marginTop = '2rem';
+        linkContainer.innerHTML = `
+            <h4 style="margin-bottom: 1rem; color: #1f2937;">📄 Document Upload</h4>
+            <p style="margin-bottom: 2rem; color: #6b7280;">
+                Klik onderstaande link om het upload formulier te openen in een nieuw tabblad:
+            </p>
+            <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" 
+               target="_blank" 
+               class="upgrade-btn"
+               style="text-decoration: none;">
+                <span>🚀</span>
+                <span>Open Upload Formulier</span>
+            </a>
+        `;
+        
+        document.getElementById('typeformContainer').appendChild(linkContainer);
+        showToast('Direct Link', 'TypeForm opent in een nieuw tabblad.', 'info');
+    }
 }
 
 // ===============================================
@@ -2905,35 +2981,7 @@ function showToast(title, message, type = 'info') {
 // UTILITY FUNCTIONS
 // ===============================================
 
-function copyOptimizedText() {
-    if (!currentAnalysis) return;
-    
-    const text = currentAnalysis.geoptimaliseerde_versie;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target.closest('.copy-btn');
-        const originalHTML = btn.innerHTML;
-        
-        btn.innerHTML = '<span>✅</span> Gekopieerd!';
-        btn.style.background = 'var(--success)';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-            btn.style.background = 'var(--success)';
-        }, 2000);
-        
-        showToast('Tekst Gekopieerd', 'Geoptimaliseerde vacature is gekopieerd naar klembord.', 'success');
-        
-        trackEvent('optimized_text_copied', {
-            event_category: 'user_interaction',
-            score: currentAnalysis.gemiddelde_score
-        });
-        
-    }).catch(err => {
-        console.error('Copy failed:', err);
-        showToast('Kopiëren Mislukt', 'Selecteer en kopieer de tekst handmatig.', 'error');
-    });
-}
+// Copy function removed as requested - users can select text manually
 
 function downloadAnalysis() {
     if (!currentAnalysis) return;
