@@ -23,7 +23,7 @@
       img-src 'self' data: https: *.typeform.com;
       frame-src *.typeform.com form.typeform.com https:;
       frame-ancestors 'self';
-      connect-src 'self' api.anthropic.com *.typeform.com *.google-analytics.com *.googletagmanager.com https:;
+      connect-src 'self' api.anthropic.com api.pdfmonkey.io *.typeform.com *.google-analytics.com *.googletagmanager.com https:;
       object-src 'none';
       base-uri 'self';
       form-action 'self' *.typeform.com https:;

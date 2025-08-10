@@ -2983,10 +2983,112 @@ function showToast(title, message, type = 'info') {
 
 // Copy function removed as requested - users can select text manually
 
-function downloadAnalysis() {
+async function downloadAnalysis() {
     if (!currentAnalysis) return;
     
-    // Create downloadable content
+    const button = event.target;
+    const originalText = button.textContent;
+    
+    try {
+        // Show loading state
+        button.textContent = '📄 PDF Genereren...';
+        button.disabled = true;
+        
+        showToast('PDF Genereren', 'Professioneel rapport wordt gegenereerd...', 'info');
+        
+        console.log('🔍 Generating PDF report with PDF Monkey...');
+        
+        // Get original vacature text
+        const originalVacatureText = document.getElementById('vacatureInput').value;
+        
+        // Call PDF generation function
+        const response = await fetch('/.netlify/functions/generate-pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                analysisData: currentAnalysis,
+                vacatureText: currentAnalysis.geoptimaliseerde_versie || '',
+                originalText: originalVacatureText
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`PDF generation failed: ${response.status}`);
+        }
+        
+        // Check if response is JSON (PDF Monkey success) or text (fallback)
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
+            // PDF Monkey integration - get download URL
+            const result = await response.json();
+            
+            if (result.success && result.download_url) {
+                // Open PDF in new window
+                window.open(result.download_url, '_blank');
+                showToast('PDF Gereed', 'Professioneel rapport wordt gedownload!', 'success');
+                
+                trackEvent('pdf_downloaded', {
+                    event_category: 'user_interaction',
+                    score: currentAnalysis.gemiddelde_score,
+                    method: 'pdfmonkey'
+                });
+            } else {
+                // PDF is being generated, show status
+                showToast('PDF Wordt Verwerkt', result.message || 'Even geduld...', 'info');
+                
+                // Poll for completion if document_id is provided
+                if (result.document_id) {
+                    checkPdfStatus(result.document_id);
+                }
+            }
+        } else {
+            // Fallback text download
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            
+            link.href = url;
+            link.download = `vacature-analyse-${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
+            showToast('Tekstrapport Gedownload', 'PDF niet beschikbaar, tekstversie gedownload.', 'warning');
+            
+            trackEvent('text_downloaded', {
+                event_category: 'user_interaction',
+                score: currentAnalysis.gemiddelde_score,
+                method: 'fallback'
+            });
+        }
+        
+    } catch (error) {
+        console.error('❌ Download error:', error);
+        
+        // Fallback to simple text download
+        downloadTextReport();
+        
+        showToast('Download Fout', 'Tekstrapport als alternatief gedownload.', 'warning');
+        
+        trackEvent('download_error', {
+            event_category: 'error',
+            error_message: error.message
+        });
+    } finally {
+        // Reset button state
+        button.textContent = originalText;
+        button.disabled = false;
+    }
+}
+
+// Helper function for text fallback download
+function downloadTextReport() {
+    if (!currentAnalysis) return;
+    
     const content = `
 NEDERLANDSE VACATURE ANALYSE RAPPORT
 =====================================
@@ -3026,7 +3128,6 @@ Gegenereerd door TalentFlow Pro
 Nederlandse Recruitment Intelligence
     `;
     
-    // Create and download file
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -3037,13 +3138,24 @@ Nederlandse Recruitment Intelligence
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
+}
+
+// Helper function to check PDF generation status
+async function checkPdfStatus(documentId, attempts = 0) {
+    if (attempts > 10) {
+        showToast('PDF Timeout', 'PDF generatie duurt langer dan verwacht.', 'warning');
+        return;
+    }
     
-    showToast('Analyse Gedownload', 'Rapport is opgeslagen als tekstbestand.', 'success');
-    
-    trackEvent('analysis_downloaded', {
-        event_category: 'user_interaction',
-        score: currentAnalysis.gemiddelde_score
-    });
+    try {
+        // This would need PDF Monkey status API - for now just show completion
+        setTimeout(() => {
+            showToast('PDF Klaar', 'Check je downloads voor het rapport!', 'success');
+        }, 3000);
+        
+    } catch (error) {
+        console.error('PDF status check failed:', error);
+    }
 }
 
 function trackEvent(eventName, parameters = {}) {

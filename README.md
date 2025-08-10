@@ -46,6 +46,7 @@ Nederlandse Vacature Optimizer is een geavanceerde AI-tool die vacatureteksten a
 - GitHub account
 - Netlify account  
 - Claude API key (Anthropic)
+- PDF Monkey API key (Optional - for professional PDF reports)
 
 ### Setup
 1. **Clone & Push to GitHub**
@@ -56,6 +57,7 @@ Nederlandse Vacature Optimizer is een geavanceerde AI-tool die vacatureteksten a
 3. **Environment Variables**:
    ```
    CLAUDE_API_KEY=your_claude_api_key_here
+   PDFMONKEY_API_KEY=your_pdfmonkey_api_key_here
    ```
 4. **Deploy** - Automatic via GitHub integration
 
@@ -65,6 +67,13 @@ Nederlandse Vacature Optimizer is een geavanceerde AI-tool die vacatureteksten a
 - Sign up at [console.anthropic.com](https://console.anthropic.com)
 - Create API key
 - Add to Netlify environment variables
+
+### PDF Monkey Setup (Optional)
+- Sign up at [pdfmonkey.io](https://pdfmonkey.io)
+- Create API key and workspace
+- Workspace ID: `729854cd-a86a-44ee-9a52-1f3febd94af0`
+- Add `PDFMONKEY_API_KEY` to Netlify environment variables
+- Without PDF Monkey: Falls back to text report downloads
 
 ### TypeForm Integration
 - Form URL: `https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94`
@@ -110,9 +119,10 @@ Bij development of API problemen valt het systeem terug op intelligente mock ana
 - Keyword density analysis
 
 ### Export Functionaliteit
-- Copy geoptimaliseerde tekst naar clipboard
-- Download analyse rapport als TXT
+- Professional PDF reports via PDF Monkey integration
+- Fallback text report download (TXT format)
 - TypeForm upload voor premium optimalisatie
+- Comprehensive analysis data export
 
 ## 🔒 Security & Privacy
 
