@@ -1641,12 +1641,28 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                             employer branding advies.
                         </p>
                         
-                        <!-- Simplified Upload Integration -->
+                        <!-- Upload Integration with Privacy -->
                         <div id="typeformContainer" style="margin-top: 2rem;">
-                            <button id="loadTypeFormBtn" class="upgrade-btn" onclick="showUploadNotification()">
+                            <!-- Privacy Acceptance Checkbox -->
+                            <div style="margin-bottom: 1.5rem; padding: 1rem; background: #f8f9fa; border-radius: 0.5rem; border: 1px solid #e9ecef;">
+                                <label style="display: flex; align-items: flex-start; cursor: pointer; font-size: 0.9rem; line-height: 1.4;">
+                                    <input type="checkbox" id="privacyAcceptance" style="margin-right: 0.8rem; margin-top: 0.2rem; transform: scale(1.2);" required>
+                                    <span style="color: #495057;">
+                                        Ik ga akkoord met de 
+                                        <a href="https://recruitin.nl/privacyverklaring-recruitin/" target="_blank" style="color: #FF6B35; text-decoration: none; font-weight: 500;">
+                                            privacyverklaring van Recruitin
+                                        </a> 
+                                        en geef toestemming voor het verwerken van mijn gegevens voor het optimaliseren van de vacaturetekst.
+                                        <span style="color: #dc3545; font-weight: 600;">*</span>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <button id="loadTypeFormBtn" class="upgrade-btn" onclick="showUploadNotification()" disabled style="opacity: 0.5; cursor: not-allowed;">
                                 <span>📄</span>
                                 <span>Upload Document - Gratis Professionele Optimalisatie</span>
                             </button>
+                        </div>
                             
                             <!-- TypeForm Embed Container -->
                             <div id="uploadNotification" style="display: none; margin-top: 2rem; background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative;">
@@ -2123,6 +2139,9 @@ function initializeApp() {
     
     // Initialize event listeners
     setupEventListeners();
+    
+    // Initialize privacy checkbox
+    initializePrivacyCheckbox();
     
     // Initialize character counter
     updateCharCounter();
@@ -3379,13 +3398,108 @@ try {
 // SIMPLIFIED UPLOAD NOTIFICATION SYSTEM
 // ===============================================
 
+// This function is now defined later with privacy functionality
+
+function showTypeFormFallback() {
+    const fallback = document.getElementById('typeformFallback');
+    if (fallback) {
+        fallback.style.display = 'block';
+        trackEvent('typeform_fallback_shown', {
+            event_category: 'conversion'
+        });
+    }
+}
+
+function hideUploadNotification() {
+    const notification = document.getElementById('uploadNotification');
+    notification.style.opacity = '0';
+    notification.style.transform = 'translateY(-20px)';
+    
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 300);
+}
+
+// ===============================================
+// PRIVACY CHECKBOX FUNCTIONALITY
+// ===============================================
+
+function initializePrivacyCheckbox() {
+    const checkbox = document.getElementById('privacyAcceptance');
+    const button = document.getElementById('loadTypeFormBtn');
+    
+    if (!checkbox || !button) {
+        console.warn('Privacy checkbox or upload button not found');
+        return;
+    }
+    
+    // Initial state - button disabled
+    updateUploadButtonState();
+    
+    // Listen for checkbox changes
+    checkbox.addEventListener('change', updateUploadButtonState);
+    
+    function updateUploadButtonState() {
+        if (checkbox.checked) {
+            // Enable button
+            button.disabled = false;
+            button.style.opacity = '1';
+            button.style.cursor = 'pointer';
+            button.style.transform = 'scale(1)';
+            button.style.transition = 'all 0.3s ease';
+            
+            console.log('✅ Privacy accepted - Upload button enabled');
+            
+            trackEvent('privacy_accepted', {
+                event_category: 'privacy',
+                timestamp: new Date().toISOString()
+            });
+        } else {
+            // Disable button
+            button.disabled = true;
+            button.style.opacity = '0.5';
+            button.style.cursor = 'not-allowed';
+            button.style.transform = 'scale(0.98)';
+            
+            console.log('❌ Privacy not accepted - Upload button disabled');
+        }
+    }
+}
+
+// Enhanced showUploadNotification with privacy check
 function showUploadNotification() {
+    const checkbox = document.getElementById('privacyAcceptance');
+    
+    // Double check privacy acceptance
+    if (!checkbox || !checkbox.checked) {
+        showToast('Privacy Vereist', 'Accepteer eerst de privacyverklaring om door te gaan.', 'warning');
+        
+        // Highlight the checkbox
+        const checkboxContainer = checkbox?.parentElement.parentElement;
+        if (checkboxContainer) {
+            checkboxContainer.style.border = '2px solid #dc3545';
+            checkboxContainer.style.background = '#fff5f5';
+            
+            setTimeout(() => {
+                checkboxContainer.style.border = '1px solid #e9ecef';
+                checkboxContainer.style.background = '#f8f9fa';
+            }, 3000);
+        }
+        
+        trackEvent('privacy_warning_shown', {
+            event_category: 'privacy'
+        });
+        
+        return;
+    }
+    
     const notification = document.getElementById('uploadNotification');
     
     // Track click
     trackEvent('upload_clicked', {
         event_category: 'conversion',
-        analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown'
+        analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown',
+        privacy_accepted: true
     });
     
     // Show notification with smooth animation
@@ -3431,28 +3545,9 @@ function showUploadNotification() {
     
     // Track successful show
     trackEvent('upload_notification_shown', {
-        event_category: 'conversion'
+        event_category: 'conversion',
+        privacy_accepted: true
     });
-}
-
-function showTypeFormFallback() {
-    const fallback = document.getElementById('typeformFallback');
-    if (fallback) {
-        fallback.style.display = 'block';
-        trackEvent('typeform_fallback_shown', {
-            event_category: 'conversion'
-        });
-    }
-}
-
-function hideUploadNotification() {
-    const notification = document.getElementById('uploadNotification');
-    notification.style.opacity = '0';
-    notification.style.transform = 'translateY(-20px)';
-    
-    setTimeout(() => {
-        notification.style.display = 'none';
-    }, 300);
 }
     </script>
 </body>
