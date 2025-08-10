@@ -1648,35 +1648,37 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                                 <span>Upload Document - Gratis Professionele Optimalisatie</span>
                             </button>
                             
-                            <!-- Success Notification -->
-                            <div id="uploadNotification" style="display: none; margin-top: 2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 1rem; padding: 2rem; color: white; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                                <div style="position: absolute; top: 1rem; right: 1rem;">
-                                    <button onclick="hideUploadNotification()" style="background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0.5rem;">✕</button>
+                            <!-- TypeForm Embed Container -->
+                            <div id="uploadNotification" style="display: none; margin-top: 2rem; background: white; border-radius: 1rem; padding: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: relative;">
+                                <div style="position: absolute; top: 1rem; right: 1rem; z-index: 10;">
+                                    <button onclick="hideUploadNotification()" style="background: rgba(0,0,0,0.5); border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; border-radius: 50%; width: 2.5rem; height: 2.5rem;">✕</button>
                                 </div>
                                 
-                                <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
-                                <h3 style="margin: 0 0 1rem 0; font-size: 1.5rem;">TypeForm Geladen!</h3>
-                                <p style="margin: 0 0 1.5rem 0; opacity: 0.9;">Upload je vacature document hieronder.</p>
+                                <!-- Success Header -->
+                                <div style="text-align: center; padding: 1rem 0 2rem 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 0.5rem; margin-bottom: 1rem; color: white;">
+                                    <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉</div>
+                                    <h3 style="margin: 0 0 0.5rem 0; font-size: 1.3rem;">TypeForm Geladen!</h3>
+                                    <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">Upload je vacature document hieronder</p>
+                                </div>
                                 
-                                <!-- Direct TypeForm Link -->
-                                <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" target="_blank" class="typeform-link" style="
-                                    display: inline-block;
-                                    background: white;
-                                    color: #4f46e5;
-                                    padding: 1rem 2rem;
-                                    border-radius: 0.5rem;
-                                    text-decoration: none;
-                                    font-weight: 600;
-                                    margin: 0.5rem;
-                                    transition: all 0.3s ease;
-                                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.2)'" onmouseout="this.style.transform='translateY(0px)'; this.style.boxShadow='0 2px 10px rgba(0,0,0,0.1)'">
-                                    📄 Open Upload Formulier
-                                </a>
+                                <!-- TypeForm Embed - Using your provided code -->
+                                <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94" style="width: 100%; height: 500px;"></div>
                                 
-                                <p style="margin: 1rem 0 0 0; font-size: 0.9rem; opacity: 0.8;">
-                                    Ontvang binnen 24 uur je volledige geoptimaliseerde vacature!
-                                </p>
+                                <!-- Loading Fallback -->
+                                <div id="typeformFallback" style="display: none; text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 0.5rem; margin-top: 1rem;">
+                                    <h4 style="margin-bottom: 1rem; color: #1f2937;">📄 Direct Link</h4>
+                                    <p style="margin-bottom: 1.5rem; color: #6b7280;">Als het formulier niet laadt, gebruik deze directe link:</p>
+                                    <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" target="_blank" style="
+                                        display: inline-block;
+                                        background: #4f46e5;
+                                        color: white;
+                                        padding: 1rem 2rem;
+                                        border-radius: 0.5rem;
+                                        text-decoration: none;
+                                        font-weight: 600;
+                                        transition: all 0.3s ease;
+                                    ">📄 Open TypeForm</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -3398,10 +3400,49 @@ function showUploadNotification() {
         notification.scrollIntoView({ behavior: 'smooth' });
     }, 100);
     
+    // Load TypeForm script if not already loaded
+    if (!document.querySelector('script[src*="embed.typeform.com"]')) {
+        console.log('🔍 Loading TypeForm embed script...');
+        const script = document.createElement('script');
+        script.src = '//embed.typeform.com/next/embed.js';
+        script.onload = () => {
+            console.log('✅ TypeForm script loaded successfully');
+            trackEvent('typeform_script_loaded', {
+                event_category: 'conversion'
+            });
+        };
+        script.onerror = () => {
+            console.error('❌ TypeForm script failed to load');
+            showTypeFormFallback();
+        };
+        document.head.appendChild(script);
+        
+        // Fallback after 8 seconds if TypeForm doesn't load
+        setTimeout(() => {
+            const typeformEmbed = document.querySelector('[data-tf-live]');
+            if (typeformEmbed && typeformEmbed.children.length === 0) {
+                console.warn('⚠️ TypeForm embed appears empty, showing fallback');
+                showTypeFormFallback();
+            }
+        }, 8000);
+    } else {
+        console.log('✅ TypeForm script already loaded');
+    }
+    
     // Track successful show
     trackEvent('upload_notification_shown', {
         event_category: 'conversion'
     });
+}
+
+function showTypeFormFallback() {
+    const fallback = document.getElementById('typeformFallback');
+    if (fallback) {
+        fallback.style.display = 'block';
+        trackEvent('typeform_fallback_shown', {
+            event_category: 'conversion'
+        });
+    }
 }
 
 function hideUploadNotification() {
