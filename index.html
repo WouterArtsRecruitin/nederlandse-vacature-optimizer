@@ -1541,22 +1541,12 @@ a:focus-visible {
         <!-- Demo Buttons Section -->
         <section class="demo-section">
             <div class="container">
-                <h3 class="demo-title">🎮 Probeer Direct met Demo Vacatures</h3>
+                <h3 class="demo-title">🎮 Probeer Direct met Demo Vacature</h3>
                 <div class="demo-buttons">
-                    <button onclick="loadDemoVacature('slecht')" class="demo-btn demo-btn-bad">
-                        <span class="demo-icon">📉</span>
-                        <span class="demo-text">Slechte Vacature</span>
-                        <span class="demo-score">Score: 3.2/10</span>
-                    </button>
-                    <button onclick="loadDemoVacature('gemiddeld')" class="demo-btn demo-btn-average">
-                        <span class="demo-icon">📊</span>
-                        <span class="demo-text">Gemiddelde Vacature</span>
-                        <span class="demo-score">Score: 6.5/10</span>
-                    </button>
                     <button onclick="loadDemoVacature('goed')" class="demo-btn demo-btn-good">
                         <span class="demo-icon">📈</span>
-                        <span class="demo-text">Goede Vacature</span>
-                        <span class="demo-score">Score: 8.8/10</span>
+                        <span class="demo-text">Demo Vacature</span>
+                        <span class="demo-score">Voorbeeld Analyse</span>
                     </button>
                 </div>
             </div>
@@ -2914,7 +2904,8 @@ function displayResults(analysis) {
             </div>
         </div>
         
-        <div class="optimized-section">
+        <!-- HIDDEN: Optimized section kept for follow-up emails -->
+        <div class="optimized-section" style="display: none;" data-feature="follow-up-email">
             <h4 class="analysis-title">
                 <span>⚡</span>
                 Geoptimaliseerde Vacaturetekst
@@ -3127,6 +3118,15 @@ function showToast(title, message, type = 'info') {
 // ===============================================
 // UTILITY FUNCTIONS
 // ===============================================
+
+// ===============================================
+// HIDDEN FEATURES - Kept for Follow-up Email CTA
+// ===============================================
+// Functions below are hidden from UI but kept in code for future email campaigns
+// - downloadAnalysis() - PDF generation functionality 
+// - generateOptimizedVersion() - Complete optimized vacancy text
+// - All analysis data still generated and stored in currentAnalysis
+// These can be activated by removing 'display: none' styles
 
 // Copy function removed as requested - users can select text manually
 
