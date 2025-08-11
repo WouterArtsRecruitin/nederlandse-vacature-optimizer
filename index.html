@@ -663,7 +663,7 @@ body {
 
 .scores-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-lg);
   margin: var(--space-2xl) 0;
 }
@@ -1538,25 +1538,15 @@ a:focus-visible {
             </div>
         </header>
 
-        <!-- Demo Buttons Section -->
+        <!-- Demo Button Section -->
         <section class="demo-section">
             <div class="container">
-                <h3 class="demo-title">🎮 Probeer Direct met Demo Vacatures</h3>
-                <div class="demo-buttons">
+                <h3 class="demo-title">🎮 Probeer Direct met Demo Vacature</h3>
+                <div class="demo-buttons" style="justify-content: center;">
                     <button onclick="loadDemoVacature('slecht')" class="demo-btn demo-btn-bad">
-                        <span class="demo-icon">📉</span>
-                        <span class="demo-text">Slechte Vacature</span>
-                        <span class="demo-score">Score: 3.2/10</span>
-                    </button>
-                    <button onclick="loadDemoVacature('gemiddeld')" class="demo-btn demo-btn-average">
                         <span class="demo-icon">📊</span>
-                        <span class="demo-text">Gemiddelde Vacature</span>
-                        <span class="demo-score">Score: 6.5/10</span>
-                    </button>
-                    <button onclick="loadDemoVacature('goed')" class="demo-btn demo-btn-good">
-                        <span class="demo-icon">📈</span>
-                        <span class="demo-text">Goede Vacature</span>
-                        <span class="demo-score">Score: 8.8/10</span>
+                        <span class="demo-text">Demo Vacature</span>
+                        <span class="demo-score">Voorbeeld Analyse</span>
                     </button>
                 </div>
             </div>
@@ -1649,13 +1639,67 @@ Wij zoeken een ervaren developer voor ons groeiende team...
                             Upload je huidige vacature document en ontvang binnen 24 uur een volledig 
                             geoptimaliseerde versie met Nederlandse markt best practices.
                         </p>
-                        <a href="https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94" 
-                           target="_blank" 
-                           class="upgrade-btn"
-                           onclick="trackTypeFormClick()">
-                            <span>📄</span>
-                            <span>Ga naar Upload Document voor Gratis Volledige Verbeterde Vacature Tekst</span>
-                        </a>
+                        <!-- Privacy en Interest Section -->
+                        <div id="privacySection" style="margin: 2rem 0; padding: 1.5rem; background: #FFF7ED; border-radius: 1rem; border: 1px solid #FDBA74;">
+                            <div style="margin-bottom: 1.5rem;">
+                                <label style="display: flex; align-items: flex-start; gap: 1rem; cursor: pointer;">
+                                    <input type="checkbox" id="privacyCheckbox" style="margin-top: 0.25rem; transform: scale(1.2);">
+                                    <div>
+                                        <strong style="color: var(--gray-900);">Ik ga akkoord met de 
+                                        <a href="https://recruitin.nl/privacyverklaring-recruitin/" target="_blank" style="color: var(--primary-orange); text-decoration: underline;">
+                                            privacyverklaring van Recruitin
+                                        </a></strong>
+                                        <br>
+                                        <small style="color: var(--gray-600);">Je gegevens worden veilig behandeld en niet gedeeld met derden.</small>
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <button id="interestBtn" class="upgrade-btn" onclick="showInterestConfirmation()" disabled style="opacity: 0.5;">
+                                <span>✨</span>
+                                <span>Interesse in Verbeterde Vacature Versie</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Upload Confirmation -->
+                        <div id="uploadConfirmation" class="typeform-container" style="display: none; background: #F0FDF4; border-color: var(--success);">
+                            <h4 style="color: var(--gray-900); margin-bottom: 1rem;">🎉 Geweldig! We maken je vacature beter</h4>
+                            <p style="color: var(--gray-700); margin-bottom: 1.5rem;">
+                                Klik op de button hieronder om het upload formulier te openen en je vacature te versturen.
+                            </p>
+                            <button class="upgrade-btn" onclick="showTypeFormEmbed()" style="background: var(--success); border-color: var(--success);">
+                                <span>📄</span>
+                                <span>Open Upload Formulier</span>
+                            </button>
+                        </div>
+                        
+                        <!-- TypeForm Embed Container -->
+                        <div id="typeformContainer" class="typeform-container" style="display: none;">
+                            <div class="typeform-loading" id="typeformLoading">
+                                <div class="typeform-spinner"></div>
+                                <h4>TypeForm Laden...</h4>
+                                <p>Even geduld, het formulier wordt geladen</p>
+                            </div>
+                            <div id="typeformEmbed">
+                                <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+                                <script src="//embed.typeform.com/next/embed.js"></script>
+                            </div>
+                        </div>
+                        
+                        <!-- Calendly Section -->
+                        <div style="margin-top: 2rem; padding: 2rem; background: #F0FDF4; border-radius: 1rem; border: 1px solid #BBF7D0; text-align: center;">
+                            <h4 style="color: var(--gray-900); margin-bottom: 1rem;">📅 Persoonlijk Adviesgesprek</h4>
+                            <p style="color: var(--gray-700); margin-bottom: 1.5rem;">
+                                Wil je persoonlijk sparren over je recruitment strategie? Boek een gratis adviesgesprek.
+                            </p>
+                            <a href="https://calendly.com/wouter-arts-/vacature-analyse-advies" 
+                               target="_blank" 
+                               class="upgrade-btn"
+                               style="background: var(--success); border-color: var(--success);">
+                                <span>🚀</span>
+                                <span>Boek Gratis Adviesgesprek</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2034,6 +2078,9 @@ function initializeApp() {
     
     // Initialize character counter
     updateCharCounter();
+    
+    // Initialize privacy checkbox
+    initializePrivacyCheckbox();
     
     // Track page load
     trackEvent('page_load', {
@@ -2806,17 +2853,79 @@ function showUpgradeSection() {
     }
 }
 
-function trackTypeFormClick() {
-    trackEvent('typeform_clicked', {
+// Privacy checkbox functionality
+function initializePrivacyCheckbox() {
+    const checkbox = document.getElementById('privacyCheckbox');
+    const button = document.getElementById('interestBtn');
+    
+    if (!checkbox || !button) return;
+    
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            button.disabled = false;
+            button.style.opacity = '1';
+            button.style.cursor = 'pointer';
+        } else {
+            button.disabled = true;
+            button.style.opacity = '0.5';
+            button.style.cursor = 'not-allowed';
+        }
+    });
+}
+
+function showInterestConfirmation() {
+    const privacySection = document.getElementById('privacySection');
+    const confirmationSection = document.getElementById('uploadConfirmation');
+    
+    // Hide privacy section and show confirmation
+    privacySection.style.display = 'none';
+    confirmationSection.style.display = 'block';
+    confirmationSection.scrollIntoView({ behavior: 'smooth' });
+    
+    trackEvent('interest_confirmed', {
         event_category: 'conversion',
         analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown'
     });
     
     showToast(
-        'TypeForm Openen...', 
-        'Je wordt doorgestuurd naar het upload formulier in een nieuw tabblad.', 
-        'info'
+        'Interesse Bevestigd!', 
+        'Je kunt nu het upload formulier openen om je vacature te versturen.', 
+        'success'
     );
+}
+
+function showTypeFormEmbed() {
+    const container = document.getElementById('typeformContainer');
+    const loading = document.getElementById('typeformLoading');
+    const confirmationSection = document.getElementById('uploadConfirmation');
+    
+    // Hide confirmation and show TypeForm container with loading
+    confirmationSection.style.display = 'none';
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth' });
+    
+    // Hide loading after a delay to show embed
+    setTimeout(() => {
+        loading.style.display = 'none';
+    }, 2000);
+    
+    trackEvent('typeform_embed_shown', {
+        event_category: 'conversion',
+        analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown'
+    });
+    
+    showToast(
+        'TypeForm Geladen', 
+        'Het upload formulier is nu beschikbaar hieronder.', 
+        'success'
+    );
+}
+
+function trackTypeFormClick() {
+    trackEvent('typeform_clicked', {
+        event_category: 'conversion',
+        analysis_score: currentAnalysis ? currentAnalysis.gemiddelde_score : 'unknown'
+    });
 }
 
 // ===============================================
