@@ -3543,61 +3543,57 @@ function openTypeForm() {
         privacy_accepted: true
     });
     
-    console.log('🚀 Opening TypeForm in popup...');
+    console.log('🚀 Opening TypeForm directly...');
     
-    // Use TypeForm's popup API if available
-    if (typeformScriptLoaded && window.tf && window.tf.load) {
-        window.tf.load('01K25SKWYTKZ05DAHER9D52J94', {
-            popup: true,
-            hideHeaders: true,
-            hideFooter: true,
-            opacity: 100,
-            onSubmit: function() {
-                console.log('✅ TypeForm submitted successfully');
-                handleTypeFormCompletion();
-            },
-            onClose: function() {
-                console.log('TypeForm closed by user');
-                trackEvent('typeform_popup_closed', {
-                    event_category: 'conversion'
-                });
+    // Always use direct link approach to avoid intermediate screens
+    const formUrl = 'https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94';
+    
+    // Try to open as popup first
+    const popup = window.open(formUrl, 'typeform_popup', 'width=900,height=700,scrollbars=yes,resizable=yes,location=no,toolbar=no,menubar=no,status=no');
+    
+    if (popup) {
+        console.log('✅ TypeForm popup opened successfully');
+        
+        // Show subtle toast notification
+        showToast('Formulier Geopend', 'Het upload formulier is geopend. Vul het in en sluit het venster daarna.', 'success');
+        
+        // Monitor for popup close
+        const checkClosed = setInterval(() => {
+            if (popup.closed) {
+                clearInterval(checkClosed);
+                console.log('TypeForm popup was closed');
+                
+                // Show completion dialog after delay
+                setTimeout(() => {
+                    const completed = confirm('Heb je het formulier succesvol ingevuld en verzonden?\n\nKlik "OK" als je het hebt verzonden, of "Annuleren" als je het nog niet hebt ingevuld.');
+                    if (completed) {
+                        handleTypeFormCompletion();
+                    }
+                }, 500);
             }
-        });
+        }, 1000);
         
         trackEvent('typeform_popup_opened', {
             event_category: 'conversion',
-            method: 'popup_api'
+            method: 'direct_popup'
         });
     } else {
-        // Fallback: Open in new tab/window
-        const formUrl = 'https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94';
-        const popup = window.open(formUrl, 'typeform_popup', 'width=800,height=700,scrollbars=yes,resizable=yes,centerscreen=yes');
+        // Popup blocked - try opening in new tab
+        console.log('Popup blocked, trying new tab...');
         
-        if (popup) {
-            showToast('Formulier Geopend', 'Het upload formulier is geopend in een nieuw venster.', 'success');
+        const newTab = window.open(formUrl, '_blank');
+        
+        if (newTab) {
+            showToast('Formulier Geopend', 'Het formulier is geopend in een nieuw tabblad.', 'success');
             
-            // Monitor for popup close (basic detection)
-            const checkClosed = setInterval(() => {
-                if (popup.closed) {
-                    clearInterval(checkClosed);
-                    console.log('TypeForm popup was closed');
-                    
-                    // Show completion dialog after delay (assuming form was submitted)
-                    setTimeout(() => {
-                        if (confirm('Heb je het formulier succesvol ingevuld en verzonden?')) {
-                            handleTypeFormCompletion();
-                        }
-                    }, 1000);
-                }
-            }, 1000);
-            
-            trackEvent('typeform_popup_opened', {
+            trackEvent('typeform_tab_opened', {
                 event_category: 'conversion',
-                method: 'new_window'
+                method: 'new_tab'
             });
         } else {
-            // Popup blocked, show direct link
-            showToast('Popup Geblokkeerd', 'Popup werd geblokkeerd. Klik hieronder om het formulier te openen.', 'warning');
+            // Both popup and new tab blocked - show direct link
+            console.log('Both popup and new tab blocked, showing direct link');
+            showToast('Popup Geblokkeerd', 'Popup werd geblokkeerd. Gebruik onderstaande link.', 'warning');
             showDirectLink();
         }
     }
