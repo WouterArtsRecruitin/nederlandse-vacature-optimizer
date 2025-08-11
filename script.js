@@ -813,6 +813,12 @@ function displayResults(analysis) {
     resultsDiv.innerHTML = resultsHTML;
     resultsDiv.style.display = 'block';
     
+    // Show upgrade section after results
+    const upgradeSection = document.getElementById('upgradeSection');
+    if (upgradeSection) {
+        upgradeSection.style.display = 'block';
+    }
+    
     // Smooth scroll to results
     setTimeout(() => {
         resultsDiv.scrollIntoView({ 
@@ -1028,11 +1034,67 @@ window.TalentFlowOptimizer = {
     pasteFromClipboard
 };
 
+// ===============================================
+// PRIVACY CHECKBOX EN TYPEFORM FUNCTIONALITEIT
+// ===============================================
+function initializePrivacyCheckbox() {
+    const checkbox = document.getElementById('privacyCheckbox');
+    const button = document.getElementById('interestBtn');
+    
+    if (!checkbox || !button) return;
+    
+    checkbox.addEventListener('change', function() {
+        if (checkbox.checked) {
+            button.disabled = false;
+            button.style.opacity = '1';
+            button.style.cursor = 'pointer';
+        } else {
+            button.disabled = true;
+            button.style.opacity = '0.5';
+            button.style.cursor = 'not-allowed';
+        }
+    });
+}
+
+function showInterestConfirmation() {
+    const privacySection = document.getElementById('privacySection');
+    const confirmationSection = document.getElementById('uploadConfirmation');
+    
+    // Hide privacy section and show confirmation
+    privacySection.style.display = 'none';
+    confirmationSection.style.display = 'block';
+    confirmationSection.scrollIntoView({ behavior: 'smooth' });
+    
+    showToast('Interesse Bevestigd!', 'Je kunt nu het upload formulier openen.', 'success');
+}
+
+function showTypeFormEmbed() {
+    const container = document.getElementById('typeformContainer');
+    const loading = document.getElementById('typeformLoading');
+    const confirmationSection = document.getElementById('uploadConfirmation');
+    
+    // Hide confirmation and show TypeForm container with loading
+    confirmationSection.style.display = 'none';
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth' });
+    
+    // Hide loading after a delay to show embed
+    setTimeout(() => {
+        loading.style.display = 'none';
+    }, 2000);
+    
+    showToast('TypeForm Geladen', 'Het upload formulier is nu beschikbaar hieronder.', 'success');
+}
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeApp);
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeApp();
+        initializePrivacyCheckbox();
+    });
 } else {
     initializeApp();
+    initializePrivacyCheckbox();
 }
 
 console.log('🇳🇱 Nederlandse Vacature Optimizer geladen - Ready for analysis!');

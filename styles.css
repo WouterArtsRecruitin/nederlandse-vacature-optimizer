@@ -175,13 +175,11 @@ body {
 
 .hero-section {
   position: relative;
-  background: linear-gradient(135deg, rgba(30, 58, 138, 0.85) 0%, rgba(255, 107, 53, 0.85) 100%), 
-              url('assets/images/hero-office.png') center/cover no-repeat;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-orange) 100%);
   color: var(--white);
   padding: var(--space-3xl) 0;
   text-align: center;
   overflow: hidden;
-  min-height: 80vh;
 }
 
 .hero-content {
@@ -630,7 +628,7 @@ body {
 
 .scores-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-lg);
   margin: var(--space-2xl) 0;
 }
@@ -966,21 +964,6 @@ body {
   background: linear-gradient(135deg, var(--primary-orange), #F97316);
   color: var(--white);
   border-radius: 50%;
-}
-
-.step-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: var(--space-md);
-}
-
-.process-icon {
-  width: 4rem;
-  height: 4rem;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-}
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1171,6 +1154,14 @@ body {
     transform: translateX(0);
     opacity: 1;
   }
+}
+
+/* ===============================================
+   SPINNER ANIMATION
+   =============================================== */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* ===============================================
