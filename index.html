@@ -592,6 +592,20 @@ Wat bieden wij: Marktconform salaris, laptop..."
                 <span>Analyseer Mijn Vacature Nu</span>
             </button>
 
+            <!-- Demo Section -->
+            <div style="text-align: center; margin: 2rem 0;">
+                <div style="background: white; border: 2px solid #10B981; border-radius: 15px; padding: 1.5rem; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
+                        <div style="background: linear-gradient(135deg, #10B981, #059669); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">📊</div>
+                        <div style="text-align: left;">
+                            <h3 style="color: #1F2937; margin: 0; font-size: 1.1rem;">🖥️ Probeer Direct met Demo Vacature</h3>
+                            <p style="color: #6B7280; margin: 0; font-size: 0.9rem;">Voorbeeld Analyse</p>
+                        </div>
+                        <button onclick="loadDemoVacature()" style="background: #10B981; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: 600;">Probeer</button>
+                    </div>
+                </div>
+            </div>
+
             <div id="loadingSection" class="loading">
                 <div class="spinner"></div>
                 <p>Analyseren van je vacature...</p>
@@ -734,6 +748,43 @@ Wat bieden wij: Marktconform salaris, laptop..."
                 });
             }, 1000);
         });
+
+        // Load demo vacature
+        function loadDemoVacature() {
+            const textarea = document.getElementById('vacatureText');
+            const demoText = `Marketing Manager - Amsterdam
+Bij TechStart Amsterdam zoeken wij een gedreven Marketing Manager voor ons groeiende team.
+
+Functie-eisen:
+- HBO/WO opleiding
+- Minimaal 3 jaar ervaring in marketing
+- Kennis van digitale marketing
+- Goede communicatieve vaardigheden
+- Zelfstandig kunnen werken
+
+Wat bieden wij:
+- Een uitdagende functie
+- Goede arbeidsvoorwaarden
+- Collegiale werksfeer
+- Doorgroeimogelijkheden
+
+Interesse? Stuur je CV naar hr@techstart.nl
+
+TechStart Amsterdam
+Herengracht 123
+1015 BG Amsterdam`;
+
+            textarea.value = demoText;
+            textarea.focus();
+            
+            // Scroll to analyze button
+            document.getElementById('analyzeBtn').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+            
+            showToast('Demo Geladen', 'Demo vacature is geladen. Klik nu op "Analyseer" om te zien hoe het werkt!', 'success');
+        }
 
         // Privacy checkbox functionality
         function initializePrivacyCheckbox() {
