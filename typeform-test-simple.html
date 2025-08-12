@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Typeform Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            width: 90%;
+            max-width: 800px;
+            height: 90%;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .close:hover {
+            color: #ff0000;
+        }
+        #typeform-embed {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Eenvoudige Typeform Test</h1>
+    
+    <!-- Test 1: Direct Inline Embed -->
+    <div class="test-section">
+        <h2>Test 1: Direct Inline Embed (data-tf-live)</h2>
+        <button onclick="showInlineEmbed()">Toon Inline Embed</button>
+        <div id="inline-container" style="display: none; height: 500px; margin-top: 20px;">
+            <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+            <script src="//embed.typeform.com/next/embed.js"></script>
+        </div>
+        <div class="status" id="status1">Klaar om te testen</div>
+    </div>
+
+    <!-- Test 2: Widget Embed -->
+    <div class="test-section">
+        <h2>Test 2: Widget Embed (data-tf-widget)</h2>
+        <button onclick="showWidgetEmbed()">Toon Widget Embed</button>
+        <div id="widget-container" style="display: none; height: 500px; margin-top: 20px;">
+            <div data-tf-widget="01K25SKWYTKZ05DAHER9D52J94" data-tf-hide-headers data-tf-hide-footer style="width: 100%; height: 100%;"></div>
+        </div>
+        <div class="status" id="status2">Klaar om te testen</div>
+    </div>
+
+    <!-- Test 3: iFrame Embed -->
+    <div class="test-section">
+        <h2>Test 3: Direct iFrame</h2>
+        <button onclick="showIframeEmbed()">Toon iFrame</button>
+        <div id="iframe-container" style="display: none; height: 500px; margin-top: 20px;">
+            <iframe src="https://form.typeform.com/to/z1GroMCc" 
+                    style="width: 100%; height: 100%; border: none;">
+            </iframe>
+        </div>
+        <div class="status" id="status3">Klaar om te testen</div>
+    </div>
+
+    <!-- Test 4: Popup Modal -->
+    <div class="test-section">
+        <h2>Test 4: Modal Popup</h2>
+        <button onclick="openModal()">Open Modal</button>
+        <div class="status" id="status4">Klaar om te testen</div>
+    </div>
+
+    <!-- Test 5: Link Redirect -->
+    <div class="test-section">
+        <h2>Test 5: Direct Link</h2>
+        <a href="https://form.typeform.com/to/z1GroMCc" target="_blank">
+            <button>Open in Nieuwe Tab</button>
+        </a>
+        <div class="status" id="status5">Direct link naar Typeform</div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <iframe id="typeform-embed" src="https://form.typeform.com/to/z1GroMCc"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(testNum, message) {
+            document.getElementById(`status${testNum}`).textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+        }
+
+        function showInlineEmbed() {
+            const container = document.getElementById('inline-container');
+            container.style.display = 'block';
+            updateStatus(1, 'Inline embed getoond. Kijk of het formulier laadt...');
+            
+            // Check after 3 seconds if iframe appeared
+            setTimeout(() => {
+                const iframe = container.querySelector('iframe');
+                if (iframe) {
+                    updateStatus(1, '✅ Inline embed succesvol - iframe gevonden!');
+                } else {
+                    updateStatus(1, '❌ Inline embed gefaald - geen iframe gevonden');
+                }
+            }, 3000);
+        }
+
+        function showWidgetEmbed() {
+            const container = document.getElementById('widget-container');
+            container.style.display = 'block';
+            updateStatus(2, 'Widget embed getoond. Kijk of het formulier laadt...');
+            
+            // Load script if not already loaded
+            if (!document.querySelector('script[src*="embed.typeform.com"]')) {
+                const script = document.createElement('script');
+                script.src = '//embed.typeform.com/next/embed.js';
+                document.head.appendChild(script);
+                updateStatus(2, 'Script toegevoegd voor widget...');
+            }
+            
+            setTimeout(() => {
+                const iframe = container.querySelector('iframe');
+                if (iframe) {
+                    updateStatus(2, '✅ Widget embed succesvol - iframe gevonden!');
+                } else {
+                    updateStatus(2, '❌ Widget embed gefaald - geen iframe gevonden');
+                }
+            }, 3000);
+        }
+
+        function showIframeEmbed() {
+            const container = document.getElementById('iframe-container');
+            container.style.display = 'block';
+            updateStatus(3, '✅ iFrame embed getoond - dit zou altijd moeten werken');
+        }
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'block';
+            updateStatus(4, '✅ Modal geopend met iFrame - dit zou altijd moeten werken');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            updateStatus(4, 'Modal gesloten');
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Log script loading
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Simple Typeform test page loaded');
+            console.log('📋 Form ID: 01K25SKWYTKZ05DAHER9D52J94');
+            console.log('🔗 Form URL: https://form.typeform.com/to/z1GroMCc');
+        });
+    </script>
+</body>
+</html>

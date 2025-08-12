@@ -1318,15 +1318,7 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
                     // Track modal open
                     this.trackEvent('typeform_modal_opened');
 
-                    // Load script if not already loaded
-                    if (!this.isScriptLoaded) {
-                        await this.loadTypeformScript();
-                    }
-
-                    // Wait a bit for script to initialize
-                    await new Promise(resolve => setTimeout(resolve, 100));
-
-                    // Create Typeform embed
+                    // Create Typeform embed (no script loading needed for iframe)
                     this.createTypeformEmbed();
 
                 } catch (error) {
@@ -1340,32 +1332,27 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
                     // Clear previous content
                     this.content.innerHTML = '';
 
-                    // Create Typeform container
-                    const typeformDiv = document.createElement('div');
-                    typeformDiv.setAttribute('data-tf-widget', this.formId);
-                    typeformDiv.setAttribute('data-tf-opacity', '0');
-                    typeformDiv.setAttribute('data-tf-iframe-props', 'title=Vacature Upload Formulier');
-                    typeformDiv.setAttribute('data-tf-hide-headers', 'true');
-                    typeformDiv.setAttribute('data-tf-hide-footer', 'true');
-                    typeformDiv.setAttribute('data-tf-auto-focus', '');
-                    typeformDiv.style.width = '100%';
-                    typeformDiv.style.height = '100%';
+                    // Create simple iframe - most reliable method
+                    const iframe = document.createElement('iframe');
+                    iframe.src = 'https://form.typeform.com/to/z1GroMCc';
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    iframe.style.borderRadius = '8px';
+                    iframe.title = 'Vacature Upload Formulier';
+                    iframe.allow = 'camera; microphone; autoplay; encrypted-media; fullscreen';
 
-                    this.content.appendChild(typeformDiv);
+                    this.content.appendChild(iframe);
 
-                    // Initialize Typeform (script will auto-initialize widgets)
-                    console.log('📝 Typeform widget created with ID:', this.formId);
+                    console.log('✅ Simple iframe Typeform created');
+                    console.log('📝 Form URL: https://form.typeform.com/to/z1GroMCc');
+                    this.trackEvent('typeform_iframe_created');
 
-                    // Hide loading after a delay
-                    setTimeout(() => {
-                        this.loading.classList.add('hidden');
-                    }, 2000);
-
-                    console.log('✅ TypeForm embed created successfully');
-                    this.trackEvent('typeform_embed_created');
+                    // Hide loading immediately since iframe loads independently
+                    this.loading.classList.add('hidden');
 
                 } catch (error) {
-                    console.error('Error creating TypeForm embed:', error);
+                    console.error('Error creating TypeForm iframe:', error);
                     this.showError(error);
                 }
             }
