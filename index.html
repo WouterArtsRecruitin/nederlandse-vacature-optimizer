@@ -906,17 +906,19 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
         // Global variables
         let typeformIntegration;
         const formId = '01K25SKWYTKZ05DAHER9D52J94';
-
-        // Character counter
-        const vacatureInput = document.getElementById('vacatureInput');
-        const charCount = document.getElementById('charCount');
-
-        vacatureInput.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-        });
+        let vacatureInput, charCount;
 
         // Demo vacature loader
         function loadDemoVacature() {
+            // Get elements dynamically to ensure they exist
+            const vacatureInput = document.getElementById('vacatureInput');
+            const charCount = document.getElementById('charCount');
+            
+            if (!vacatureInput || !charCount) {
+                console.error('Demo button error: Required elements not found');
+                alert('Er is een probleem opgetreden. Probeer de pagina te vernieuwen.');
+                return;
+            }
             const demoText = `Senior Marketing Manager - TechStart Amsterdam
 
 Ben jij een ervaren marketing professional die klaar is voor de volgende stap? TechStart, een snelgroeiende tech scale-up in Amsterdam, zoekt een Senior Marketing Manager om ons team te versterken!
@@ -1344,6 +1346,17 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
 
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize DOM elements
+            vacatureInput = document.getElementById('vacatureInput');
+            charCount = document.getElementById('charCount');
+            
+            // Setup character counter
+            if (vacatureInput && charCount) {
+                vacatureInput.addEventListener('input', function() {
+                    charCount.textContent = this.value.length;
+                });
+            }
+            
             console.log('🚀 Vacature Analyse Tool initialized');
             console.log('📋 Typeform ID: ' + formId);
             console.log('🎯 Embed code: <div data-tf-live="' + formId + '"></div><script src="//embed.typeform.com/next/embed.js"></script>');
