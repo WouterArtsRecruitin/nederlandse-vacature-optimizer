@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Typeform Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+        }
+        .success { 
+            color: green; 
+            font-weight: bold; 
+        }
+        .error { 
+            color: red; 
+            font-weight: bold; 
+        }
+        iframe {
+            border: 2px solid #ff6b35;
+            border-radius: 10px;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            height: 90%;
+            border-radius: 10px;
+            position: relative;
+            padding: 20px;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎯 Final Typeform Test</h1>
+    
+    <h2>Test Resultaten:</h2>
+    <div id="results"></div>
+    
+    <h2>1. Direct iframe embed test:</h2>
+    <button onclick="testDirectIframe()">Test Direct iFrame</button>
+    <div id="iframe-container" style="display: none; margin: 20px 0;">
+        <h3>Direct iFrame (zou altijd moeten werken):</h3>
+        <iframe src="https://form.typeform.com/to/z1GroMCc" 
+                width="100%" 
+                height="500" 
+                frameborder="0">
+        </iframe>
+    </div>
+    
+    <h2>2. Modal iframe test:</h2>
+    <button onclick="openModal()">Open Modal met iFrame</button>
+    
+    <h2>3. Widget test (data-tf-live):</h2>
+    <button onclick="testWidget()">Test Widget</button>
+    <div id="widget-container" style="display: none; margin: 20px 0;">
+        <h3>Widget Embed:</h3>
+        <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94" style="height: 500px;"></div>
+        <script src="//embed.typeform.com/next/embed.js"></script>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>Modal Typeform</h3>
+            <iframe src="https://form.typeform.com/to/z1GroMCc" 
+                    width="100%" 
+                    height="90%" 
+                    frameborder="0">
+            </iframe>
+        </div>
+    </div>
+
+    <script>
+        function addResult(message, isSuccess = true) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = isSuccess ? 'success' : 'error';
+            div.innerHTML = `${new Date().toLocaleTimeString()}: ${message}`;
+            results.appendChild(div);
+        }
+
+        function testDirectIframe() {
+            document.getElementById('iframe-container').style.display = 'block';
+            addResult('✅ Direct iFrame getoond - dit zou moeten werken', true);
+            
+            // Test if iframe loads
+            setTimeout(() => {
+                const iframe = document.querySelector('#iframe-container iframe');
+                if (iframe) {
+                    addResult('✅ iFrame element gevonden en geladen', true);
+                } else {
+                    addResult('❌ iFrame element niet gevonden', false);
+                }
+            }, 1000);
+        }
+
+        function testWidget() {
+            document.getElementById('widget-container').style.display = 'block';
+            addResult('Widget container getoond, script wordt geladen...', true);
+            
+            setTimeout(() => {
+                const widget = document.querySelector('[data-tf-live]');
+                const iframe = document.querySelector('#widget-container iframe');
+                
+                if (iframe) {
+                    addResult('✅ Widget succesvol - iframe gevonden!', true);
+                } else {
+                    addResult('❌ Widget gefaald - geen iframe gevonden', false);
+                }
+            }, 3000);
+        }
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'flex';
+            addResult('✅ Modal geopend met iFrame', true);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            addResult('Modal gesloten', true);
+        }
+
+        // Check which method is most reliable
+        window.onload = function() {
+            addResult('🚀 Pagina geladen, klaar voor testen', true);
+            
+            // Log alle beschikbare informatie
+            console.log('=== TYPEFORM TEST INFO ===');
+            console.log('Form ID: 01K25SKWYTKZ05DAHER9D52J94');
+            console.log('Form URL: https://form.typeform.com/to/z1GroMCc');
+            console.log('Browser:', navigator.userAgent);
+            
+            // Auto test the most reliable method (iframe)
+            setTimeout(() => {
+                addResult('🔍 Auto-test: Testing direct iframe in 3 seconds...', true);
+                setTimeout(testDirectIframe, 3000);
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
