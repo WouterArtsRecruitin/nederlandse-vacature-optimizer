@@ -588,129 +588,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        /* TypeForm Modal Styles */
-        .typeform-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 20px;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .typeform-modal.show {
-            display: flex;
-            opacity: 1;
-        }
-
-        .typeform-container {
-            background: white;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 900px;
-            height: 85vh;
-            max-height: 700px;
-            position: relative;
-            box-shadow: var(--shadow-xl);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            overflow: hidden;
-            border: 2px solid var(--primary-orange);
-        }
-
-        .typeform-modal.show .typeform-container {
-            transform: scale(1);
-        }
-
-        .typeform-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            border-bottom: 2px solid var(--gray-200);
-            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
-        }
-
-        .typeform-header h3 {
-            color: var(--recruitin-blue);
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .typeform-close {
-            background: var(--gray-200);
-            border: none;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: var(--gray-600);
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-
-        .typeform-close:hover {
-            background: var(--danger-red);
-            color: white;
-            transform: scale(1.1);
-        }
-
-        .typeform-embed {
-            height: calc(100% - 80px);
-            width: 100%;
-            background: var(--gray-50);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .typeform-embed iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: white;
-        }
-
-        .typeform-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: var(--gray-600);
-            z-index: 1;
-        }
-
-        .typeform-loading.hidden {
-            display: none;
-        }
-
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--gray-200);
-            border-top: 4px solid var(--primary-orange);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
-        }
+        /* Modal CSS verwijderd - gebruiken directe link */
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -739,28 +617,7 @@
                 order: -1;
             }
 
-            .typeform-modal {
-                padding: 10px;
-            }
-
-            .typeform-container {
-                max-height: 90vh;
-                height: 90vh;
-            }
-
-            .typeform-header {
-                padding: 16px 20px;
-            }
-
-            .typeform-header h3 {
-                font-size: 1.125rem;
-            }
-
-            .typeform-close {
-                width: 32px;
-                height: 32px;
-                font-size: 18px;
-            }
+            /* Typeform modal CSS verwijderd */
 
             .cta-btn,
             .demo-btn,
@@ -780,62 +637,10 @@
                 font-size: 2rem;
             }
 
-            .typeform-modal {
-                padding: 5px;
-            }
-
-            .typeform-container {
-                height: 95vh;
-                max-height: 95vh;
-            }
-
-            .typeform-header {
-                padding: 12px 16px;
-            }
-
-            .typeform-header h3 {
-                font-size: 1rem;
-            }
+            /* Typeform modal CSS verwijderd */
         }
 
-        /* Error States */
-        .typeform-error {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--danger-red);
-        }
-
-        .error-icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
-        }
-
-        .error-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .error-message {
-            color: var(--gray-600);
-            margin-bottom: 24px;
-        }
-
-        .retry-btn {
-            background: var(--primary-orange);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .retry-btn:hover {
-            background: var(--primary-orange-dark);
-            transform: translateY(-1px);
-        }
+        /* Error states CSS verwijderd - niet meer nodig */
 
         /* Hidden by default */
         .hidden {
@@ -922,29 +727,14 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
             <h3 class="cta-title">🎉 Wil je een volledig geoptimaliseerde versie?</h3>
             <p class="cta-subtitle">Upload je vacature en ontvang binnen 24 uur een professioneel herschreven versie die 40% meer sollicitaties genereert.</p>
             
-            <button class="cta-btn" onclick="openTypeForm()">
+            <a href="https://form.typeform.com/to/z1GroMCc" target="_blank" class="cta-btn" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 12px;">
                 <span>📄</span>
                 <span>Upload je Vacature</span>
                 <span>→</span>
-            </button>
+            </a>
         </div>
 
-        <!-- TypeForm Modal -->
-        <div id="typeformModal" class="typeform-modal" role="dialog" aria-labelledby="typeform-title" aria-modal="true">
-            <div class="typeform-container">
-                <div class="typeform-header">
-                    <h3 id="typeform-title">📝 Vacature Upload Formulier</h3>
-                    <button class="typeform-close" onclick="closeTypeForm()" aria-label="Sluit formulier">×</button>
-                </div>
-                <div class="typeform-embed">
-                    <div id="typeformLoading" class="typeform-loading">
-                        <div class="loading-spinner"></div>
-                        <div>Formulier laden...</div>
-                    </div>
-                    <div id="typeformContent"></div>
-                </div>
-            </div>
-        </div>
+        <!-- Modal verwijderd - directe link naar Typeform -->
     </div>
 
     <script>
@@ -1216,285 +1006,7 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Enhanced Typeform Integration Class
-        class EnhancedTypeformIntegration {
-            constructor() {
-                this.formId = formId;
-                this.modal = document.getElementById('typeformModal');
-                this.loading = document.getElementById('typeformLoading');
-                this.content = document.getElementById('typeformContent');
-                this.isScriptLoaded = false;
-                this.isScriptLoading = false;
-                this.retryCount = 0;
-                this.maxRetries = 3;
-                
-                this.initEventListeners();
-                this.preloadScript(); // Preload for better UX
-            }
-
-            initEventListeners() {
-                // Close modal on escape key
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && this.modal.classList.contains('show')) {
-                        this.closeModal();
-                    }
-                });
-
-                // Close modal on backdrop click
-                this.modal.addEventListener('click', (e) => {
-                    if (e.target === this.modal) {
-                        this.closeModal();
-                    }
-                });
-
-                // TypeForm events
-                window.addEventListener('message', (event) => {
-                    this.handleTypeformMessage(event);
-                });
-            }
-
-            async preloadScript() {
-                // Preload script for better performance
-                try {
-                    await this.loadTypeformScript();
-                } catch (error) {
-                    console.warn('TypeForm preload failed:', error);
-                }
-            }
-
-            async loadTypeformScript() {
-                if (this.isScriptLoaded) return Promise.resolve();
-                if (this.isScriptLoading) return this.scriptLoadingPromise;
-
-                this.isScriptLoading = true;
-                
-                // Check if script already exists
-                const existingScript = document.querySelector('script[src*="embed.typeform.com"]');
-                if (existingScript) {
-                    this.isScriptLoaded = true;
-                    this.isScriptLoading = false;
-                    return Promise.resolve();
-                }
-
-                this.scriptLoadingPromise = new Promise((resolve, reject) => {
-                    const script = document.createElement('script');
-                    script.src = 'https://embed.typeform.com/next/embed.js';
-                    script.async = true;
-                    script.crossOrigin = 'anonymous';
-
-                    script.onload = () => {
-                        this.isScriptLoaded = true;
-                        this.isScriptLoading = false;
-                        console.log('✅ TypeForm script loaded successfully');
-                        resolve();
-                    };
-
-                    script.onerror = (error) => {
-                        this.isScriptLoading = false;
-                        console.error('❌ TypeForm script failed to load:', error);
-                        reject(new Error('Failed to load TypeForm script'));
-                    };
-
-                    // Set timeout for script loading
-                    setTimeout(() => {
-                        if (!this.isScriptLoaded) {
-                            reject(new Error('TypeForm script loading timeout'));
-                        }
-                    }, 10000); // 10 second timeout
-
-                    document.head.appendChild(script);
-                });
-
-                return this.scriptLoadingPromise;
-            }
-
-            async openModal() {
-                try {
-                    // Show modal with loading state
-                    this.modal.classList.add('show');
-                    document.body.style.overflow = 'hidden';
-                    this.loading.classList.remove('hidden');
-
-                    // Track modal open
-                    this.trackEvent('typeform_modal_opened');
-
-                    // Create Typeform embed (no script loading needed for iframe)
-                    this.createTypeformEmbed();
-
-                } catch (error) {
-                    console.error('Error opening TypeForm:', error);
-                    this.showError(error);
-                }
-            }
-
-            createTypeformEmbed() {
-                try {
-                    // Clear previous content
-                    this.content.innerHTML = '';
-
-                    // Use direct iframe method - most reliable
-                    const iframe = document.createElement('iframe');
-                    iframe.src = `https://form.typeform.com/to/${this.formId}`;
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = 'none';
-                    iframe.style.borderRadius = '8px';
-                    iframe.title = 'Vacature Upload Formulier';
-                    iframe.allow = 'camera; microphone; autoplay; encrypted-media; fullscreen';
-                    iframe.setAttribute('loading', 'eager');
-
-                    this.content.appendChild(iframe);
-
-                    console.log('✅ Direct iframe Typeform created');
-                    console.log('📝 Form URL:', iframe.src);
-                    this.trackEvent('typeform_iframe_created');
-
-                    // Hide loading immediately - iframe loads independently
-                    this.loading.classList.add('hidden');
-
-                    // Verify iframe loads
-                    iframe.onload = () => {
-                        console.log('✅ Typeform iframe loaded successfully!');
-                    };
-
-                    iframe.onerror = () => {
-                        console.error('❌ Typeform iframe failed to load');
-                        this.showError(new Error('Formulier kon niet worden geladen'));
-                    };
-
-                } catch (error) {
-                    console.error('Error creating TypeForm iframe:', error);
-                    this.showError(error);
-                }
-            }
-
-            closeModal() {
-                this.modal.classList.remove('show');
-                document.body.style.overflow = 'auto';
-                
-                // Track modal close
-                this.trackEvent('typeform_modal_closed');
-
-                // Optional: Clear content to save memory
-                setTimeout(() => {
-                    if (!this.modal.classList.contains('show')) {
-                        this.content.innerHTML = '';
-                        this.loading.classList.remove('hidden');
-                    }
-                }, 300);
-            }
-
-            showError(error) {
-                this.loading.classList.add('hidden');
-                
-                const errorHTML = `
-                    <div class="typeform-error">
-                        <div class="error-icon">⚠️</div>
-                        <div class="error-title">Formulier kon niet worden geladen</div>
-                        <div class="error-message">
-                            ${error.message || 'Er is een technische fout opgetreden. Probeer het opnieuw.'}
-                        </div>
-                        <button class="retry-btn" onclick="typeformIntegration.retryLoad()">
-                            🔄 Opnieuw Proberen
-                        </button>
-                    </div>
-                `;
-                
-                this.content.innerHTML = errorHTML;
-                this.trackEvent('typeform_error', { error: error.message });
-            }
-
-            async retryLoad() {
-                if (this.retryCount >= this.maxRetries) {
-                    this.showError(new Error('Maximum aantal pogingen bereikt. Neem contact op met support.'));
-                    return;
-                }
-
-                this.retryCount++;
-                this.loading.classList.remove('hidden');
-                this.content.innerHTML = '';
-
-                try {
-                    // Reset script state for retry
-                    this.isScriptLoaded = false;
-                    this.isScriptLoading = false;
-                    
-                    await this.loadTypeformScript();
-                    this.createTypeformEmbed();
-                } catch (error) {
-                    this.showError(error);
-                }
-            }
-
-            handleTypeformMessage(event) {
-                // Handle messages from TypeForm iframe
-                if (event.origin !== 'https://form.typeform.com') return;
-
-                const data = event.data;
-                console.log('TypeForm message:', data);
-
-                switch (data.type) {
-                    case 'form_ready':
-                        this.loading.classList.add('hidden');
-                        this.trackEvent('typeform_ready');
-                        break;
-                    case 'form_submit':
-                        this.trackEvent('typeform_submit', { formId: this.formId });
-                        // Auto-close after successful submission (optional)
-                        setTimeout(() => {
-                            this.closeModal();
-                            this.showSuccessMessage();
-                        }, 2000);
-                        break;
-                    case 'form_screen_changed':
-                        this.trackEvent('typeform_progress', { screen: data.screen });
-                        break;
-                }
-            }
-
-            showSuccessMessage() {
-                // Show a success notification (implement as needed)
-                console.log('🎉 Form successfully submitted!');
-                showNotification('Bedankt! We nemen binnen 24 uur contact met je op over je geoptimaliseerde vacature.', 'success');
-            }
-
-            trackEvent(eventName, properties = {}) {
-                // Enhanced analytics tracking
-                const eventData = {
-                    event: eventName,
-                    formId: this.formId,
-                    timestamp: new Date().toISOString(),
-                    ...properties
-                };
-
-                console.log('📊 Analytics Event:', eventData);
-
-                // Google Analytics 4
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', eventName, {
-                        event_category: 'TypeForm',
-                        event_label: 'Vacature Upload',
-                        ...properties
-                    });
-                }
-
-                // Add other analytics platforms here (e.g., Mixpanel, Facebook Pixel)
-            }
-        }
-
-        // Global functions for buttons
-        function openTypeForm() {
-            if (!typeformIntegration) {
-                typeformIntegration = new EnhancedTypeformIntegration();
-            }
-            typeformIntegration.openModal();
-        }
-
-        function closeTypeForm() {
-            if (typeformIntegration) {
-                typeformIntegration.closeModal();
-            }
-        }
+        // Typeform modal JavaScript verwijderd - gebruiken directe link
 
         // Notification system
         function showNotification(message, type = 'info') {
@@ -1607,27 +1119,9 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
 
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            // Pre-initialize for better performance
-            setTimeout(() => {
-                typeformIntegration = new EnhancedTypeformIntegration();
-            }, 1000);
-
             console.log('🚀 Vacature Analyse Tool initialized');
-            console.log('📋 Form ID: 01K25SKWYTKZ05DAHER9D52J94');
+            console.log('📋 Direct link naar Typeform: https://form.typeform.com/to/z1GroMCc');
             console.log('✅ All systems ready');
-        });
-
-        // Accessibility enhancements
-        document.addEventListener('focusin', function(e) {
-            // Ensure proper focus management within modal
-            const modal = document.getElementById('typeformModal');
-            if (modal.classList.contains('show')) {
-                if (!modal.contains(e.target)) {
-                    // Focus escaped modal, bring it back
-                    const closeBtn = modal.querySelector('.typeform-close');
-                    if (closeBtn) closeBtn.focus();
-                }
-            }
         });
 
         // Performance monitoring
