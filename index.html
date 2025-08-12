@@ -1332,43 +1332,38 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
                     // Clear previous content
                     this.content.innerHTML = '';
 
-                    // Use original Typeform embed method with data-tf-live
-                    const typeformDiv = document.createElement('div');
-                    typeformDiv.setAttribute('data-tf-live', this.formId);
-                    typeformDiv.style.width = '100%';
-                    typeformDiv.style.height = '100%';
-                    typeformDiv.style.minHeight = '500px';
+                    // Use direct iframe method - most reliable
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://form.typeform.com/to/${this.formId}`;
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = 'none';
+                    iframe.style.borderRadius = '8px';
+                    iframe.title = 'Vacature Upload Formulier';
+                    iframe.allow = 'camera; microphone; autoplay; encrypted-media; fullscreen';
+                    iframe.setAttribute('loading', 'eager');
 
-                    this.content.appendChild(typeformDiv);
+                    this.content.appendChild(iframe);
 
-                    // Load Typeform script if not already loaded
-                    if (!document.querySelector('script[src*="embed.typeform.com"]')) {
-                        const script = document.createElement('script');
-                        script.src = '//embed.typeform.com/next/embed.js';
-                        script.async = true;
-                        document.head.appendChild(script);
-                        console.log('📜 Typeform script added to page');
-                    }
+                    console.log('✅ Direct iframe Typeform created');
+                    console.log('📝 Form URL:', iframe.src);
+                    this.trackEvent('typeform_iframe_created');
 
-                    console.log('✅ Original data-tf-live embed created');
-                    console.log('📝 Form ID:', this.formId);
-                    this.trackEvent('typeform_original_embed_created');
+                    // Hide loading immediately - iframe loads independently
+                    this.loading.classList.add('hidden');
 
-                    // Hide loading after delay to allow embed to initialize
-                    setTimeout(() => {
-                        this.loading.classList.add('hidden');
-                        
-                        // Check if iframe appeared
-                        const iframe = this.content.querySelector('iframe');
-                        if (iframe) {
-                            console.log('✅ Typeform iframe successfully loaded!');
-                        } else {
-                            console.warn('⚠️ Typeform iframe not found after 3 seconds');
-                        }
-                    }, 3000);
+                    // Verify iframe loads
+                    iframe.onload = () => {
+                        console.log('✅ Typeform iframe loaded successfully!');
+                    };
+
+                    iframe.onerror = () => {
+                        console.error('❌ Typeform iframe failed to load');
+                        this.showError(new Error('Formulier kon niet worden geladen'));
+                    };
 
                 } catch (error) {
-                    console.error('Error creating TypeForm embed:', error);
+                    console.error('Error creating TypeForm iframe:', error);
                     this.showError(error);
                 }
             }

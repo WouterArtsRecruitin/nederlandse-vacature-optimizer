@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direct iFrame Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .iframe-container {
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            height: 600px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .status {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        h1 { color: #28a745; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Direct iFrame Test</h1>
+        
+        <div class="status">
+            Testing direct iframe met URL: <strong>https://form.typeform.com/to/z1GroMCc</strong>
+        </div>
+
+        <div class="iframe-container">
+            <iframe 
+                src="https://form.typeform.com/to/z1GroMCc"
+                title="Typeform Test"
+                allow="camera; microphone; autoplay; encrypted-media; fullscreen">
+            </iframe>
+        </div>
+
+        <div class="status">
+            ✅ Als je het formulier hierboven ziet, werkt de iframe methode perfect!
+        </div>
+    </div>
+
+    <script>
+        console.log('=== DIRECT IFRAME TEST ===');
+        console.log('URL: https://form.typeform.com/to/z1GroMCc');
+        console.log('Form ID: z1GroMCc');
+        
+        // Check if iframe loads
+        const iframe = document.querySelector('iframe');
+        iframe.onload = () => {
+            console.log('✅ iFrame loaded successfully!');
+        };
+        iframe.onerror = () => {
+            console.error('❌ iFrame failed to load');
+        };
+    </script>
+</body>
+</html>
