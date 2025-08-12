@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Working Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .typeform-box {
+            border: 3px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 600px;
+            background: #f8f9fa;
+        }
+        .status {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        h1 { color: #28a745; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✅ Final Working Typeform Test</h1>
+        
+        <div class="status">
+            🎯 Testing met CORRECTE Form ID: <strong>z1GroMCc</strong><br>
+            (Uit URL: https://form.typeform.com/to/z1GroMCc)
+        </div>
+
+        <div class="typeform-box">
+            <h2>Jouw Typeform met Correct ID:</h2>
+            
+            <!-- Exact jouw code maar dan met correct ID -->
+            <div data-tf-live="z1GroMCc"></div>
+            <script src="//embed.typeform.com/next/embed.js"></script>
+        </div>
+
+        <div class="status" id="result">
+            ⏳ Loading... Wacht 5 seconden voor resultaat
+        </div>
+    </div>
+
+    <script>
+        // Check na 5 seconden
+        setTimeout(() => {
+            const iframe = document.querySelector('iframe');
+            const result = document.getElementById('result');
+            
+            if (iframe) {
+                result.innerHTML = '🎉 <strong>SUCCESS!</strong> Typeform laadt perfect met Form ID: z1GroMCc';
+                result.style.background = '#d4edda';
+                result.style.color = '#155724';
+                console.log('✅ SUCCESS: Typeform iframe found!', iframe);
+            } else {
+                result.innerHTML = '❌ <strong>FAILED:</strong> Nog steeds geen iframe na 5 seconden';
+                result.style.background = '#f8d7da';
+                result.style.color = '#721c24';
+                console.log('❌ FAILED: No iframe found');
+            }
+        }, 5000);
+
+        console.log('=== FINAL TEST ===');
+        console.log('Form ID: z1GroMCc (correct from URL)');
+        console.log('Old ID was: 01K25SKWYTKZ05DAHER9D52J94 (incorrect)');
+    </script>
+</body>
+</html>
