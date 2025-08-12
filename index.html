@@ -1344,6 +1344,12 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             }, 5000);
         }
 
+        // Make functions globally available
+        window.loadDemoVacature = loadDemoVacature;
+        window.analyzeVacature = analyzeVacature;
+        window.openTypeForm = openTypeForm;
+        window.closeTypeForm = closeTypeForm;
+
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize DOM elements
@@ -1361,6 +1367,7 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             console.log('📋 Typeform ID: ' + formId);
             console.log('🎯 Embed code: <div data-tf-live="' + formId + '"></div><script src="//embed.typeform.com/next/embed.js"></script>');
             console.log('✅ All systems ready');
+            console.log('📋 Functions made globally available:', { loadDemoVacature, analyzeVacature, openTypeForm, closeTypeForm });
         });
 
         // Performance monitoring
