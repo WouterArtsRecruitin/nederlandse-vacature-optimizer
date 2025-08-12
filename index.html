@@ -814,7 +814,7 @@
             <h3 class="demo-title">🚀 Test de Vacature Analyse Tool</h3>
             <p style="color: var(--gray-600); margin-bottom: 24px; font-size: 1rem;">Probeer direct onze AI-powered analyse met een voorbeeld vacature:</p>
             
-            <button class="demo-btn" onclick="loadDemoVacature()">
+            <button class="demo-btn" id="demoBtnElement">
                 <span>📝</span>
                 <span>Probeer Demo Vacature</span>
                 <span>→</span>
@@ -855,7 +855,7 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
                 </div>
             </div>
 
-            <button id="analyzeBtn" class="analyze-btn" onclick="analyzeVacature()">
+            <button id="analyzeBtn" class="analyze-btn">
                 <span id="analyzeIcon">🚀</span>
                 <span id="analyzeText">Analyseer Vacature</span>
             </button>
@@ -877,7 +877,7 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
             <h3 class="cta-title">🎉 Wil je een volledig geoptimaliseerde versie?</h3>
             <p class="cta-subtitle">Upload je vacature en ontvang binnen 24 uur een professioneel herschreven versie die 40% meer sollicitaties genereert.</p>
             
-            <button class="cta-btn" onclick="openTypeForm()">
+            <button class="cta-btn" id="ctaBtnElement">
                 <span>📄</span>
                 <span>Upload je Vacature</span>
                 <span>→</span>
@@ -889,7 +889,7 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
             <div class="typeform-container">
                 <div class="typeform-header">
                     <h3 id="typeform-title">📝 Vacature Upload Formulier</h3>
-                    <button class="typeform-close" onclick="closeTypeForm()" aria-label="Sluit formulier">×</button>
+                    <button class="typeform-close" id="typeformCloseBtnElement" aria-label="Sluit formulier">×</button>
                 </div>
                 <div class="typeform-embed">
                     <div id="typeformLoading" class="typeform-loading">
@@ -1365,6 +1365,32 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
                 vacatureInput.addEventListener('input', function() {
                     charCount.textContent = this.value.length;
                 });
+            }
+            
+            // Setup event listeners for buttons
+            const demoBtn = document.getElementById('demoBtnElement');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const ctaBtn = document.getElementById('ctaBtnElement');
+            const typeformCloseBtn = document.getElementById('typeformCloseBtnElement');
+            
+            if (demoBtn) {
+                demoBtn.addEventListener('click', loadDemoVacature);
+                console.log('✅ Demo button event listener attached');
+            }
+            
+            if (analyzeBtn) {
+                analyzeBtn.addEventListener('click', analyzeVacature);
+                console.log('✅ Analyze button event listener attached');
+            }
+            
+            if (ctaBtn) {
+                ctaBtn.addEventListener('click', openTypeForm);
+                console.log('✅ CTA button event listener attached');
+            }
+            
+            if (typeformCloseBtn) {
+                typeformCloseBtn.addEventListener('click', closeTypeForm);
+                console.log('✅ Typeform close button event listener attached');
             }
             
             console.log('🚀 Vacature Analyse Tool initialized');
