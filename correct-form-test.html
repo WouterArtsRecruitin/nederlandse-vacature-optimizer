@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correct Form ID Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .test-box {
+            border: 3px solid #ff6b35;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            min-height: 500px;
+        }
+        .status {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        button:hover { background: #e55a2b; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Correct Form ID Test</h1>
+    
+    <div class="status">
+        <strong>Probleem gevonden:</strong> Form ID "01K25SKWYTKZ05DAHER9D52J94" lijkt niet correct.<br>
+        <strong>Uit jouw URL</strong> https://form.typeform.com/to/z1GroMCc krijgen we ID: <strong>z1GroMCc</strong>
+    </div>
+
+    <button onclick="testWrongID()">Test Verkeerde ID (01K25SKWYTKZ05DAHER9D52J94)</button>
+    <button onclick="testCorrectID()">Test Correcte ID (z1GroMCc)</button>
+    <button onclick="clearTests()">Clear Tests</button>
+
+    <!-- Test Verkeerde ID -->
+    <div class="test-box" id="wrongTest" style="display: none;">
+        <h2>❌ Test met Verkeerde ID: 01K25SKWYTKZ05DAHER9D52J94</h2>
+        <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+        <div class="status" id="wrongStatus">Testing...</div>
+    </div>
+
+    <!-- Test Correcte ID -->
+    <div class="test-box" id="correctTest" style="display: none;">
+        <h2>✅ Test met Correcte ID: z1GroMCc</h2>
+        <div data-tf-live="z1GroMCc"></div>
+        <div class="status" id="correctStatus">Testing...</div>
+    </div>
+
+    <!-- Test Results -->
+    <div class="status" id="results" style="display: none;">
+        <h2>🎯 Test Resultaten:</h2>
+        <div id="resultContent"></div>
+    </div>
+
+    <!-- Load Typeform script once -->
+    <script src="//embed.typeform.com/next/embed.js"></script>
+
+    <script>
+        function testWrongID() {
+            document.getElementById('wrongTest').style.display = 'block';
+            updateStatus('wrongStatus', 'Testing verkeerde ID...', 'testing');
+            
+            setTimeout(() => {
+                const iframe = document.querySelector('#wrongTest iframe');
+                if (iframe) {
+                    updateStatus('wrongStatus', '✅ ONVERWACHT: Verkeerde ID werkt toch!', 'success');
+                } else {
+                    updateStatus('wrongStatus', '❌ VERWACHT: Verkeerde ID werkt niet', 'error');
+                }
+            }, 3000);
+        }
+
+        function testCorrectID() {
+            document.getElementById('correctTest').style.display = 'block';
+            updateStatus('correctStatus', 'Testing correcte ID...', 'testing');
+            
+            setTimeout(() => {
+                const iframe = document.querySelector('#correctTest iframe');
+                if (iframe) {
+                    updateStatus('correctStatus', '✅ SUCCESS: Correcte ID werkt!', 'success');
+                    showResults('CORRECT ID (z1GroMCc) werkt! 🎉');
+                } else {
+                    updateStatus('correctStatus', '❌ FAILED: Correcte ID werkt niet', 'error');
+                    showResults('Geen van beide IDs werkt - ander probleem');
+                }
+            }, 3000);
+        }
+
+        function clearTests() {
+            document.getElementById('wrongTest').style.display = 'none';
+            document.getElementById('correctTest').style.display = 'none';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        function updateStatus(statusId, message, type) {
+            const element = document.getElementById(statusId);
+            element.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            element.className = `status ${type}`;
+            console.log(message);
+        }
+
+        function showResults(message) {
+            const results = document.getElementById('results');
+            const content = document.getElementById('resultContent');
+            content.innerHTML = `<strong>${message}</strong>`;
+            results.style.display = 'block';
+        }
+
+        console.log('=== FORM ID COMPARISON TEST ===');
+        console.log('Verkeerde ID: 01K25SKWYTKZ05DAHER9D52J94');
+        console.log('Correcte ID (uit URL): z1GroMCc');
+        console.log('URL: https://form.typeform.com/to/z1GroMCc');
+    </script>
+</body>
+</html>
