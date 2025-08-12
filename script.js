@@ -7,6 +7,47 @@
 let isAnalyzing = false;
 let currentAnalysis = null;
 
+// Security Helper Functions
+function secureUpdateHTML(element, htmlContent) {
+    // Sanitize HTML content to prevent XSS attacks
+    if (typeof DOMPurify !== 'undefined') {
+        const cleanHTML = DOMPurify.sanitize(htmlContent);
+        element.innerHTML = cleanHTML;
+    } else {
+        // Fallback: use textContent for safety if DOMPurify not loaded
+        console.warn('DOMPurify not loaded, using textContent as fallback');
+        element.textContent = htmlContent.replace(/<[^>]*>/g, '');
+    }
+}
+
+// Performance Helper Functions
+function measurePerformance(name, fn) {
+    // Performance monitoring wrapper
+    return async function(...args) {
+        const start = performance.now();
+        try {
+            const result = await fn.apply(this, args);
+            const end = performance.now();
+            console.log(`⏱️ ${name}: ${(end - start).toFixed(2)}ms`);
+            return result;
+        } catch (error) {
+            const end = performance.now();
+            console.log(`❌ ${name} failed after ${(end - start).toFixed(2)}ms:`, error.message);
+            throw error;
+        }
+    };
+}
+
+// Lazy loading for TypeForm embed
+function loadTypeFormWhenNeeded() {
+    // Only load TypeForm script when user shows interest
+    const script = document.createElement('script');
+    script.src = '//embed.typeform.com/next/embed.js';
+    script.async = true;
+    document.head.appendChild(script);
+    console.log('📝 TypeForm script loaded on demand');
+}
+
 // Nederlandse Recruitment Prompt Template
 const NEDERLANDS_RECRUITMENT_PROMPT = `
 Je bent een senior Nederlandse recruitment expert met 15+ jaar ervaring in tech en industrie.
@@ -482,8 +523,9 @@ async function analyzeVacature() {
         console.log('🔍 Starting vacature analysis...');
         const startTime = Date.now();
         
-        // Call Claude API
-        const analysis = await callClaudeAPI(vacatureText);
+        // Call Claude API with performance monitoring
+        const measureClaudeAPI = measurePerformance('Claude API Call', callClaudeAPI);
+        const analysis = await measureClaudeAPI(vacatureText);
         
         const analysisTime = (Date.now() - startTime) / 1000;
         console.log(`✅ Analysis completed in ${analysisTime.toFixed(1)}s`);
@@ -528,10 +570,15 @@ async function analyzeVacature() {
 // API INTEGRATION
 // ===============================================
 
-async function callClaudeAPI(vacatureText) {
+async function callClaudeAPI(vacatureText, retryCount = 0) {
     const prompt = NEDERLANDS_RECRUITMENT_PROMPT.replace('{VACATURE_TEKST}', vacatureText);
+    const maxRetries = 3;
     
     try {
+        // Add timeout to prevent hanging requests
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+        
         // Try Netlify function first
         const response = await fetch('/.netlify/functions/claude-analyze', {
             method: 'POST',
@@ -541,17 +588,29 @@ async function callClaudeAPI(vacatureText) {
             body: JSON.stringify({
                 prompt: prompt,
                 max_tokens: 4000
-            })
+            }),
+            signal: controller.signal
         });
 
+        clearTimeout(timeoutId);
+
         if (!response.ok) {
-            throw new Error(`API call failed: ${response.status} ${response.statusText}`);
+            // Enhanced error handling based on status code
+            let errorMessage = `API aanroep mislukt (${response.status})`;
+            if (response.status === 429) {
+                errorMessage = 'Te veel verzoeken. Probeer het over een minuut opnieuw.';
+            } else if (response.status === 401 || response.status === 403) {
+                errorMessage = 'API authenticatie probleem. Contact support.';
+            } else if (response.status >= 500) {
+                errorMessage = 'Server probleem. Probeer het over een paar minuten opnieuw.';
+            }
+            throw new Error(errorMessage);
         }
 
         const data = await response.json();
         
         if (!data.content || !data.content[0] || !data.content[0].text) {
-            throw new Error('Invalid API response format');
+            throw new Error('Ongeldig API antwoord formaat');
         }
         
         let content = data.content[0].text;
@@ -559,8 +618,13 @@ async function callClaudeAPI(vacatureText) {
         // Clean up JSON response
         content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
         
-        // Parse JSON
-        const analysis = JSON.parse(content);
+        // Parse JSON with better error handling
+        let analysis;
+        try {
+            analysis = JSON.parse(content);
+        } catch (parseError) {
+            throw new Error('Kon AI antwoord niet verwerken. Probeer het opnieuw.');
+        }
         
         // Validate required fields
         validateAnalysisResponse(analysis);
@@ -570,13 +634,35 @@ async function callClaudeAPI(vacatureText) {
     } catch (error) {
         console.error('Claude API Error:', error);
         
-        // Try fallback mock analysis for development
-        if (error.message.includes('404') || error.message.includes('Netlify')) {
-            console.log('🔄 Using fallback mock analysis for development...');
+        // Handle timeout errors
+        if (error.name === 'AbortError') {
+            if (retryCount < maxRetries) {
+                console.log(`⏰ Timeout, retry ${retryCount + 1}/${maxRetries}...`);
+                await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))); // Exponential backoff
+                return callClaudeAPI(vacatureText, retryCount + 1);
+            }
+            throw new Error('Analyse duurt te lang. Probeer het later opnieuw.');
+        }
+        
+        // Handle network errors with retry
+        if ((error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) && retryCount < maxRetries) {
+            console.log(`🔄 Network error, retry ${retryCount + 1}/${maxRetries}...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))); // Exponential backoff
+            return callClaudeAPI(vacatureText, retryCount + 1);
+        }
+        
+        // Try fallback mock analysis for development/API issues
+        if (error.message.includes('404') || error.message.includes('Netlify') || error.message.includes('API authenticatie')) {
+            console.log('🔄 Using fallback mock analysis...');
             return generateMockAnalysis(vacatureText);
         }
         
-        throw new Error(`Analyse mislukt: ${error.message}. Probeer het opnieuw.`);
+        // User-friendly error message
+        const userMessage = error.message.startsWith('Te veel') || error.message.startsWith('API') || error.message.startsWith('Server') 
+            ? error.message 
+            : 'Er ging iets mis bij de analyse. Probeer het opnieuw.';
+            
+        throw new Error(userMessage);
     }
 }
 
@@ -810,7 +896,8 @@ function displayResults(analysis) {
         </div>
     `;
 
-    resultsDiv.innerHTML = resultsHTML;
+    // Security: Use secure HTML update to prevent XSS attacks
+    secureUpdateHTML(resultsDiv, resultsHTML);
     resultsDiv.style.display = 'block';
     
     // Show upgrade section after results

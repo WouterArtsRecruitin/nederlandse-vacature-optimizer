@@ -1342,21 +1342,19 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
 
                     // Create Typeform container
                     const typeformDiv = document.createElement('div');
-                    typeformDiv.setAttribute('data-tf-live', this.formId);
+                    typeformDiv.setAttribute('data-tf-widget', this.formId);
                     typeformDiv.setAttribute('data-tf-opacity', '0');
                     typeformDiv.setAttribute('data-tf-iframe-props', 'title=Vacature Upload Formulier');
-                    typeformDiv.setAttribute('data-tf-transitive-search-params', '');
+                    typeformDiv.setAttribute('data-tf-hide-headers', 'true');
+                    typeformDiv.setAttribute('data-tf-hide-footer', 'true');
                     typeformDiv.setAttribute('data-tf-auto-focus', '');
-                    typeformDiv.setAttribute('data-tf-medium', 'snippet');
                     typeformDiv.style.width = '100%';
                     typeformDiv.style.height = '100%';
 
                     this.content.appendChild(typeformDiv);
 
-                    // Initialize Typeform if tf object is available
-                    if (window.tf && window.tf.live) {
-                        window.tf.live.initialize();
-                    }
+                    // Initialize Typeform (script will auto-initialize widgets)
+                    console.log('📝 Typeform widget created with ID:', this.formId);
 
                     // Hide loading after a delay
                     setTimeout(() => {

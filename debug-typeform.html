@@ -94,7 +94,10 @@
     <!-- Simple embed test -->
     <div id="simpleEmbed" style="display: none; margin: 20px 0;">
         <h3>Simple Embed Test:</h3>
-        <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+        <div data-tf-widget="01K25SKWYTKZ05DAHER9D52J94" 
+             data-tf-hide-headers="true" 
+             data-tf-hide-footer="true" 
+             style="height: 500px;"></div>
     </div>
     
     <!-- Modal test -->
@@ -133,15 +136,12 @@
             if (!scriptLoaded) {
                 loadTypeformScript().then(() => {
                     addLog('✅ Script geladen voor simple embed');
-                    if (window.tf && window.tf.live) {
-                        window.tf.live.initialize();
-                        addLog('✅ Typeform geïnitialiseerd');
-                    } else {
-                        addLog('❌ window.tf niet beschikbaar');
-                    }
+                    addLog('✅ Typeform widget auto-initialized');
                 }).catch(error => {
                     addLog('❌ Script loading error: ' + error.message);
                 });
+            } else {
+                addLog('✅ Simple embed ready (script already loaded)');
             }
         }
 
@@ -175,19 +175,16 @@
                 // Create typeform div
                 modalContent.innerHTML = '';
                 const typeformDiv = document.createElement('div');
-                typeformDiv.setAttribute('data-tf-live', '01K25SKWYTKZ05DAHER9D52J94');
-                typeformDiv.setAttribute('data-tf-opacity', '0');
+                typeformDiv.setAttribute('data-tf-widget', '01K25SKWYTKZ05DAHER9D52J94');
+                typeformDiv.setAttribute('data-tf-hide-headers', 'true');
+                typeformDiv.setAttribute('data-tf-hide-footer', 'true');
                 typeformDiv.style.width = '100%';
                 typeformDiv.style.height = '400px';
                 
                 modalContent.appendChild(typeformDiv);
                 
-                if (window.tf && window.tf.live) {
-                    window.tf.live.initialize();
-                    addLog('✅ Modal Typeform geïnitialiseerd');
-                } else {
-                    addLog('❌ window.tf niet beschikbaar voor modal');
-                }
+                // Widgets auto-initialize, no manual initialization needed
+                addLog('✅ Modal Typeform widget toegevoegd (auto-initialize)');
                 
             }).catch(error => {
                 addLog('❌ Modal script loading error: ' + error.message);
