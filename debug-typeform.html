@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typeform Debug Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 0;
+            display: block;
+        }
+        .test-btn:hover {
+            background: #e55a2b;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            height: 80%;
+            position: relative;
+            padding: 20px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .log {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Typeform Debug Test</h1>
+    
+    <h2>Tests:</h2>
+    
+    <button class="test-btn" onclick="testSimpleEmbed()">
+        1. Test Eenvoudige Typeform Embed
+    </button>
+    
+    <button class="test-btn" onclick="testScriptLoading()">
+        2. Test Script Loading
+    </button>
+    
+    <button class="test-btn" onclick="testModalWithTypeform()">
+        3. Test Modal + Typeform
+    </button>
+    
+    <button class="test-btn" onclick="clearLog()">
+        🗑️ Clear Log
+    </button>
+    
+    <h2>Debug Log:</h2>
+    <div id="log" class="log"></div>
+    
+    <!-- Simple embed test -->
+    <div id="simpleEmbed" style="display: none; margin: 20px 0;">
+        <h3>Simple Embed Test:</h3>
+        <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+    </div>
+    
+    <!-- Modal test -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <h3>Modal Typeform Test</h3>
+            <div id="modalTypeform"></div>
+        </div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        let scriptLoaded = false;
+
+        function addLog(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            log.textContent += `[${timestamp}] ${message}\n`;
+            log.scrollTop = log.scrollHeight;
+            console.log(message);
+        }
+
+        function clearLog() {
+            log.textContent = '';
+        }
+
+        addLog('🚀 Debug pagina geladen');
+
+        // Test 1: Simple embed
+        function testSimpleEmbed() {
+            addLog('📝 Test 1: Eenvoudige embed starten...');
+            
+            const embedDiv = document.getElementById('simpleEmbed');
+            embedDiv.style.display = 'block';
+            
+            if (!scriptLoaded) {
+                loadTypeformScript().then(() => {
+                    addLog('✅ Script geladen voor simple embed');
+                    if (window.tf && window.tf.live) {
+                        window.tf.live.initialize();
+                        addLog('✅ Typeform geïnitialiseerd');
+                    } else {
+                        addLog('❌ window.tf niet beschikbaar');
+                    }
+                }).catch(error => {
+                    addLog('❌ Script loading error: ' + error.message);
+                });
+            }
+        }
+
+        // Test 2: Script loading
+        function testScriptLoading() {
+            addLog('📜 Test 2: Script loading testen...');
+            
+            loadTypeformScript().then(() => {
+                addLog('✅ Script succesvol geladen');
+                addLog('🔍 window.tf beschikbaar: ' + (window.tf ? 'Ja' : 'Nee'));
+                if (window.tf) {
+                    addLog('🔍 window.tf.live beschikbaar: ' + (window.tf.live ? 'Ja' : 'Nee'));
+                }
+            }).catch(error => {
+                addLog('❌ Script loading gefaald: ' + error.message);
+            });
+        }
+
+        // Test 3: Modal with Typeform
+        function testModalWithTypeform() {
+            addLog('🪟 Test 3: Modal met Typeform...');
+            
+            const modal = document.getElementById('modal');
+            const modalContent = document.getElementById('modalTypeform');
+            
+            modal.style.display = 'flex';
+            
+            loadTypeformScript().then(() => {
+                addLog('✅ Script geladen voor modal');
+                
+                // Create typeform div
+                modalContent.innerHTML = '';
+                const typeformDiv = document.createElement('div');
+                typeformDiv.setAttribute('data-tf-live', '01K25SKWYTKZ05DAHER9D52J94');
+                typeformDiv.setAttribute('data-tf-opacity', '0');
+                typeformDiv.style.width = '100%';
+                typeformDiv.style.height = '400px';
+                
+                modalContent.appendChild(typeformDiv);
+                
+                if (window.tf && window.tf.live) {
+                    window.tf.live.initialize();
+                    addLog('✅ Modal Typeform geïnitialiseerd');
+                } else {
+                    addLog('❌ window.tf niet beschikbaar voor modal');
+                }
+                
+            }).catch(error => {
+                addLog('❌ Modal script loading error: ' + error.message);
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            addLog('🚪 Modal gesloten');
+        }
+
+        // Script loading function
+        function loadTypeformScript() {
+            if (scriptLoaded) {
+                addLog('ℹ️ Script al geladen');
+                return Promise.resolve();
+            }
+
+            addLog('⏳ Typeform script laden...');
+            
+            return new Promise((resolve, reject) => {
+                // Check if script already exists
+                const existingScript = document.querySelector('script[src*="embed.typeform.com"]');
+                if (existingScript) {
+                    addLog('ℹ️ Script bestaat al in DOM');
+                    scriptLoaded = true;
+                    resolve();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = 'https://embed.typeform.com/next/embed.js';
+                script.async = true;
+
+                script.onload = () => {
+                    scriptLoaded = true;
+                    addLog('✅ Script onload event gefired');
+                    
+                    // Wait a bit for script to initialize
+                    setTimeout(() => {
+                        addLog('🔍 Checking window.tf after load...');
+                        if (window.tf) {
+                            addLog('✅ window.tf beschikbaar na load');
+                            resolve();
+                        } else {
+                            addLog('⚠️ window.tf nog steeds niet beschikbaar');
+                            resolve(); // Resolve anyway to continue testing
+                        }
+                    }, 100);
+                };
+
+                script.onerror = (error) => {
+                    addLog('❌ Script onerror: ' + error);
+                    reject(new Error('Script load failed'));
+                };
+
+                // Timeout
+                setTimeout(() => {
+                    if (!scriptLoaded) {
+                        addLog('⏰ Script loading timeout (10s)');
+                        reject(new Error('Script loading timeout'));
+                    }
+                }, 10000);
+
+                document.head.appendChild(script);
+                addLog('📤 Script toegevoegd aan DOM');
+            });
+        }
+
+        // Listen for Typeform events
+        window.addEventListener('message', (event) => {
+            if (event.origin === 'https://form.typeform.com') {
+                addLog('📨 Typeform message: ' + JSON.stringify(event.data));
+            }
+        });
+
+        // Error handling
+        window.addEventListener('error', (event) => {
+            addLog('❌ JavaScript Error: ' + event.message + ' at ' + event.filename + ':' + event.lineno);
+        });
+
+        addLog('✅ Debug script volledig geladen');
+    </script>
+</body>
+</html>
