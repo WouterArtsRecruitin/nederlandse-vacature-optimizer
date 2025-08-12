@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Originele Typeform Embed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 20px 0;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #e55a2b;
+        }
+        .embed-container {
+            border: 2px dashed #ff6b35;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            min-height: 500px;
+        }
+        .status {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            height: 90%;
+            border-radius: 15px;
+            position: relative;
+            padding: 20px;
+            overflow: hidden;
+        }
+        .close {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 1001;
+            color: #333;
+        }
+        .close:hover {
+            color: #ff0000;
+        }
+        .typeform-embed {
+            width: 100%;
+            height: calc(100% - 60px);
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Originele Typeform Embed Code</h1>
+    
+    <div class="status" id="mainStatus">
+        Status: Pagina geladen, ready voor test
+    </div>
+
+    <!-- Test 1: Exacte code die je gaf -->
+    <div class="test-container">
+        <h2>Test 1: Jouw Originele Code</h2>
+        <p><strong>Code:</strong> <code>&lt;div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"&gt;&lt;/div&gt;&lt;script src="//embed.typeform.com/next/embed.js"&gt;&lt;/script&gt;</code></p>
+        
+        <button onclick="showOriginalEmbed()">Toon Originele Embed</button>
+        <button onclick="checkEmbedStatus()">Check Status</button>
+        
+        <div id="originalContainer" class="embed-container" style="display: none;">
+            <h3>Originele Typeform Embed:</h3>
+            <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+            <script src="//embed.typeform.com/next/embed.js"></script>
+        </div>
+        
+        <div class="status" id="status1">Wacht op test...</div>
+    </div>
+
+    <!-- Test 2: Met extra styling -->
+    <div class="test-container">
+        <h2>Test 2: Met Height Styling</h2>
+        
+        <button onclick="showStyledEmbed()">Toon Styled Embed</button>
+        
+        <div id="styledContainer" class="embed-container" style="display: none;">
+            <h3>Styled Typeform Embed:</h3>
+            <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94" style="width: 100%; height: 500px;"></div>
+        </div>
+        
+        <div class="status" id="status2">Wacht op test...</div>
+    </div>
+
+    <!-- Test 3: In Modal -->
+    <div class="test-container">
+        <h2>Test 3: In Modal</h2>
+        
+        <button onclick="openModalTest()">Open Modal Test</button>
+        
+        <div class="status" id="status3">Modal test gereed</div>
+    </div>
+
+    <!-- Test 4: Script controle -->
+    <div class="test-container">
+        <h2>Test 4: Script & Browser Controle</h2>
+        
+        <button onclick="checkScriptStatus()">Check Script Status</button>
+        <button onclick="forceReload()">Force Script Reload</button>
+        
+        <div class="status" id="status4">Script status onbekend</div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h3>🎯 Modal Typeform Test</h3>
+            <div class="typeform-embed">
+                <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94" style="width: 100%; height: 100%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let scriptLoaded = false;
+        
+        function updateStatus(statusId, message, isSuccess = null) {
+            const element = document.getElementById(statusId);
+            const timestamp = new Date().toLocaleTimeString();
+            element.textContent = `[${timestamp}] ${message}`;
+            
+            if (isSuccess === true) element.style.color = 'green';
+            else if (isSuccess === false) element.style.color = 'red';
+            else element.style.color = '#333';
+            
+            console.log(`${timestamp}: ${message}`);
+        }
+
+        function showOriginalEmbed() {
+            const container = document.getElementById('originalContainer');
+            container.style.display = 'block';
+            updateStatus('status1', 'Originele embed container getoond, wacht 5 seconden...');
+            
+            // Check na 5 seconden
+            setTimeout(() => {
+                const iframe = container.querySelector('iframe');
+                if (iframe) {
+                    updateStatus('status1', '✅ SUCCESS! Iframe gevonden, Typeform werkt!', true);
+                    updateStatus('mainStatus', '🎉 ORIGINELE CODE WERKT! Typeform succesvol geladen.', true);
+                } else {
+                    updateStatus('status1', '❌ FAILED! Geen iframe gevonden na 5 seconden', false);
+                }
+            }, 5000);
+        }
+
+        function showStyledEmbed() {
+            const container = document.getElementById('styledContainer');
+            container.style.display = 'block';
+            updateStatus('status2', 'Styled embed getoond...');
+            
+            setTimeout(() => {
+                const iframe = container.querySelector('iframe');
+                if (iframe) {
+                    updateStatus('status2', '✅ Styled embed werkt!', true);
+                } else {
+                    updateStatus('status2', '❌ Styled embed gefaald', false);
+                }
+            }, 3000);
+        }
+
+        function openModalTest() {
+            document.getElementById('modal').style.display = 'flex';
+            updateStatus('status3', 'Modal geopend met Typeform...');
+            
+            setTimeout(() => {
+                const iframe = document.querySelector('#modal iframe');
+                if (iframe) {
+                    updateStatus('status3', '✅ Modal Typeform werkt!', true);
+                } else {
+                    updateStatus('status3', '❌ Modal Typeform gefaald', false);
+                }
+            }, 3000);
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            updateStatus('status3', 'Modal gesloten');
+        }
+
+        function checkEmbedStatus() {
+            const containers = document.querySelectorAll('.embed-container');
+            let totalIframes = 0;
+            
+            containers.forEach(container => {
+                const iframes = container.querySelectorAll('iframe');
+                totalIframes += iframes.length;
+            });
+            
+            updateStatus('status1', `Embed check: ${totalIframes} iframe(s) gevonden op pagina`);
+        }
+
+        function checkScriptStatus() {
+            const scripts = document.querySelectorAll('script[src*="embed.typeform.com"]');
+            const tfAvailable = typeof window.tf !== 'undefined';
+            
+            updateStatus('status4', `Scripts geladen: ${scripts.length}, window.tf beschikbaar: ${tfAvailable}`);
+            
+            if (scripts.length > 0) {
+                updateStatus('status4', `✅ Typeform script gevonden: ${scripts[0].src}`, true);
+            }
+        }
+
+        function forceReload() {
+            // Remove existing scripts
+            const existingScripts = document.querySelectorAll('script[src*="embed.typeform.com"]');
+            existingScripts.forEach(script => script.remove());
+            
+            // Add new script
+            const newScript = document.createElement('script');
+            newScript.src = '//embed.typeform.com/next/embed.js';
+            newScript.onload = () => {
+                updateStatus('status4', '✅ Script force reloaded successfully!', true);
+            };
+            newScript.onerror = () => {
+                updateStatus('status4', '❌ Script force reload failed!', false);
+            };
+            
+            document.head.appendChild(newScript);
+            updateStatus('status4', 'Force reloading Typeform script...');
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            updateStatus('mainStatus', '🚀 Test pagina volledig geladen');
+            
+            console.log('=== TYPEFORM DEBUG INFO ===');
+            console.log('Form ID: 01K25SKWYTKZ05DAHER9D52J94');
+            console.log('Expected URL: https://form.typeform.com/to/z1GroMCc');
+            console.log('User Agent:', navigator.userAgent);
+            console.log('Page URL:', window.location.href);
+            
+            // Auto check script status
+            setTimeout(checkScriptStatus, 1000);
+        });
+
+        // Listen for Typeform messages
+        window.addEventListener('message', function(event) {
+            if (event.origin === 'https://form.typeform.com') {
+                console.log('📨 Typeform message received:', event.data);
+                updateStatus('mainStatus', `📨 Typeform event: ${event.data.type || 'unknown'}`);
+            }
+        });
+
+        // Global error handler
+        window.addEventListener('error', function(event) {
+            console.error('❌ JavaScript Error:', event.error);
+            updateStatus('mainStatus', `❌ Error: ${event.message}`, false);
+        });
+    </script>
+</body>
+</html>
