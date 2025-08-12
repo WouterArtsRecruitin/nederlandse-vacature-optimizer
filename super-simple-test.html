@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Simple Typeform Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-box {
+            border: 3px solid #ff6b35;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            min-height: 600px;
+        }
+        h1 { color: #ff6b35; }
+        .status {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Super Simple Typeform Test</h1>
+    
+    <p><strong>Test:</strong> Exact jouw code hieronder:</p>
+    <code>&lt;div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"&gt;&lt;/div&gt;&lt;script src="//embed.typeform.com/next/embed.js"&gt;&lt;/script&gt;</code>
+    
+    <div class="status" id="status">Status: Pagina geladen...</div>
+    
+    <div class="test-box">
+        <h2>Jouw Exacte Code:</h2>
+        <!-- Exact jouw code hier: -->
+        <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+        <script src="//embed.typeform.com/next/embed.js"></script>
+    </div>
+
+    <hr>
+    
+    <h2>🔍 Debug Info:</h2>
+    <div id="debug-info" class="status"></div>
+
+    <script>
+        function updateStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.innerHTML = `${new Date().toLocaleTimeString()}: ${message}`;
+            status.className = isError ? 'status error' : 'status success';
+            console.log(message);
+        }
+
+        function checkTypeform() {
+            const debugInfo = document.getElementById('debug-info');
+            let info = '<h3>Debug Informatie:</h3>';
+            
+            // Check script
+            const scripts = document.querySelectorAll('script[src*="embed.typeform.com"]');
+            info += `<p>📜 Scripts gevonden: ${scripts.length}</p>`;
+            
+            // Check div
+            const tfDiv = document.querySelector('[data-tf-live]');
+            info += `<p>📦 Typeform div gevonden: ${tfDiv ? 'Ja' : 'Nee'}</p>`;
+            
+            // Check iframe
+            const iframe = document.querySelector('iframe');
+            info += `<p>🖼️ iFrame gevonden: ${iframe ? 'Ja ✅' : 'Nee ❌'}</p>`;
+            
+            if (iframe) {
+                info += `<p>🔗 iFrame src: ${iframe.src || 'Geen src'}</p>`;
+                info += `<p>📏 iFrame grootte: ${iframe.width || 'auto'} x ${iframe.height || 'auto'}</p>`;
+            }
+            
+            // Check window.tf
+            info += `<p>🪟 window.tf beschikbaar: ${typeof window.tf !== 'undefined' ? 'Ja ✅' : 'Nee ❌'}</p>`;
+            
+            // Browser info
+            info += `<p>🌐 Browser: ${navigator.userAgent}</p>`;
+            info += `<p>📍 URL: ${window.location.href}</p>`;
+            
+            debugInfo.innerHTML = info;
+        }
+
+        // Initial status
+        updateStatus('⏳ Wachten op Typeform...');
+        
+        // Check na 2 seconden
+        setTimeout(() => {
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                updateStatus('✅ SUCCESS! Typeform iframe gevonden!');
+            } else {
+                updateStatus('❌ FAILED! Geen iframe gevonden na 2 seconden', true);
+            }
+            checkTypeform();
+        }, 2000);
+
+        // Check na 5 seconden
+        setTimeout(() => {
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                updateStatus('✅ CONFIRMED! Typeform werkt na 5 seconden!');
+            } else {
+                updateStatus('❌ STILL FAILED! Geen iframe na 5 seconden', true);
+            }
+            checkTypeform();
+        }, 5000);
+
+        // Check na 10 seconden
+        setTimeout(() => {
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                updateStatus('✅ FINAL CHECK: Typeform werkt perfect!');
+            } else {
+                updateStatus('❌ FINAL RESULT: Typeform embed werkt niet', true);
+            }
+            checkTypeform();
+        }, 10000);
+
+        // Error handling
+        window.addEventListener('error', function(e) {
+            updateStatus(`❌ JavaScript Error: ${e.message}`, true);
+            console.error('Error details:', e);
+        });
+
+        // Message listener
+        window.addEventListener('message', function(event) {
+            if (event.origin.includes('typeform.com')) {
+                updateStatus(`📨 Typeform bericht ontvangen: ${event.data.type || 'onbekend'}`);
+                console.log('Typeform message:', event.data);
+            }
+        });
+
+        console.log('=== SUPER SIMPLE TEST STARTED ===');
+        console.log('Form ID: 01K25SKWYTKZ05DAHER9D52J94');
+        console.log('Expected iframe src should contain: form.typeform.com');
+    </script>
+</body>
+</html>
