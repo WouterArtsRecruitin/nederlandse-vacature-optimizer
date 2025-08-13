@@ -101,27 +101,6 @@
             font-size: 1.1rem;
         }
 
-        .calendly-btn {
-            background: linear-gradient(135deg, var(--recruitin-orange) 0%, var(--recruitin-orange-dark) 100%);
-            color: white;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 15px -3px rgba(239, 125, 0, 0.2);
-        }
-
-        .calendly-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px -5px rgba(239, 125, 0, 0.3);
-            background: linear-gradient(135deg, var(--recruitin-orange-light) 0%, var(--recruitin-orange) 100%);
-        }
 
         .process-steps {
             background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
@@ -168,10 +147,16 @@
                 font-size: 1.5rem;
             }
 
-            .calendly-btn {
-                width: 100%;
-                justify-content: center;
-            }
+        }
+
+        /* Verberg eventuele Calendly popups/overlays */
+        .calendly-overlay,
+        .calendly-popup,
+        [class*="calendly"][class*="overlay"],
+        [class*="calendly"][class*="popup"],
+        .calendly-badge-widget {
+            display: none !important;
+            visibility: hidden !important;
         }
     </style>
 </head>
@@ -188,10 +173,14 @@
         <div class="calendly-section">
             <h3 style="text-align: center; margin: 30px 0 20px 0; color: var(--recruitin-primary);">Plan Direct je Gratis Adviesgesprek</h3>
             
-            <!-- Calendly inline widget begin -->
-            <div class="calendly-inline-widget" data-url="https://calendly.com/wouter-arts-/vacature-analyse-advies" style="min-width:320px;height:700px;"></div>
-            <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-            <!-- Calendly inline widget end -->
+            <!-- Direct Calendly iframe -->
+            <iframe src="https://calendly.com/wouter-arts-/vacature-analyse-advies?embed_type=Inline&embed_domain=kandidatentekort.nl&hide_landing_page_details=1&hide_gdpr_banner=1" 
+                    width="100%" 
+                    height="700" 
+                    frameborder="0" 
+                    scrolling="no"
+                    style="border-radius: 10px; min-width: 320px;">
+            </iframe>
         </div>
         
         <div class="process-steps">
