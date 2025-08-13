@@ -691,34 +691,6 @@
             box-shadow: 0 8px 25px rgba(239, 125, 0, 0.3);
         }
 
-        /* CTA Buttons Container */
-        .cta-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Calendly Button */
-        .calendly-btn {
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
-            color: white;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 12px;
-            font-size: 1.25rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .calendly-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.3);
-        }
 
 
         /* Responsive Design */
@@ -749,13 +721,7 @@
             }
 
 
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
             .cta-btn,
-            .calendly-btn,
             .demo-btn,
             .analyze-btn {
                 width: 100%;
@@ -876,20 +842,13 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
                 </label>
             </div>
             
-            <div class="cta-buttons">
-                <button class="cta-btn" id="ctaBtnElement">
-                    <span>📄</span>
-                    <span>Upload je Vacature</span>
-                    <span>→</span>
-                </button>
-                
-                <button class="calendly-btn" id="calendlyBtnElement">
-                    <span>📅</span>
-                    <span>Plan Gratis Analyse Gesprek</span>
-                    <span>→</span>
-                </button>
-            </div>
+            <button class="cta-btn" id="ctaBtnElement">
+                <span>📄</span>
+                <span>Upload je Vacature</span>
+                <span>→</span>
+            </button>
         </div>
+
 
     </div>
 
@@ -1192,99 +1151,6 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
         // Make function immediately available
         window.openTypeForm = openTypeForm;
 
-        // Calendly popup function
-        function openCalendly() {
-            // Create fullscreen overlay for Calendly
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.8);
-                z-index: 10000;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 20px;
-            `;
-            
-            // Create container for Calendly
-            const container = document.createElement('div');
-            container.style.cssText = `
-                width: 100%;
-                max-width: 900px;
-                height: 90vh;
-                background: white;
-                border-radius: 15px;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-            `;
-            
-            // Create close button
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '×';
-            closeBtn.style.cssText = `
-                position: absolute;
-                top: 15px;
-                right: 15px;
-                background: #FF6B35;
-                color: white;
-                border: none;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                font-size: 24px;
-                cursor: pointer;
-                z-index: 10001;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-            `;
-            
-            closeBtn.onclick = () => {
-                document.body.removeChild(overlay);
-                document.body.style.overflow = 'auto';
-            };
-            
-            // Create Calendly iframe
-            const iframe = document.createElement('iframe');
-            iframe.src = 'https://calendly.com/wouter-arts-/vacature-analyse-advies';
-            iframe.style.cssText = `
-                width: 100%;
-                height: 100%;
-                border: none;
-                border-radius: 15px;
-            `;
-            
-            // Assemble the overlay
-            container.appendChild(closeBtn);
-            container.appendChild(iframe);
-            overlay.appendChild(container);
-            document.body.appendChild(overlay);
-            document.body.style.overflow = 'hidden';
-            
-            // Close on escape key
-            const escapeHandler = (e) => {
-                if (e.key === 'Escape') {
-                    closeBtn.click();
-                    document.removeEventListener('keydown', escapeHandler);
-                }
-            };
-            document.addEventListener('keydown', escapeHandler);
-            
-            // Close on backdrop click
-            overlay.onclick = (e) => {
-                if (e.target === overlay) {
-                    closeBtn.click();
-                }
-            };
-        }
-        // Make function immediately available
-        window.openCalendly = openCalendly;
 
         // Notification system
         function showNotification(message, type = 'info') {
@@ -1414,7 +1280,6 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             const demoBtn = document.getElementById('demoBtnElement');
             const analyzeBtn = document.getElementById('analyzeBtn');
             const ctaBtn = document.getElementById('ctaBtnElement');
-            const calendlyBtn = document.getElementById('calendlyBtnElement');
             
             // Setup event listeners for buttons
             if (demoBtn) {
@@ -1427,10 +1292,6 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             
             if (ctaBtn) {
                 ctaBtn.addEventListener('click', openTypeForm);
-            }
-            
-            if (calendlyBtn) {
-                calendlyBtn.addEventListener('click', openCalendly);
             }
         });
 
