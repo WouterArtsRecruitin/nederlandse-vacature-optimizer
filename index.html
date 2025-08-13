@@ -112,11 +112,15 @@
         }
 
         :root {
-            --primary-orange: #ff6b35;
-            --primary-orange-light: #ff8a5e;
-            --primary-orange-dark: #e55a2b;
-            --recruitin-blue: #2c3e50;
-            --recruitin-blue-light: #34495e;
+            /* Recruitin Brand Colors */
+            --recruitin-orange: #EF7D00;
+            --recruitin-orange-light: #FF9420;
+            --recruitin-orange-dark: #D66A00;
+            --recruitin-primary: #32373C;
+            --recruitin-primary-light: #4A5058;
+            --recruitin-white: #FFFFFF;
+            
+            /* Supporting Colors */
             --success-green: #10b981;
             --warning-yellow: #f59e0b;
             --danger-red: #ef4444;
@@ -139,8 +143,8 @@
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
-            color: var(--gray-800);
-            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            color: var(--recruitin-primary);
+            background: var(--recruitin-white);
             min-height: 100vh;
             font-feature-settings: 'kern' 1, 'liga' 1;
             -webkit-font-smoothing: antialiased;
@@ -148,9 +152,10 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 32px 24px;
+            padding: 40px 24px;
+            background: var(--recruitin-white);
         }
 
         .header {
@@ -158,6 +163,9 @@
             margin-bottom: 48px;
             padding: 40px 0;
             position: relative;
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--recruitin-white) 100%);
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
         }
 
         .header::before {
@@ -166,9 +174,9 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
+            width: 80px;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary-orange) 0%, var(--primary-orange-light) 100%);
+            background: linear-gradient(90deg, var(--recruitin-orange) 0%, var(--recruitin-orange-light) 100%);
             border-radius: 2px;
         }
 
@@ -183,13 +191,13 @@
         .logo {
             font-size: 3rem;
             font-weight: 800;
-            color: var(--recruitin-blue);
+            color: var(--recruitin-primary);
             letter-spacing: -0.02em;
             position: relative;
         }
 
         .logo .accent {
-            color: var(--primary-orange);
+            color: var(--recruitin-orange);
             position: relative;
         }
 
@@ -200,12 +208,12 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary-orange) 0%, transparent 100%);
+            background: linear-gradient(90deg, var(--recruitin-orange) 0%, transparent 100%);
             border-radius: 2px;
         }
 
         .beta-badge {
-            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-dark) 100%);
+            background: linear-gradient(135deg, var(--recruitin-orange) 0%, var(--recruitin-orange-dark) 100%);
             color: white;
             padding: 4px 12px;
             border-radius: 20px;
@@ -219,23 +227,23 @@
         .tagline {
             font-size: 1.375rem;
             font-weight: 600;
-            color: var(--gray-700);
+            color: var(--recruitin-primary);
             margin-bottom: 12px;
             line-height: 1.4;
         }
 
         .subtitle {
             font-size: 1.125rem;
-            color: var(--gray-500);
+            color: var(--recruitin-primary-light);
             font-weight: 400;
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto 32px auto;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         /* Demo Section */
         .demo-section {
-            background: var(--gray-50);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--recruitin-white) 100%);
             padding: 40px 0;
             border: 2px dashed var(--gray-300);
             border-radius: 16px;
@@ -251,7 +259,7 @@
         }
 
         .demo-btn {
-            background: linear-gradient(135deg, var(--primary-orange) 0%, var(--primary-orange-dark) 100%);
+            background: linear-gradient(135deg, var(--recruitin-orange) 0%, var(--recruitin-orange-dark) 100%);
             color: white;
             border: none;
             padding: 16px 32px;
@@ -348,7 +356,7 @@
         /* Analyze Button */
         .analyze-btn {
             width: 100%;
-            background: linear-gradient(135deg, var(--success-green) 0%, #059669 100%);
+            background: linear-gradient(135deg, var(--recruitin-primary) 0%, var(--recruitin-primary-light) 100%);
             color: white;
             border: none;
             padding: 20px;
@@ -362,6 +370,23 @@
             justify-content: center;
             gap: 12px;
             box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analyze-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .analyze-btn:hover::before {
+            left: 100%;
         }
 
         .analyze-btn:hover {
@@ -379,9 +404,9 @@
         .privacy-section {
             margin: 20px 0;
             padding: 16px 20px;
-            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--recruitin-white) 100%);
             border-radius: 12px;
-            border: 1px solid #fed7aa;
+            border: 1px solid var(--recruitin-orange);
         }
 
         .privacy-checkbox {
@@ -415,12 +440,12 @@
         }
 
         .privacy-checkbox:hover .checkmark {
-            border-color: var(--primary-color);
+            border-color: var(--recruitin-orange);
         }
 
         .privacy-checkbox input:checked ~ .checkmark {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+            background: var(--recruitin-orange);
+            border-color: var(--recruitin-orange);
         }
 
         .checkmark:after {
@@ -446,13 +471,13 @@
         }
 
         .privacy-text a {
-            color: var(--primary-color);
+            color: var(--recruitin-orange);
             text-decoration: underline;
             transition: color 0.2s ease;
         }
 
         .privacy-text a:hover {
-            color: var(--primary-dark);
+            color: var(--recruitin-orange-dark);
         }
 
         /* Loading Animation */
@@ -472,11 +497,12 @@
 
         /* Results Section */
         .results-section {
-            background: white;
+            background: var(--recruitin-white);
             border-radius: 20px;
             padding: 40px;
             box-shadow: var(--shadow-lg);
             margin-bottom: 40px;
+            border-top: 4px solid var(--recruitin-orange);
         }
 
         .results-header {
@@ -646,9 +672,9 @@
         }
 
         .cta-btn {
-            background: white;
-            color: var(--primary-orange);
-            border: none;
+            background: linear-gradient(135deg, var(--recruitin-orange) 0%, var(--recruitin-orange-light) 100%);
+            color: white;
+            border: 2px solid transparent;
             padding: 16px 32px;
             border-radius: 12px;
             font-size: 1.25rem;
@@ -662,7 +688,7 @@
 
         .cta-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 8px 25px rgba(239, 125, 0, 0.3);
         }
 
         /* CTA Buttons Container */
