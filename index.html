@@ -839,6 +839,8 @@
                 <textarea 
                     id="vacatureInput" 
                     class="input-textarea"
+                    spellcheck="false"
+                    autocomplete="off"
                     placeholder="Plak hier je volledige vacaturetekst...
 
 Voorbeeld:
@@ -918,8 +920,7 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
             const charCount = document.getElementById('charCount');
             
             if (!vacatureInput || !charCount) {
-                console.error('Demo button error: Required elements not found');
-                alert('Er is een probleem opgetreden. Probeer de pagina te vernieuwen.');
+                showNotification('Er is een probleem opgetreden. Probeer de pagina te vernieuwen.', 'error');
                 return;
             }
             const demoText = `Senior Marketing Manager - TechStart Amsterdam
@@ -973,8 +974,7 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
         async function analyzeVacature() {
             const vacatureInput = document.getElementById('vacatureInput');
             if (!vacatureInput) {
-                console.error('Analyze error: vacatureInput not found');
-                alert('Er is een probleem opgetreden. Probeer de pagina te vernieuwen.');
+                showNotification('Er is een probleem opgetreden. Probeer de pagina te vernieuwen.', 'error');
                 return;
             }
             
@@ -1215,16 +1215,12 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
                 script.src = '//embed.typeform.com/next/embed.js';
                 script.async = true;
                 document.head.appendChild(script);
-                console.log('📜 Typeform script loaded');
             }
             
             // Hide loading after delay
             setTimeout(() => {
                 loading.classList.add('hidden');
-                console.log('✅ Typeform embed created with ID:', formId);
             }, 2000);
-            
-            console.log('🎯 Modal opened with Typeform ID:', formId);
         }
         // Make function immediately available
         window.openTypeForm = openTypeForm;
@@ -1233,7 +1229,6 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             const modal = document.getElementById('typeformModal');
             modal.classList.remove('show');
             document.body.style.overflow = 'auto';
-            console.log('🚪 Modal closed');
         }
         // Make function immediately available
         window.closeTypeForm = closeTypeForm;
@@ -1383,47 +1378,34 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             const ctaBtn = document.getElementById('ctaBtnElement');
             const typeformCloseBtn = document.getElementById('typeformCloseBtnElement');
             
+            // Setup event listeners for buttons
             if (demoBtn) {
                 demoBtn.addEventListener('click', loadDemoVacature);
-                console.log('✅ Demo button event listener attached');
             }
             
             if (analyzeBtn) {
                 analyzeBtn.addEventListener('click', analyzeVacature);
-                console.log('✅ Analyze button event listener attached');
             }
             
             if (ctaBtn) {
                 ctaBtn.addEventListener('click', openTypeForm);
-                console.log('✅ CTA button event listener attached');
             }
             
             if (typeformCloseBtn) {
                 typeformCloseBtn.addEventListener('click', closeTypeForm);
-                console.log('✅ Typeform close button event listener attached');
             }
-            
-            console.log('🚀 Vacature Analyse Tool initialized');
-            console.log('📋 Typeform ID: ' + formId);
-            console.log('🎯 Embed code: <div data-tf-live="' + formId + '"></div><script src="//embed.typeform.com/next/embed.js"></script>');
-            console.log('✅ All systems ready');
-            console.log('📋 Global functions available:', { 
-                loadDemoVacature: typeof window.loadDemoVacature, 
-                analyzeVacature: typeof window.analyzeVacature, 
-                openTypeForm: typeof window.openTypeForm, 
-                closeTypeForm: typeof window.closeTypeForm 
-            });
         });
 
-        // Performance monitoring
+        // Performance monitoring (production ready)
         if ('performance' in window) {
             window.addEventListener('load', function() {
-                setTimeout(() => {
-                    const perfData = performance.getEntriesByType('navigation')[0];
-                    if (perfData) {
-                        console.log('⚡ Page load time:', Math.round(perfData.loadEventEnd - perfData.loadEventStart), 'ms');
-                    }
-                }, 0);
+                // Silent performance monitoring
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (perfData && window.gtag) {
+                    gtag('event', 'page_load_time', {
+                        value: Math.round(perfData.loadEventEnd - perfData.loadEventStart)
+                    });
+                }
             });
         }
     </script>
