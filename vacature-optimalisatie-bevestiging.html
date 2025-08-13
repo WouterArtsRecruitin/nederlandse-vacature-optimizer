@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vacature Optimalisatie Bevestiging | Kandidatentekort.nl</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BFYNLSLX0F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-BFYNLSLX0F');
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            /* Recruitin Brand Colors */
+            --recruitin-orange: #EF7D00;
+            --recruitin-orange-light: #FF9420;
+            --recruitin-orange-dark: #D66A00;
+            --recruitin-primary: #32373C;
+            --recruitin-primary-light: #4A5058;
+            --recruitin-white: #FFFFFF;
+            --success-green: #10b981;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--recruitin-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--recruitin-primary);
+        }
+
+        .confirmation-container {
+            background: var(--recruitin-white);
+            border-radius: 20px;
+            box-shadow: 0 20px 25px -5px rgba(239, 125, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 95%;
+            text-align: center;
+            border: 1px solid var(--recruitin-orange-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirmation-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--recruitin-orange) 0%, var(--recruitin-orange-light) 100%);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--recruitin-orange);
+            animation: bounce 1.5s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .title {
+            color: var(--recruitin-primary);
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .calendly-btn {
+            background: linear-gradient(135deg, var(--recruitin-orange) 0%, var(--recruitin-orange-dark) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 15px -3px rgba(239, 125, 0, 0.2);
+        }
+
+        .calendly-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -5px rgba(239, 125, 0, 0.3);
+            background: linear-gradient(135deg, var(--recruitin-orange-light) 0%, var(--recruitin-orange) 100%);
+        }
+
+        .process-steps {
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+            border: 1px solid var(--gray-200);
+        }
+
+        .process-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .process-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 15px;
+            bottom: -10px;
+            width: 1px;
+            height: 20px;
+            background: var(--gray-200);
+        }
+
+        .process-step-icon {
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: var(--recruitin-orange);
+            width: 30px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        @media (max-width: 600px) {
+            .confirmation-container {
+                padding: 30px 20px;
+                margin: 0 10px;
+            }
+
+            .title {
+                font-size: 1.5rem;
+            }
+
+            .calendly-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirmation-container">
+        <div class="success-icon">✓</div>
+        
+        <h1 class="title">Vacature Upload Succesvol!</h1>
+        
+        <p class="subtitle">
+            Je vacature is ontvangen. Onze AI-analyse gaat direct van start om jouw tekst te optimaliseren voor maximale kandidatenrespons.
+        </p>
+        
+        <button class="calendly-btn" onclick="openCalendly()">
+            Plan Gratis Adviesgesprek
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h13M12 5l7 7-7 7"/>
+            </svg>
+        </button>
+        
+        <div class="process-steps">
+            <div class="process-step">
+                <span class="process-step-icon">1</span>
+                <span>Binnen 24 uur ontvang je een geoptimaliseerde vacaturetekst</span>
+            </div>
+            <div class="process-step">
+                <span class="process-step-icon">2</span>
+                <span>Persoonlijk 30-minuten expert adviesgesprek</span>
+            </div>
+            <div class="process-step">
+                <span class="process-step-icon">3</span>
+                <span>Verhoog je response rate met gemiddeld 40%</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Verwerk parameters van Typeform
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Voorbeeld: naam uit Typeform parameter ophalen
+            const naam = decodeURIComponent(params.get('naam') || 'Recruiter');
+            const email = decodeURIComponent(params.get('email') || '');
+            const vraag = decodeURIComponent(params.get('vraag') || '');
+            const regio = decodeURIComponent(params.get('regio') || '');
+            const functie = decodeURIComponent(params.get('functie') || '');
+
+            // Update teksten dynamisch
+            const subtitleElement = document.querySelector('.subtitle');
+            if (subtitleElement) {
+                subtitleElement.innerHTML = `Beste ${naam}, je vacature voor ${functie || 'de functie'} in ${regio || 'de regio'} is ontvangen. Onze AI-analyse gaat direct van start om jouw tekst te optimaliseren voor maximale kandidatenrespons.`;
+            }
+
+            // Optioneel: Stuur analytics event
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'vacature_optimalisatie_ontvangen', {
+                    'regio': regio,
+                    'functie': functie,
+                    'email': email
+                });
+            }
+
+            // Log voor debugging (kan later worden verwijderd)
+            console.log('Ontvangen vacature details:', { naam, email, vraag, regio, functie });
+        });
+
+        function openCalendly() {
+            // Create fullscreen overlay for Calendly
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 10000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            `;
+            
+            // Create container for Calendly
+            const container = document.createElement('div');
+            container.style.cssText = `
+                width: 100%;
+                max-width: 900px;
+                height: 90vh;
+                background: white;
+                border-radius: 15px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            `;
+            
+            // Create close button
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '×';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: #EF7D00;
+                color: white;
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 10001;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: bold;
+            `;
+            
+            closeBtn.onclick = () => {
+                document.body.removeChild(overlay);
+                document.body.style.overflow = 'auto';
+            };
+            
+            // Create Calendly iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://calendly.com/wouter-arts-/vacature-analyse-advies';
+            iframe.style.cssText = `
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 15px;
+            `;
+            
+            // Assemble the overlay
+            container.appendChild(closeBtn);
+            container.appendChild(iframe);
+            overlay.appendChild(container);
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+            
+            // Close on escape key
+            const escapeHandler = (e) => {
+                if (e.key === 'Escape') {
+                    closeBtn.click();
+                    document.removeEventListener('keydown', escapeHandler);
+                }
+            };
+            document.addEventListener('keydown', escapeHandler);
+            
+            // Close on backdrop click
+            overlay.onclick = (e) => {
+                if (e.target === overlay) {
+                    closeBtn.click();
+                }
+            };
+        }
+    </script>
+</body>
+</html>
