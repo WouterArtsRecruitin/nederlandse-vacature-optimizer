@@ -177,6 +177,29 @@
             opacity: 1 !important;
             pointer-events: auto !important;
         }
+        
+        .calendly-redirect-btn {
+            background: linear-gradient(135deg, var(--recruitin-orange) 0%, var(--recruitin-orange-dark) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 15px -3px rgba(239, 125, 0, 0.2);
+            margin: 20px auto;
+        }
+        
+        .calendly-redirect-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -5px rgba(239, 125, 0, 0.3);
+            background: linear-gradient(135deg, var(--recruitin-orange-light) 0%, var(--recruitin-orange) 100%);
+        }
     </style>
 </head>
 <body>
@@ -192,14 +215,8 @@
         <div class="calendly-section">
             <h3 style="text-align: center; margin: 30px 0 20px 0; color: var(--recruitin-primary);">Plan Direct je Gratis Adviesgesprek</h3>
             
-            <!-- Direct Calendly iframe -->
-            <iframe src="https://calendly.com/wouter-arts-/vacature-analyse-advies?embed_type=Inline&embed_domain=kandidatentekort.nl&hide_landing_page_details=1&hide_gdpr_banner=1" 
-                    width="100%" 
-                    height="700" 
-                    frameborder="0" 
-                    scrolling="no"
-                    style="border-radius: 10px; min-width: 320px;">
-            </iframe>
+            <!-- Calendly inline embed using React version -->
+            <div id="calendly-embed" style="min-width:320px;height:700px;border-radius:10px;overflow:hidden;"></div>
         </div>
         
         <div class="process-steps">
@@ -275,7 +292,30 @@
             // Run immediately and on interval
             removeCalendlyPopups();
             setInterval(removeCalendlyPopups, 1000);
+            
+            // Initialize Calendly embed programmatically
+            initializeCalendlyEmbed();
         });
+        
+        function initializeCalendlyEmbed() {
+            // Try alternative Calendly embedding without external script
+            const embedContainer = document.getElementById('calendly-embed');
+            if (embedContainer) {
+                // Create clean iframe directly
+                const iframe = document.createElement('iframe');
+                iframe.src = 'https://calendly.com/wouter-arts-/vacature-analyse-advies?background_color=ffffff&text_color=32373C&primary_color=EF7D00';
+                iframe.width = '100%';
+                iframe.height = '700';
+                iframe.frameBorder = '0';
+                iframe.scrolling = 'no';
+                iframe.style.borderRadius = '10px';
+                iframe.style.minWidth = '320px';
+                
+                // Clear container and add iframe
+                embedContainer.innerHTML = '';
+                embedContainer.appendChild(iframe);
+            }
+        }
 
     </script>
 </body>
