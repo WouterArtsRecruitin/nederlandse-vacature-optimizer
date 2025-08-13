@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruitment APK Rapport - Verbeterd Design</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BFYNLSLX0F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-BFYNLSLX0F');
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #FF6B35;
+            --primary-orange-dark: #E55A2B;
+            --deep-blue: #1E3A8A;
+            --success-green: #10B981;
+            --warning-amber: #F59E0B;
+            --danger-red: #EF4444;
+            --purple-gradient: linear-gradient(135deg, #8B5CF6, #EC4899);
+            --orange-gradient: linear-gradient(135deg, #FF6B35, #FF8F65);
+            --blue-gradient: linear-gradient(135deg, #1E3A8A, #3B82F6);
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: linear-gradient(135deg, var(--gray-50) 0%, #ffffff 100%);
+        }
+
+        .report-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        /* HEADER SECTION */
+        .header {
+            background: var(--blue-gradient);
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="1.5" fill="rgba(255,255,255,0.08)"/><circle cx="50" cy="10" r="0.8" fill="rgba(255,255,255,0.12)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: var(--orange-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: white;
+            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
+        }
+
+        .company-info {
+            color: white;
+            text-align: left;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .company-tagline {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .report-title {
+            color: white;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .report-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+        }
+
+        /* HERO SCORE SECTION */
+        .hero-score {
+            padding: 60px 40px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            position: relative;
+        }
+
+        .hero-score::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: var(--orange-gradient);
+            border-radius: 50%;
+            opacity: 0.1;
+            filter: blur(40px);
+        }
+
+        .score-circle {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+
+        .score-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--primary-orange) 0deg 208deg, 
+                var(--gray-200) 208deg 360deg
+            );
+            padding: 8px;
+        }
+
+        .score-inner {
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-number {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--primary-orange);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .score-total {
+            font-size: 18px;
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .score-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 12px;
+        }
+
+        .score-description {
+            font-size: 16px;
+            color: var(--gray-600);
+            margin-bottom: 30px;
+        }
+
+        .benchmarks {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .benchmark-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+
+        .benchmark-label {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .benchmark-comparison {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .benchmark-score {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-700);
+        }
+
+        .comparison-arrow {
+            font-size: 20px;
+            color: var(--success-green);
+        }
+
+        .your-score {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-orange);
+        }
+
+        /* CATEGORIES SECTION */
+        .categories-section {
+            padding: 50px 40px;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-900);
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .category-card {
+            background: var(--gray-50);
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card.excellent {
+            border-color: var(--success-green);
+            background: linear-gradient(135deg, #ECFDF5 0%, #F0FDF4 100%);
+        }
+
+        .category-card.good {
+            border-color: var(--warning-amber);
+            background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+        }
+
+        .category-card.needs-improvement {
+            border-color: var(--primary-orange);
+            background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+        }
+
+        .category-icon {
+            font-size: 32px;
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .category-score {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 8px;
+        }
+
+        .category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+
+        .category-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-excellent {
+            background: var(--success-green);
+            color: white;
+        }
+
+        .status-good {
+            background: var(--warning-amber);
+            color: white;
+        }
+
+        .status-needs-improvement {
+            background: var(--primary-orange);
+            color: white;
+        }
+
+        .benchmark-vs {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* INSIGHTS SECTION */
+        .insights-section {
+            padding: 50px 40px;
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+        }
+
+        .insights-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .insight-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--primary-orange);
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .insight-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .insight-icon.trophy {
+            background: var(--orange-gradient);
+        }
+
+        .insight-icon.lightning {
+            background: var(--blue-gradient);
+        }
+
+        .insight-icon.target {
+            background: var(--purple-gradient);
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .insight-description {
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-description {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .contact-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+
+        .cta-button {
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .cta-primary {
+            background: var(--orange-gradient);
+            color: white;
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .report-container {
+                margin: 20px;
+                border-radius: 16px;
+            }
+
+            .header, .hero-score, .categories-section, .insights-section, .footer {
+                padding: 30px 24px;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benchmarks {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .score-circle {
+                width: 160px;
+                height: 160px;
+            }
+
+            .score-number {
+                font-size: 48px;
+            }
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .report-container {
+                box-shadow: none;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- HEADER SECTION -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">R</div>
+                    <div class="company-info">
+                        <div class="company-name">RECRUITIN</div>
+                        <div class="company-tagline">Recruitment Excellence Assessment</div>
+                    </div>
+                </div>
+                
+                <h1 class="report-title">📊 RECRUITMENT APK RAPPORT</h1>
+                <p class="report-subtitle">Volledige analyse van uw recruitment prestaties en concrete verbeteradviezen</p>
+                
+                <div class="meta-info">
+                    <div>
+                        <strong>Datum:</strong> 8 augustus 2025<br>
+                        <strong>ID:</strong> RMA-2025-080803
+                    </div>
+                    <div>
+                        <strong>Assessment:</strong> 5 augustus 2025<br>
+                        <strong>Organisatie:</strong> Arts Recruitin B.V.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HERO SCORE SECTION -->
+        <div class="hero-score">
+            <div class="score-circle">
+                <div class="score-background">
+                    <div class="score-inner">
+                        <div class="score-number">58</div>
+                        <div class="score-total">/100</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="score-label">TOTALE APK SCORE</div>
+            <div class="score-description">Goede basis met verbeterpotentieel</div>
+            
+            <div class="benchmarks">
+                <div class="benchmark-card">
+                    <div class="benchmark-label">NL Gemiddelde</div>
+                    <div class="benchmark-comparison">
+                        <span class="benchmark-score">65</span>
+                        <span class="comparison-arrow">→</span>
+                        <span class="your-score">58</span>
+                    </div>
+                </div>
+                <div class="benchmark-card">
+                    <div class="benchmark-label">Metaalbewerking & Industrie</div>
+                    <div class="benchmark-comparison">
+                        <span class="benchmark-score">62</span>
+                        <span class="comparison-arrow">→</span>
+                        <span class="your-score">58</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CATEGORIES SECTION -->
+        <div class="categories-section">
+            <h2 class="section-title">📈 PRESTATIES PER CATEGORIE</h2>
+            
+            <div class="categories-grid">
+                <div class="category-card needs-improvement">
+                    <span class="category-icon">📋</span>
+                    <div class="category-score">52</div>
+                    <div class="category-name">Proces & Organisatie</div>
+                    <span class="category-status status-needs-improvement">Verbeteren</span>
+                    <div class="benchmark-vs">vs benchmark: 70</div>
+                </div>
+                
+                <div class="category-card good">
+                    <span class="category-icon">👥</span>
+                    <div class="category-score">61</div>
+                    <div class="category-name">Mensen & Cultuur</div>
+                    <span class="category-status status-good">Goed</span>
+                    <div class="benchmark-vs">vs benchmark: 62</div>
+                </div>
+                
+                <div class="category-card needs-improvement">
+                    <span class="category-icon">🌟</span>
+                    <div class="category-score">55</div>
+                    <div class="category-name">Kandidatenervaring</div>
+                    <span class="category-status status-needs-improvement">Verbeteren</span>
+                    <div class="benchmark-vs">vs benchmark: 68</div>
+                </div>
+                
+                <div class="category-card excellent">
+                    <span class="category-icon">📊</span>
+                    <div class="category-score">64</div>
+                    <div class="category-name">Data & Performance</div>
+                    <span class="category-status status-excellent">Excellent</span>
+                    <div class="benchmark-vs">vs benchmark: 60</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INSIGHTS SECTION -->
+        <div class="insights-section">
+            <h2 class="section-title">💡 Belangrijkste Inzichten</h2>
+            
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon trophy">🏆</div>
+                        <div class="insight-title">Data-Driven Excellence</div>
+                    </div>
+                    <div class="insight-description">
+                        Score 64/100 - Uitzonderlijk voor Metaalbewerking & Industrie sector met complete dashboards en data-gedreven besluitvorming.
+                    </div>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon lightning">⚡</div>
+                        <div class="insight-title">Snelle Time-to-Hire</div>
+                    </div>
+                    <div class="insight-description">
+                        Proces geoptimaliseerd met snelle response tijden (24-48u) en strategische talenten benadering.
+                    </div>
+                </div>
+                
+                <div class="insight-card">
+                    <div class="insight-header">
+                        <div class="insight-icon target">🎯</div>
+                        <div class="insight-title">Employer Branding Kans</div>
+                    </div>
+                    <div class="insight-description">
+                        Score 55/100 - Goede basis maar grootste verbeterpotentieel ligt in multicanal branding strategie.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="footer-content">
+                <h3 class="footer-title">Vervolgafspraak & Adviesgesprek</h3>
+                <p class="footer-description">
+                    Bespreek de resultaten en concrete vervolgstappen in een persoonlijk adviesgesprek.
+                </p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Contact</div>
+                        <div class="contact-value">Wouter Arts</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value">warts@recruitin.nl</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Telefoon</div>
+                        <div class="contact-value">06-14314593</div>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons">
+                    <a href="#" class="cta-button cta-primary">📅 Plan Meeting via Calendly</a>
+                    <a href="#" class="cta-button cta-secondary">📧 Email Vervolgafspraak</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate score on load
+            const scoreNumber = document.querySelector('.score-number');
+            let currentScore = 0;
+            const targetScore = 58;
+            
+            const interval = setInterval(() => {
+                currentScore++;
+                scoreNumber.textContent = currentScore;
+                
+                if (currentScore >= targetScore) {
+                    clearInterval(interval);
+                }
+            }, 30);
+            
+            // Add hover effects to category cards
+            const categoryCards = document.querySelectorAll('.category-card');
+            categoryCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
