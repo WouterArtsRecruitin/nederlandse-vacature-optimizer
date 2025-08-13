@@ -910,7 +910,6 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
     <script>
         // Global variables
         let typeformIntegration;
-        const formId = '01K25SKWYTKZ05DAHER9D52J94';
         let vacatureInput, charCount;
 
         // Demo vacature loader - make immediately global
@@ -1187,7 +1186,7 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Typeform Modal Functions
+        // Typeform Modal Functions - Updated with new embed code
         function openTypeForm() {
             const modal = document.getElementById('typeformModal');
             const loading = document.getElementById('typeformLoading');
@@ -1201,21 +1200,11 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             // Clear previous content
             content.innerHTML = '';
             
-            // Create Typeform embed using your exact code
-            const typeformDiv = document.createElement('div');
-            typeformDiv.setAttribute('data-tf-live', formId);
-            typeformDiv.style.width = '100%';
-            typeformDiv.style.height = '100%';
-            
-            content.appendChild(typeformDiv);
-            
-            // Load Typeform script if not already loaded
-            if (!document.querySelector('script[src*="embed.typeform.com"]')) {
-                const script = document.createElement('script');
-                script.src = '//embed.typeform.com/next/embed.js';
-                script.async = true;
-                document.head.appendChild(script);
-            }
+            // Use the new Typeform embed code provided by user
+            content.innerHTML = `
+                <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
+                <script src="//embed.typeform.com/next/embed.js"></script>
+            `;
             
             // Hide loading after delay
             setTimeout(() => {
