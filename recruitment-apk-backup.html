@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowMaster Pro - Recruitment Intelligence Platform</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BFYNLSLX0F"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-BFYNLSLX0F');
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary-blue: #1e3a8a;
+            --accent-orange: #f97316;
+            --success-green: #10b981;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background-color: var(--gray-50);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #2563eb 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ea580c 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-button {
+            background: white;
+            color: var(--accent-orange);
+            padding: 20px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .about {
+            padding: 80px 0;
+            background: var(--gray-50);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 60px 0;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--gray-600);
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>🚀 FlowMaster Pro</h1>
+            <p>De nieuwe generatie recruitment intelligence platform voor moderne HR-professionals</p>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px; color: var(--primary-blue);">
+                Revolutioneer je Recruitment Process
+            </h2>
+            <p style="text-align: center; font-size: 1.25rem; color: var(--gray-600); max-width: 800px; margin: 0 auto;">
+                FlowMaster Pro combineert AI-gedreven analyse met intuïtieve workflows om je recruitment effectiviteit te maximaliseren
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Candidate Matching</h3>
+                    <p>Onze AI analyseert kandidaatprofielen en matcht automatisch met de juiste vacatures, waardoor je tijd bespaart en betere matches krijgt.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time Analytics</h3>
+                    <p>Krijg directe inzichten in je recruitment funnel met gedetailleerde rapportages en voorspellende analyses.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Automated Workflows</h3>
+                    <p>Automatiseer repetitieve taken zoals screening, communicatie en planning om je team te laten focussen op strategische activiteiten.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Seamless Integration</h3>
+                    <p>Integreer moeiteloos met je bestaande HR-systemen, jobboards en communicatietools.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Customizable Interface</h3>
+                    <p>Pas het platform aan je specifieke behoeften aan met aanpasbare dashboards en workflows.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile First</h3>
+                    <p>Volledig responsive design zorgt ervoor dat je overal en altijd toegang hebt tot je recruitment data.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <div class="about-content">
+                <div>
+                    <h2 style="font-size: 2.5rem; margin-bottom: 30px; color: var(--primary-blue);">
+                        Waarom FlowMaster Pro?
+                    </h2>
+                    <p style="font-size: 1.25rem; margin-bottom: 25px; color: var(--gray-600);">
+                        In de moderne recruitment wereld heb je meer nodig dan alleen een ATS. FlowMaster Pro is ontwikkeld door recruitment professionals voor recruitment professionals.
+                    </p>
+                    <p style="font-size: 1.25rem; color: var(--gray-600);">
+                        Ons platform combineert de kracht van AI met menselijke intuïtie om je recruitment proces te optimaliseren en betere kandidaten sneller te vinden.
+                    </p>
+                </div>
+                <div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">Sneller Recruiteren</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">92%</div>
+                            <div class="stat-label">Betere Matches</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">60%</div>
+                            <div class="stat-label">Minder Admin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Klaar om je Recruitment te Revolutioneren?</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 30px; opacity: 0.9;">
+                Start vandaag nog met FlowMaster Pro en ervaar het verschil van intelligent recruitment
+            </p>
+            <button class="cta-button" onclick="showAssessment()">
+                <span>🚀</span>
+                <span>Start Gratis Assessment</span>
+            </button>
+        </div>
+    </section>
+
+    <script>
+        function showAssessment() {
+            // Redirect to Typeform assessment
+            window.open('https://form.typeform.com/to/your-typeform-id', '_blank');
+        }
+
+        // Add smooth scrolling for any anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize any additional functionality
+            console.log('FlowMaster Pro loaded successfully');
+            
+            // Track page visit
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    page_title: 'FlowMaster Pro Landing',
+                    page_location: window.location.href
+                });
+            }
+        });
+    </script>
+</body>
+</html>
