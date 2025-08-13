@@ -1108,7 +1108,7 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             resultsSection.scrollIntoView({ behavior: 'smooth' });
         }
 
-        // Typeform embed with privacy validation
+        // Direct Typeform redirect - no popup, no modal
         function openTypeForm() {
             // Check if privacy checkbox is checked
             const privacyCheck = document.getElementById('privacyCheck');
@@ -1123,95 +1123,8 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
                 return;
             }
             
-            // Create fullscreen overlay for Typeform
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.9);
-                z-index: 10000;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            `;
-            
-            // Create container for Typeform
-            const container = document.createElement('div');
-            container.style.cssText = `
-                width: 100%;
-                height: 100%;
-                max-width: none;
-                max-height: none;
-                background: white;
-                position: relative;
-                overflow: hidden;
-            `;
-            
-            // Create close button
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '×';
-            closeBtn.style.cssText = `
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: #FF6B35;
-                color: white;
-                border: none;
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                font-size: 24px;
-                cursor: pointer;
-                z-index: 10001;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-weight: bold;
-            `;
-            
-            closeBtn.onclick = () => {
-                document.body.removeChild(overlay);
-                document.body.style.overflow = 'auto';
-            };
-            
-            // Create Typeform div with updated ID
-            const typeformDiv = document.createElement('div');
-            typeformDiv.setAttribute('data-tf-live', 'z1GroMCc');
-            typeformDiv.style.cssText = 'width:100%;height:100%;';
-            
-            // Assemble the overlay
-            container.appendChild(closeBtn);
-            container.appendChild(typeformDiv);
-            overlay.appendChild(container);
-            document.body.appendChild(overlay);
-            document.body.style.overflow = 'hidden';
-            
-            // Load Typeform script
-            if (!document.querySelector('script[src*="embed.typeform.com/next/embed.js"]')) {
-                const script = document.createElement('script');
-                script.src = '//embed.typeform.com/next/embed.js';
-                script.async = true;
-                document.head.appendChild(script);
-            }
-            
-            // Close on escape key
-            const escapeHandler = (e) => {
-                if (e.key === 'Escape') {
-                    closeBtn.click();
-                    document.removeEventListener('keydown', escapeHandler);
-                }
-            };
-            document.addEventListener('keydown', escapeHandler);
-            
-            // Close on backdrop click
-            overlay.onclick = (e) => {
-                if (e.target === overlay) {
-                    closeBtn.click();
-                }
-            };
+            // Direct redirect to new Typeform - no popup, no embed
+            window.open('https://form.typeform.com/to/z1GroMCc', '_blank');
         }
         // Make function immediately available
         window.openTypeForm = openTypeForm;
