@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vacature Optimalisatie Bevestiging | Kandidatentekort.nl</title>
+    <!-- Cache buster: Force refresh -->
     
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-BFYNLSLX0F"></script>
@@ -149,14 +150,32 @@
 
         }
 
-        /* Verberg eventuele Calendly popups/overlays */
+        /* Verberg ALLE eventuele Calendly popups/overlays/modals */
         .calendly-overlay,
         .calendly-popup,
+        .calendly-modal,
+        .calendly-badge-widget,
+        .calendly-widget,
         [class*="calendly"][class*="overlay"],
         [class*="calendly"][class*="popup"],
-        .calendly-badge-widget {
+        [class*="calendly"][class*="modal"],
+        [data-calendly-url],
+        [role="dialog"],
+        div[style*="position: fixed"],
+        div[style*="z-index: 999"],
+        div[style*="z-index: 9999"] {
             display: none !important;
             visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        /* Force only iframe to show */
+        iframe[src*="calendly.com"] {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
         }
     </style>
 </head>
@@ -228,6 +247,34 @@
 
             // Log voor debugging (kan later worden verwijderd)
             console.log('Ontvangen vacature details:', { naam, email, vraag, regio, functie });
+            
+            // Force remove any Calendly popups/overlays
+            function removeCalendlyPopups() {
+                const selectors = [
+                    '.calendly-overlay',
+                    '.calendly-popup', 
+                    '.calendly-modal',
+                    '.calendly-badge-widget',
+                    '[class*="calendly"][class*="overlay"]',
+                    '[class*="calendly"][class*="popup"]',
+                    '[class*="calendly"][class*="modal"]',
+                    '[role="dialog"]',
+                    'div[style*="position: fixed"][style*="z-index"]'
+                ];
+                
+                selectors.forEach(selector => {
+                    const elements = document.querySelectorAll(selector);
+                    elements.forEach(el => {
+                        if (el && !el.matches('iframe[src*="calendly.com"]')) {
+                            el.remove();
+                        }
+                    });
+                });
+            }
+            
+            // Run immediately and on interval
+            removeCalendlyPopups();
+            setInterval(removeCalendlyPopups, 1000);
         });
 
     </script>
