@@ -383,11 +383,11 @@
 
         /* Privacy Section */
         .privacy-section {
-            margin-top: 24px;
-            padding: 20px;
-            background: var(--gray-50);
+            margin: 20px 0;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
             border-radius: 12px;
-            border: 1px solid var(--gray-200);
+            border: 1px solid #fed7aa;
         }
 
         .privacy-checkbox {
@@ -402,6 +402,10 @@
             position: absolute;
             opacity: 0;
             cursor: pointer;
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            z-index: 10;
         }
 
         .checkmark {
@@ -788,16 +792,6 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
                 <span id="analyzeText">Analyseer Vacature</span>
             </button>
             
-            <!-- Privacy Checkbox for Upload -->
-            <div class="privacy-section">
-                <label class="privacy-checkbox">
-                    <input type="checkbox" id="privacyCheck">
-                    <span class="checkmark"></span>
-                    <span class="privacy-text">
-                        Ik ga akkoord met de <a href="https://recruitin.nl/privacyverklaring-recruitin/" target="_blank" rel="noopener noreferrer">privacyverklaring</a> voor het uploaden van vacature documenten
-                    </span>
-                </label>
-            </div>
         </div>
 
         <!-- Results Section (Hidden by default) -->
@@ -815,6 +809,17 @@ Wij zoeken een ervaren marketing professional voor ons groeiende team...
         <div id="ctaSection" class="cta-section hidden">
             <h3 class="cta-title">🎉 Wil je een volledig geoptimaliseerde versie?</h3>
             <p class="cta-subtitle">Upload je vacature en ontvang binnen 24 uur een professioneel herschreven versie die 40% meer sollicitaties genereert.</p>
+            
+            <!-- Privacy Checkbox -->
+            <div class="privacy-section">
+                <label class="privacy-checkbox">
+                    <input type="checkbox" id="privacyCheck">
+                    <span class="checkmark"></span>
+                    <span class="privacy-text">
+                        Ik ga akkoord met de <a href="https://recruitin.nl/privacyverklaring-recruitin/" target="_blank" rel="noopener noreferrer">privacyverklaring</a> voor het uploaden van vacature documenten
+                    </span>
+                </label>
+            </div>
             
             <button class="cta-btn" id="ctaBtnElement">
                 <span>📄</span>
@@ -1105,15 +1110,30 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
 
         // Direct Typeform redirect with privacy validation
         function openTypeForm() {
+            console.log('openTypeForm called');
+            
             // Check if privacy checkbox is checked
             const privacyCheck = document.getElementById('privacyCheck');
+            console.log('Privacy checkbox found:', privacyCheck);
+            console.log('Checkbox checked:', privacyCheck ? privacyCheck.checked : 'not found');
+            
+            if (!privacyCheck) {
+                showNotification('Privacy checkbox niet gevonden. Herlaad de pagina.', 'error');
+                return;
+            }
+            
             if (!privacyCheck.checked) {
                 showNotification('Je moet eerst akkoord gaan met de privacyverklaring voordat je kunt uploaden.', 'error');
                 return;
             }
             
+            console.log('Opening Typeform...');
+            showNotification('Typeform wordt geopend...', 'success');
+            
             // Direct redirect to Typeform
-            window.open('https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94', '_blank');
+            const typeformUrl = 'https://form.typeform.com/to/01K25SKWYTKZ05DAHER9D52J94';
+            console.log('Typeform URL:', typeformUrl);
+            window.open(typeformUrl, '_blank');
         }
         // Make function immediately available
         window.openTypeForm = openTypeForm;
