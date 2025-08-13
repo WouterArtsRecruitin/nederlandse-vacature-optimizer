@@ -1201,10 +1201,17 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
             content.innerHTML = '';
             
             // Use the new Typeform embed code provided by user
-            content.innerHTML = `
-                <div data-tf-live="01K25SKWYTKZ05DAHER9D52J94"></div>
-                <script src="//embed.typeform.com/next/embed.js"></script>
-            `;
+            const typeformDiv = document.createElement('div');
+            typeformDiv.setAttribute('data-tf-live', '01K25SKWYTKZ05DAHER9D52J94');
+            content.appendChild(typeformDiv);
+            
+            // Load Typeform script if not already loaded
+            if (!document.querySelector('script[src*="embed.typeform.com/next/embed.js"]')) {
+                const script = document.createElement('script');
+                script.src = '//embed.typeform.com/next/embed.js';
+                script.async = true;
+                document.head.appendChild(script);
+            }
             
             // Hide loading after delay
             setTimeout(() => {
