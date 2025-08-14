@@ -1,0 +1,93 @@
+{
+  "zap_name": "Kandidatentekort Vacature Analyse - Automated",
+  "version": "1.0",
+  "created": "2025-01-13",
+  "description": "Automated flow from Google Sheets to Netlify webhook for vacancy analysis",
+  
+  "steps": [
+    {
+      "step": 1,
+      "app": "Google Sheets",
+      "event": "New Spreadsheet Row",
+      "config": {
+        "spreadsheet_url": "https://docs.google.com/spreadsheets/d/1iye7W9h1CG_Vqhlyf4KTVpQ6UOT6GS-bTOmyyqgWr4k/edit?usp=sharing",
+        "worksheet": "Form Responses 1",
+        "trigger_column": "",
+        "polling_interval": "2_minutes"
+      },
+      "expected_columns": [
+        "Tracking ID",
+        "First name", 
+        "Last name",
+        "Phone number",
+        "Email",
+        "Company",
+        "In welke technische sector is uw vacature?",
+        "Wat is de grootte van uw bedrijf?",
+        "Wat is uw optimalisatiedoel voor deze vacature?",
+        "Waar plaats je normaal vacatures?",
+        "Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie."
+      ]
+    },
+    {
+      "step": 2,
+      "app": "Webhooks by Zapier",
+      "event": "POST",
+      "config": {
+        "url": "https://kandidatentekort.nl/.netlify/functions/process-vacancy-analysis",
+        "method": "POST",
+        "payload_type": "form",
+        "headers": {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Accept": "application/json"
+        }
+      },
+      "field_mapping": {
+        "tracking_id": "{{1.Tracking ID}}",
+        "customer_first_name": "{{1.First name}}",
+        "customer_last_name": "{{1.Last name}}",
+        "customer_phone": "{{1.Phone number}}",
+        "customer_email": "{{1.Email}}",
+        "customer_company": "{{1.Company}}",
+        "technical_sector": "{{1.In welke technische sector is uw vacature?}}",
+        "company_size": "{{1.Wat is de grootte van uw bedrijf?}}",
+        "optimization_goal": "{{1.Wat is uw optimalisatiedoel voor deze vacature?}}",
+        "vacancy_platforms": "{{1.Waar plaats je normaal vacatures?}}",
+        "vacancy_text": "{{1.Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie.}}"
+      }
+    }
+  ],
+  
+  "test_data": {
+    "tracking_id": "TF_TEST_001",
+    "first_name": "Test",
+    "last_name": "User", 
+    "phone_number": "0612345678",
+    "email": "test@recruitin.nl",
+    "company": "Test Company BV",
+    "technical_sector": "Software ontwikkeling",
+    "company_size": "10-50 medewerkers",
+    "optimization_goal": "Meer gekwalificeerde kandidaten",
+    "vacancy_platforms": "LinkedIn, Indeed",
+    "vacancy_text": "Wij zoeken een ervaren software developer voor ons team. Fulltime positie met veel groeimogelijkheden in een dynamische omgeving."
+  },
+
+  "validation_rules": {
+    "required_fields": ["Email", "First name", "Last name"],
+    "email_format": "valid_email_address",
+    "phone_format": "dutch_mobile_number"
+  },
+
+  "expected_response": {
+    "status": "success",
+    "processing_id": "VAC_[timestamp]_[random]",
+    "request_summary": {
+      "tracking_id": "string",
+      "customer_email": "string", 
+      "customer_name": "string",
+      "company": "string",
+      "technical_sector": "string",
+      "vacancy_word_count": "number"
+    }
+  }
+}
