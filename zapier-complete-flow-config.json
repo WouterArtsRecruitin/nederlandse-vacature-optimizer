@@ -1,0 +1,158 @@
+{
+  "zap_name": "Kandidatentekort Vacature Analyse - Complete AI Pipeline",
+  "version": "2.0",
+  "created": "2025-01-13",
+  "description": "Complete end-to-end automation from Google Sheets to AI processing with notifications",
+  "status": "production_ready",
+  
+  "workflow_steps": [
+    {
+      "step": 1,
+      "name": "Google Sheets Trigger",
+      "app": "Google Sheets",
+      "event": "New Spreadsheet Row",
+      "config": {
+        "spreadsheet_id": "1iye7W9h1CG_Vqhlyf4KTVpQ6UOT6GS-bTOmyyqgWr4k",
+        "worksheet": "Form Responses 1",
+        "trigger_column": "",
+        "polling_interval": "2_minutes"
+      },
+      "expected_fields": [
+        "Tracking ID", "First name", "Last name", "Phone number", "Email", "Company",
+        "In welke technische sector is uw vacature?", "Wat is de grootte van uw bedrijf?",
+        "Wat is uw optimalisatiedoel voor deze vacature?", "Waar plaats je normaal vacatures?",
+        "Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie."
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Initial Webhook Processing",
+      "app": "Webhooks by Zapier",
+      "event": "POST",
+      "config": {
+        "url": "https://kandidatentekort.nl/.netlify/functions/process-vacancy-analysis",
+        "method": "POST",
+        "payload_type": "form"
+      },
+      "field_mapping": {
+        "tracking_id": "{{1.Tracking ID}}",
+        "Email": "{{1.Email}}",
+        "customer_email": "{{1.Email}}",
+        "first_name": "{{1.First name}}",
+        "last_name": "{{1.Last name}}",
+        "phone_number": "{{1.Phone number}}",
+        "company": "{{1.Company}}",
+        "technical_sector": "{{1.In welke technische sector is uw vacature?}}",
+        "company_size": "{{1.Wat is de grootte van uw bedrijf?}}",
+        "optimization_goal": "{{1.Wat is uw optimalisatiedoel voor deze vacature?}}",
+        "vacancy_platforms": "{{1.Waar plaats je normaal vacatures?}}",
+        "vacancy_text": "{{1.Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie.}}"
+      }
+    },
+    {
+      "step": 3,
+      "name": "Processing Delay",
+      "app": "Delay by Zapier",
+      "event": "Delay For",
+      "config": {
+        "delay_for": "30 seconds",
+        "reason": "Allow time for Claude AI processing and email delivery"
+      }
+    },
+    {
+      "step": 4,
+      "name": "Confirmation Email",
+      "app": "Email by Zapier",
+      "event": "Send Outbound Email",
+      "config": {
+        "to": "{{1.Email}}",
+        "from": "artsrecruitin@gmail.com",
+        "subject": "✅ Je Vacature Analyse is gestart - Bevestiging",
+        "body_type": "html",
+        "template": "confirmation_email_template"
+      }
+    },
+    {
+      "step": 5,
+      "name": "CRM Logging",
+      "app": "Google Sheets",
+      "event": "Create Spreadsheet Row",
+      "config": {
+        "spreadsheet_name": "Vacature Analyses - CRM Log",
+        "worksheet": "Processing Log"
+      },
+      "field_mapping": {
+        "Date": "{{zap_meta_human_now}}",
+        "Processing ID": "{{2.processing_id}}",
+        "Customer Email": "{{1.Email}}",
+        "Customer Name": "{{1.First name}} {{1.Last name}}",
+        "Company": "{{1.Company}}",
+        "Sector": "{{1.In welke technische sector is uw vacature?}}",
+        "Goal": "{{1.Wat is uw optimalisatiedoel voor deze vacature?}}",
+        "Status": "Processing Started",
+        "Automation": "Success",
+        "Tracking ID": "{{1.Tracking ID}}"
+      }
+    },
+    {
+      "step": 6,
+      "name": "Team Notification",
+      "app": "Slack",
+      "event": "Send Channel Message",
+      "config": {
+        "channel": "#recruitment-analytics",
+        "bot_name": "Zapier"
+      },
+      "message_template": "🎯 **Nieuwe Vacature Analyse**\\n\\n**Klant:** {{1.First name}} {{1.Last name}} ({{1.Company}})\\n**Email:** {{1.Email}}\\n**Sector:** {{1.In welke technische sector is uw vacature?}}\\n**Processing ID:** {{2.processing_id}}\\n**Status:** ✅ AI Processing Started"
+    }
+  ],
+  
+  "test_scenarios": [
+    {
+      "name": "Complete Flow Test",
+      "description": "End-to-end test with real data",
+      "test_data": {
+        "tracking_id": "TF_TEST_COMPLETE",
+        "first_name": "Complete",
+        "last_name": "Test",
+        "email": "complete.test@recruitin.nl",
+        "company": "Test Automation BV",
+        "technical_sector": "Software Development",
+        "company_size": "10-50 medewerkers",
+        "optimization_goal": "More qualified candidates",
+        "vacancy_platforms": "LinkedIn, Indeed",
+        "vacancy_text": "We are looking for a Senior Software Developer to join our growing team. You will work with modern technologies including React, Node.js, and cloud platforms. Great growth opportunities in a dynamic environment."
+      },
+      "expected_results": {
+        "step_1": "Trigger successful",
+        "step_2": "Webhook returns processing_id",
+        "step_3": "Delay completes",
+        "step_4": "Confirmation email sent",
+        "step_5": "CRM log entry created",
+        "step_6": "Slack notification sent",
+        "ai_email": "Claude AI results email within 5 minutes"
+      }
+    }
+  ],
+  
+  "monitoring": {
+    "success_criteria": [
+      "All 6 steps complete successfully",
+      "Customer receives 2 emails (confirmation + AI results)",
+      "CRM log entry created",
+      "Team notification sent"
+    ],
+    "failure_handling": [
+      "Check Netlify function logs",
+      "Verify environment variables",
+      "Test API connectivity",
+      "Review Zapier step errors"
+    ]
+  },
+  
+  "performance_metrics": {
+    "expected_completion_time": "5 minutes",
+    "success_rate_target": "95%+",
+    "customer_satisfaction": "High (automated professional experience)"
+  }
+}
