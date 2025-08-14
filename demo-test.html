@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Button Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        textarea { width: 100%; height: 300px; margin: 10px 0; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Demo Button Test</h1>
+    
+    <div class="status" id="status">Status: Ready for test</div>
+    
+    <button onclick="loadDemoVacature()">🎯 Test Demo Button</button>
+    
+    <div>
+        <label for="vacatureInput">Vacature Input:</label>
+        <textarea id="vacatureInput" placeholder="Demo content will appear here..."></textarea>
+        <div>Characters: <span id="charCount">0</span></div>
+    </div>
+
+    <script>
+        const vacatureInput = document.getElementById('vacatureInput');
+        const charCount = document.getElementById('charCount');
+        const status = document.getElementById('status');
+
+        function updateStatus(message, type = 'success') {
+            status.innerHTML = `${new Date().toLocaleTimeString()}: ${message}`;
+            status.className = `status ${type}`;
+            console.log(message);
+        }
+
+        function showNotification(message, type) {
+            updateStatus(`Notification: ${message}`, type);
+        }
+
+        // Demo vacature loader (copied from main file)
+        function loadDemoVacature() {
+            try {
+                updateStatus('Loading demo vacature...', 'info');
+                
+                const demoText = `Senior Marketing Manager - TechStart Amsterdam
+
+Ben jij een ervaren marketing professional die klaar is voor de volgende stap? TechStart, een snelgroeiende tech scale-up in Amsterdam, zoekt een Senior Marketing Manager om ons team te versterken!
+
+Over de functie:
+Als Senior Marketing Manager ben je verantwoordelijk voor het ontwikkelen en uitvoeren van onze marketingstrategie. Je werkt nauw samen met het sales team en rapporteert direct aan de CMO.
+
+Wat ga je doen:
+• Ontwikkelen van marketingcampagnes voor B2B doelgroepen
+• Beheren van ons marketing budget (€500K+)
+• Leiden van een team van 3 marketing specialisten  
+• Samenwerken met externe agencies
+• Analyseren van marketing performance en ROI
+
+Wat wij zoeken:
+• Minimaal 5 jaar ervaring in B2B marketing
+• HBO/WO diploma Marketing, Communicatie of gerelateerd
+• Ervaring met marketing automation tools (HubSpot)
+• Sterke analytische vaardigheden
+• Uitstekende communicatie in Nederlands en Engels
+
+Wat wij bieden:
+• Salaris tussen €65.000 - €80.000 per jaar
+• 25 vakantiedagen + 5 ADV dagen
+• Flexibel thuiswerken (2-3 dagen kantoor)
+• Budget voor persoonlijke ontwikkeling
+• Laptop en telefoon van de zaak
+• Uitstekende pensioenregeling
+
+Over TechStart:
+TechStart is een innovatief softwarebedrijf dat AI-oplossingen ontwikkelt voor de logistieke sector. We werken met grote klanten zoals DHL en PostNL. Ons team van 45 mensen werkt vanuit ons moderne kantoor in Amsterdam Noord.
+
+Interesse?
+Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer informatie. Voor vragen kun je contact opnemen met Sarah van der Berg, HR Manager.`;
+
+                vacatureInput.value = demoText;
+                charCount.textContent = demoText.length;
+                
+                // Scroll to input
+                vacatureInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Show notification
+                showNotification('Demo vacature geladen! Klik nu op "Analyseer Vacature" om te zien hoe de tool werkt.', 'success');
+                
+                updateStatus('✅ Demo loaded successfully! Text length: ' + demoText.length, 'success');
+                
+            } catch (error) {
+                updateStatus('❌ Error loading demo: ' + error.message, 'error');
+                console.error('Demo load error:', error);
+            }
+        }
+
+        // Character counter
+        vacatureInput.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+
+        console.log('🧪 Demo test page loaded');
+        console.log('Ready to test loadDemoVacature function');
+    </script>
+</body>
+</html>

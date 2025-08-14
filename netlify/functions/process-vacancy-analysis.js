@@ -124,12 +124,59 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // STEP 3: Trigger Claude AI Processing automatically
+    console.log('Triggering Claude AI processing for:', processingId);
+    
+    try {
+      // Prepare data for Claude processing
+      const claudePayload = {
+        processing_id: processingId,
+        customer_email: requestData.customer?.email || requestData.customer_email || requestData.Email,
+        company_name: requestData.customer?.company || requestData.company,
+        job_title: 'Vacature optimalisatie', // default
+        vacancy_text: requestData.vacancy?.text || requestData.vacancy_text,
+        technical_sector: requestData.business?.technical_sector || requestData.technical_sector,
+        optimization_goal: requestData.business?.optimization_goal || requestData.optimization_goal
+      };
+
+      // Call Claude processing function
+      const claudeResponse = await fetch('https://kandidatentekort.nl/.netlify/functions/claude-vacature-processing', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(claudePayload)
+      });
+
+      const claudeResult = await claudeResponse.json();
+      console.log('Claude processing result:', claudeResult.status);
+
+      // If Claude processing succeeds, trigger email delivery
+      if (claudeResult.status === 'success') {
+        setTimeout(async () => {
+          try {
+            const emailResponse = await fetch('https://kandidatentekort.nl/.netlify/functions/email-delivery', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(claudeResult)
+            });
+            const emailResult = await emailResponse.json();
+            console.log('Email delivery result:', emailResult.status);
+          } catch (emailError) {
+            console.error('Email delivery failed:', emailError);
+          }
+        }, 2000); // 2 second delay for email
+      }
+
+    } catch (processingError) {
+      console.error('Claude processing failed:', processingError);
+    }
+
     // Process the vacancy analysis request
     const response = {
       status: 'success',
-      message: 'Vacancy analysis request received and queued for processing',
+      message: 'Vacancy analysis request received and processing started',
       processing_id: processingId,
       timestamp: new Date().toISOString(),
+      automation_triggered: true,
       
       // Request summary with Typeform data
       request_summary: {

@@ -46,7 +46,9 @@
     "npm": ">=8.0.0"
   },
   "dependencies": {
-    "@netlify/functions": "^2.4.1"
+    "@netlify/functions": "^2.4.1",
+    "@anthropic-ai/sdk": "^0.24.3",
+    "nodemailer": "^6.9.13"
   },
   "devDependencies": {
     "netlify-cli": "^17.10.1",
