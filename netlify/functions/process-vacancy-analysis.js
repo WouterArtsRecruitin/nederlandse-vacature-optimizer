@@ -86,21 +86,32 @@ exports.handler = async (event, context) => {
     const processingId = requestData.processing_id || 
       `VAC_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
+    // Debug mode - show all received data
+    console.log('DEBUG - Full request body:', event.body);
+    console.log('DEBUG - Content type:', contentType);
+    console.log('DEBUG - Parsed data:', JSON.stringify(requestData, null, 2));
+    
     // Validate required fields - check for email from Typeform
     const hasCustomerData = requestData.customer?.email || 
                            requestData.customer_email ||
                            requestData.email;
     
     if (!hasCustomerData) {
+      // Return detailed debug info instead of error
       return {
-        statusCode: 400,
+        statusCode: 200,
         headers,
         body: JSON.stringify({
-          error: 'Missing customer email',
-          message: 'Customer email is required for processing',
-          received_keys: Object.keys(requestData),
-          debug_body: event.body?.substring(0, 300) + '...',
-          content_type: contentType
+          status: 'debug_mode',
+          message: 'No email found - showing debug info',
+          debug: {
+            content_type: contentType,
+            raw_body: event.body,
+            parsed_data: requestData,
+            received_keys: Object.keys(requestData),
+            form_params: contentType.includes('form-urlencoded') ? 
+              Object.fromEntries(new URLSearchParams(event.body || '')) : null
+          }
         })
       };
     }
