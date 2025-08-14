@@ -47,20 +47,30 @@ exports.handler = async (event, context) => {
         };
       }
     } else if (contentType.includes('application/x-www-form-urlencoded')) {
-      // Parse form data
+      // Parse form data with correct Typeform field names
       const params = new URLSearchParams(event.body || '');
       requestData = {
+        tracking: {
+          id: params.get('tracking_id')
+        },
         customer: {
+          first_name: params.get('customer_first_name'),
+          last_name: params.get('customer_last_name'),
           email: params.get('customer_email'),
-          name: params.get('customer_name'), 
-          company: params.get('customer_company'),
-          phone: params.get('customer_phone')
+          phone: params.get('customer_phone'),
+          company: params.get('customer_company')
+        },
+        business: {
+          technical_sector: params.get('technical_sector'),
+          company_size: params.get('company_size'),
+          optimization_goal: params.get('optimization_goal'),
+          vacancy_platforms: params.get('vacancy_platforms')
         },
         vacancy: {
-          title: params.get('vacancy_title'),
-          description: params.get('vacancy_description'),
-          region: params.get('vacancy_region'),
-          sector: params.get('vacancy_sector')
+          text: params.get('vacancy_text'),
+          description: params.get('vacancy_text'), // fallback
+          title: 'Vacature optimalisatie', // default
+          sector: params.get('technical_sector')
         }
       };
     } else {
@@ -76,8 +86,10 @@ exports.handler = async (event, context) => {
     const processingId = requestData.processing_id || 
       `VAC_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    // Validate required fields - more flexible validation
-    const hasCustomerData = requestData.customer?.email || requestData.customer_email;
+    // Validate required fields - check for email from Typeform
+    const hasCustomerData = requestData.customer?.email || 
+                           requestData.customer_email ||
+                           requestData.email;
     
     if (!hasCustomerData) {
       return {
@@ -87,7 +99,8 @@ exports.handler = async (event, context) => {
           error: 'Missing customer email',
           message: 'Customer email is required for processing',
           received_keys: Object.keys(requestData),
-          debug_body: event.body?.substring(0, 200) + '...'
+          debug_body: event.body?.substring(0, 300) + '...',
+          content_type: contentType
         })
       };
     }
@@ -99,11 +112,17 @@ exports.handler = async (event, context) => {
       processing_id: processingId,
       timestamp: new Date().toISOString(),
       
-      // Request summary
+      // Request summary with Typeform data
       request_summary: {
+        tracking_id: requestData.tracking?.id || 'not_provided',
         customer_email: requestData.customer?.email || 'not_provided',
-        vacancy_title: requestData.vacancy?.title || requestData.vacancy?.functietitel || 'not_provided',
-        word_count: requestData.vacancy?.word_count || 0,
+        customer_name: `${requestData.customer?.first_name || ''} ${requestData.customer?.last_name || ''}`.trim() || 'not_provided',
+        company: requestData.customer?.company || 'not_provided',
+        technical_sector: requestData.business?.technical_sector || 'not_provided',
+        company_size: requestData.business?.company_size || 'not_provided',
+        optimization_goal: requestData.business?.optimization_goal || 'not_provided',
+        vacancy_platforms: requestData.business?.vacancy_platforms || 'not_provided',
+        vacancy_word_count: requestData.vacancy?.text ? requestData.vacancy.text.split(/\s+/).length : 0,
         priority: requestData.processing?.priority || 'normal'
       },
       
