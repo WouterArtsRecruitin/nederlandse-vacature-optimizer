@@ -47,8 +47,11 @@ exports.handler = async (event, context) => {
         };
       }
     } else if (contentType.includes('application/x-www-form-urlencoded')) {
-      // Parse form data with correct Typeform field names
+      // Parse form data - get all parameters first
       const params = new URLSearchParams(event.body || '');
+      const allParams = Object.fromEntries(params);
+      
+      // Create structured data with fallbacks for direct field access
       requestData = {
         tracking: {
           id: params.get('tracking_id')
@@ -71,7 +74,9 @@ exports.handler = async (event, context) => {
           description: params.get('vacancy_text'), // fallback
           title: 'Vacature optimalisatie', // default
           sector: params.get('technical_sector')
-        }
+        },
+        // Add direct access to all form fields
+        ...allParams
       };
     } else {
       // Try to parse as JSON anyway
@@ -91,10 +96,13 @@ exports.handler = async (event, context) => {
     console.log('DEBUG - Content type:', contentType);
     console.log('DEBUG - Parsed data:', JSON.stringify(requestData, null, 2));
     
-    // Validate required fields - check for email from Typeform
+    // Validate required fields - check multiple email field variations
     const hasCustomerData = requestData.customer?.email || 
                            requestData.customer_email ||
-                           requestData.email;
+                           requestData.email ||
+                           requestData.Email ||
+                           requestData['customer[email]'] ||
+                           requestData['Email'];
     
     if (!hasCustomerData) {
       // Return detailed debug info instead of error
