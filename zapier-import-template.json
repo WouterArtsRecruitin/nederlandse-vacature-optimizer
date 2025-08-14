@@ -1,0 +1,90 @@
+{
+  "version": "1.0.0",
+  "title": "Kandidatentekort Vacature Analyse - Complete AI Pipeline",
+  "description": "Complete automated workflow from Google Sheets to AI processing with professional email delivery",
+  "trigger": {
+    "app": "google-sheets",
+    "event": "new-spreadsheet-row"
+  },
+  "steps": [
+    {
+      "id": "trigger",
+      "app": "google-sheets",
+      "event": "new-spreadsheet-row",
+      "title": "New Spreadsheet Row in Google Sheets",
+      "params": {
+        "spreadsheet": "{{GOOGLE_SHEETS_ID}}",
+        "worksheet": "Form Responses 1"
+      }
+    },
+    {
+      "id": "webhook",
+      "app": "webhook", 
+      "event": "post",
+      "title": "POST to Webhook",
+      "params": {
+        "url": "https://kandidatentekort.nl/.netlify/functions/process-vacancy-analysis",
+        "method": "POST",
+        "data": {
+          "tracking_id": "{{trigger.Tracking ID}}",
+          "Email": "{{trigger.Email}}",
+          "customer_email": "{{trigger.Email}}",
+          "first_name": "{{trigger.First name}}",
+          "last_name": "{{trigger.Last name}}",
+          "phone_number": "{{trigger.Phone number}}",
+          "company": "{{trigger.Company}}",
+          "technical_sector": "{{trigger.In welke technische sector is uw vacature?}}",
+          "company_size": "{{trigger.Wat is de grootte van uw bedrijf?}}",
+          "optimization_goal": "{{trigger.Wat is uw optimalisatiedoel voor deze vacature?}}",
+          "vacancy_platforms": "{{trigger.Waar plaats je normaal vacatures?}}",
+          "vacancy_text": "{{trigger.Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie.}}"
+        }
+      }
+    },
+    {
+      "id": "delay",
+      "app": "delay",
+      "event": "delay-for",
+      "title": "Delay For 30 Seconds",
+      "params": {
+        "delay_for": 30,
+        "unit": "seconds"
+      }
+    },
+    {
+      "id": "email",
+      "app": "email",
+      "event": "send-outbound-email", 
+      "title": "Send Confirmation Email",
+      "params": {
+        "to": "{{trigger.Email}}",
+        "from": "artsrecruitin@gmail.com",
+        "subject": "✅ Je Vacature Analyse is gestart - Bevestiging",
+        "body_type": "html",
+        "body": "<!DOCTYPE html><html><head><style>body{font-family:Arial,sans-serif;line-height:1.6;color:#333}.container{max-width:600px;margin:0 auto;padding:20px}.header{background:#ff6b35;color:white;padding:20px;text-align:center;border-radius:10px 10px 0 0}.content{background:#f9fafb;padding:20px;border-radius:0 0 10px 10px}.highlight{background:#fff3cd;padding:15px;border-radius:8px;margin:15px 0;border-left:4px solid #ff6b35}</style></head><body><div class='container'><div class='header'><h1>🎯 Vacature Analyse Gestart!</h1><p>Bevestiging voor {{trigger.Company}}</p></div><div class='content'><p>Beste {{trigger.First name}} {{trigger.Last name}},</p><div class='highlight'><h3>✅ Je aanvraag is ontvangen!</h3><ul><li><strong>Bedrijf:</strong> {{trigger.Company}}</li><li><strong>Sector:</strong> {{trigger.In welke technische sector is uw vacature?}}</li><li><strong>Doel:</strong> {{trigger.Wat is uw optimalisatiedoel voor deze vacature?}}</li></ul></div><p>🤖 <strong>Onze AI is nu aan het werk:</strong></p><ul><li>Analyse van je vacaturetekst</li><li>Optimalisatie voor {{trigger.In welke technische sector is uw vacature?}}</li><li>Performance score berekening</li><li>Verbetersuggesties generatie</li></ul><div class='highlight'><p><strong>📧 Je ontvangt binnen 5 minuten:</strong></p><ul><li>Volledig geoptimaliseerde vacaturetekst</li><li>Performance score (0-100)</li><li>Top 5 concrete verbeteringen</li><li>Link voor gratis adviesgesprek</li></ul></div><p>Heb je vragen? Reageer op deze email!</p><p>Groeten,<br><strong>Recruitin Intelligence Team</strong></p></div></div></body></html>"
+      }
+    },
+    {
+      "id": "sheets_log",
+      "app": "google-sheets",
+      "event": "create-spreadsheet-row",
+      "title": "Log to CRM Sheet", 
+      "params": {
+        "spreadsheet": "Vacature Analyses - CRM Log",
+        "worksheet": "Processing Log",
+        "values": [
+          "{{zap_meta_human_now}}",
+          "{{webhook.processing_id}}",
+          "{{trigger.Email}}",
+          "{{trigger.First name}} {{trigger.Last name}}",
+          "{{trigger.Company}}",
+          "{{trigger.In welke technische sector is uw vacature?}}",
+          "{{trigger.Wat is uw optimalisatiedoel voor deze vacature?}}",
+          "Processing Started",
+          "Success",
+          "{{trigger.Tracking ID}}"
+        ]
+      }
+    }
+  ]
+}
