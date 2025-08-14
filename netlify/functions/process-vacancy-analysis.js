@@ -1,3 +1,72 @@
+// Parse Typeform webhook data
+function parseTypeformData(typeformData) {
+  const answers = typeformData.form_response.answers;
+  const parsed = {
+    typeform_id: typeformData.form_response.form_id,
+    typeform_token: typeformData.form_response.token,
+    submitted_at: typeformData.form_response.submitted_at
+  };
+
+  // Map Typeform answers to our expected fields
+  answers.forEach(answer => {
+    const fieldRef = answer.field.ref;
+    const fieldId = answer.field.id;
+    const fieldTitle = answer.field.title || '';
+    
+    // Get the value from different answer types
+    let value = '';
+    if (answer.email) value = answer.email;
+    else if (answer.text) value = answer.text;
+    else if (answer.choice && answer.choice.label) value = answer.choice.label;
+    else if (answer.choices) value = answer.choices.map(c => c.label).join(', ');
+    else if (answer.number) value = answer.number.toString();
+    else if (answer.boolean !== undefined) value = answer.boolean.toString();
+    else if (answer.file_url) value = answer.file_url;
+    
+    // Map common field patterns to our standard fields
+    if (fieldRef.includes('email') || fieldTitle.toLowerCase().includes('email')) {
+      parsed.Email = value;
+      parsed.email = value;
+    } else if (fieldRef.includes('first_name') || fieldTitle.toLowerCase().includes('voornaam') || fieldTitle.toLowerCase().includes('first name')) {
+      parsed['First name'] = value;
+      parsed.first_name = value;
+    } else if (fieldRef.includes('last_name') || fieldTitle.toLowerCase().includes('achternaam') || fieldTitle.toLowerCase().includes('last name')) {
+      parsed['Last name'] = value;
+      parsed.last_name = value;
+    } else if (fieldRef.includes('company') || fieldTitle.toLowerCase().includes('bedrijf') || fieldTitle.toLowerCase().includes('company')) {
+      parsed.Company = value;
+      parsed.company = value;
+    } else if (fieldRef.includes('phone') || fieldTitle.toLowerCase().includes('telefoon') || fieldTitle.toLowerCase().includes('phone')) {
+      parsed['Phone number'] = value;
+      parsed.phone_number = value;
+    } else if (fieldTitle.toLowerCase().includes('technische sector')) {
+      parsed['In welke technische sector is uw vacature?'] = value;
+      parsed.technical_sector = value;
+    } else if (fieldTitle.toLowerCase().includes('grootte') && fieldTitle.toLowerCase().includes('bedrijf')) {
+      parsed['Wat is de grootte van uw bedrijf?'] = value;
+      parsed.company_size = value;
+    } else if (fieldTitle.toLowerCase().includes('optimalisatiedoel')) {
+      parsed['Wat is uw optimalisatiedoel voor deze vacature?'] = value;
+      parsed.optimization_goal = value;
+    } else if (fieldTitle.toLowerCase().includes('plaats') && fieldTitle.toLowerCase().includes('vacature')) {
+      parsed['Waar plaats je normaal vacatures?'] = value;
+      parsed.vacancy_platforms = value;
+    } else if (fieldTitle.toLowerCase().includes('vacaturetekst') || fieldTitle.toLowerCase().includes('upload')) {
+      parsed['Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie.'] = value;
+      parsed.vacancy_text = value;
+    } else if (fieldRef.includes('tracking') || fieldTitle.toLowerCase().includes('tracking')) {
+      parsed['Tracking ID'] = value;
+      parsed.tracking_id = value;
+    }
+    
+    // Also store with original field reference for debugging
+    parsed[fieldRef] = value;
+    parsed[fieldId] = value;
+  });
+  
+  return parsed;
+}
+
 exports.handler = async (event, context) => {
   // Set CORS headers
   const headers = {
@@ -35,7 +104,15 @@ exports.handler = async (event, context) => {
     
     if (contentType.includes('application/json')) {
       try {
-        requestData = JSON.parse(event.body || '{}');
+        const rawData = JSON.parse(event.body || '{}');
+        
+        // Check if this is Typeform data
+        if (rawData.form_response && rawData.form_response.answers) {
+          console.log('Processing Typeform webhook data...');
+          requestData = parseTypeformData(rawData);
+        } else {
+          requestData = rawData;
+        }
       } catch (parseError) {
         return {
           statusCode: 400,
@@ -96,78 +173,150 @@ exports.handler = async (event, context) => {
     console.log('DEBUG - Content type:', contentType);
     console.log('DEBUG - Parsed data:', JSON.stringify(requestData, null, 2));
     
-    // Validate required fields - check multiple email field variations
-    const hasCustomerData = requestData.customer?.email || 
-                           requestData.customer_email ||
-                           requestData.email ||
-                           requestData.Email ||
-                           requestData['customer[email]'] ||
-                           requestData['Email'];
-    
-    if (!hasCustomerData) {
-      // Return detailed debug info instead of error
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          status: 'debug_mode',
-          message: 'No email found - showing debug info',
-          debug: {
-            content_type: contentType,
-            raw_body: event.body,
-            parsed_data: requestData,
-            received_keys: Object.keys(requestData),
-            form_params: contentType.includes('form-urlencoded') ? 
-              Object.fromEntries(new URLSearchParams(event.body || '')) : null
-          }
-        })
-      };
-    }
+    // Skip validation for now - proceed with automation pipeline
+    console.log('Processing automation pipeline with received data...');
 
-    // STEP 3: Trigger Claude AI Processing automatically
-    console.log('Triggering Claude AI processing for:', processingId);
+    // COMPLETE AUTOMATION PIPELINE
+    console.log('Starting complete automation pipeline for:', processingId);
     
+    // Extract customer data from all possible field variations
+    const customerEmail = requestData.customer?.email || 
+                         requestData.customer_email || 
+                         requestData.Email || 
+                         requestData.email ||
+                         requestData['Email'];
+    
+    const customerName = {
+      first: requestData.customer?.first_name || 
+             requestData.first_name || 
+             requestData['first_name'] ||
+             requestData['First name'] || 
+             'Klant',
+      last: requestData.customer?.last_name || 
+            requestData.last_name || 
+            requestData['last_name'] ||
+            requestData['Last name'] || 
+            ''
+    };
+
+    const companyName = requestData.customer?.company || 
+                       requestData.company || 
+                       requestData.Company ||
+                       requestData['Company'] || 
+                       'Uw bedrijf';
+
+    const technicalSector = requestData.business?.technical_sector || 
+                           requestData.technical_sector ||
+                           requestData['In welke technische sector is uw vacature?'] ||
+                           'Technology';
+
+    const optimizationGoal = requestData.business?.optimization_goal || 
+                            requestData.optimization_goal ||
+                            requestData['Wat is uw optimalisatiedoel voor deze vacature?'] ||
+                            'Performance verbetering';
+
+    const vacancyText = requestData.vacancy?.text || 
+                       requestData.vacancy_text ||
+                       requestData['Upload je vacaturetekst en ontvang binnen 24 uur een volledige geoptimaliseerde versie.'] ||
+                       '';
+
     try {
-      // Prepare data for Claude processing
+      // STEP 1: Immediate confirmation email (no delay needed)
+      console.log('Step 1: Sending immediate confirmation email...');
+      const confirmationResponse = await fetch('https://kandidatentekort.nl/.netlify/functions/send-confirmation-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          processing_id: processingId,
+          customer_email: customerEmail,
+          customer_first_name: customerName.first,
+          customer_last_name: customerName.last,
+          company_name: companyName,
+          technical_sector: technicalSector,
+          optimization_goal: optimizationGoal,
+          email_type: 'confirmation'
+        })
+      });
+
+      const confirmationResult = await confirmationResponse.json();
+      console.log('Confirmation email result:', confirmationResult.status);
+
+      // STEP 2: Claude AI Processing (async)
+      console.log('Step 2: Triggering Claude AI processing...');
       const claudePayload = {
         processing_id: processingId,
-        customer_email: requestData.customer?.email || requestData.customer_email || requestData.Email,
-        company_name: requestData.customer?.company || requestData.company,
-        job_title: 'Vacature optimalisatie', // default
-        vacancy_text: requestData.vacancy?.text || requestData.vacancy_text,
-        technical_sector: requestData.business?.technical_sector || requestData.technical_sector,
-        optimization_goal: requestData.business?.optimization_goal || requestData.optimization_goal
+        customer_email: customerEmail,
+        company_name: companyName,
+        job_title: 'Vacature optimalisatie',
+        vacancy_text: vacancyText,
+        technical_sector: technicalSector,
+        optimization_goal: optimizationGoal
       };
 
-      // Call Claude processing function
-      const claudeResponse = await fetch('https://kandidatentekort.nl/.netlify/functions/claude-vacature-processing', {
+      // Don't wait for Claude processing - trigger async
+      fetch('https://kandidatentekort.nl/.netlify/functions/claude-vacature-processing', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(claudePayload)
+      }).then(async (claudeResponse) => {
+        try {
+          const claudeResult = await claudeResponse.json();
+          console.log('Claude processing completed:', claudeResult.status);
+          
+          // STEP 3: Results email after AI processing completes
+          if (claudeResult.status === 'success') {
+            setTimeout(async () => {
+              try {
+                const resultsEmailResponse = await fetch('https://kandidatentekort.nl/.netlify/functions/email-delivery', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    ...claudeResult,
+                    email_type: 'results'
+                  })
+                });
+                const resultsEmailResult = await resultsEmailResponse.json();
+                console.log('Results email delivered:', resultsEmailResult.status);
+              } catch (emailError) {
+                console.error('Results email failed:', emailError);
+              }
+            }, 5000); // 5 second delay for results email
+          }
+        } catch (claudeError) {
+          console.error('Claude processing error:', claudeError);
+        }
+      }).catch(error => {
+        console.error('Claude processing failed to trigger:', error);
       });
 
-      const claudeResult = await claudeResponse.json();
-      console.log('Claude processing result:', claudeResult.status);
+      // STEP 4: CRM Logging (immediate)
+      console.log('Step 3: Logging to CRM...');
+      const crmData = {
+        timestamp: new Date().toISOString(),
+        processing_id: processingId,
+        customer_email: customerEmail,
+        customer_name: `${customerName.first} ${customerName.last}`.trim(),
+        company_name: companyName,
+        technical_sector: technicalSector,
+        optimization_goal: optimizationGoal,
+        status: 'Processing Started',
+        automation_status: 'Success',
+        tracking_id: requestData.tracking?.id || requestData.tracking_id || requestData['Tracking ID'] || processingId
+      };
 
-      // If Claude processing succeeds, trigger email delivery
-      if (claudeResult.status === 'success') {
-        setTimeout(async () => {
-          try {
-            const emailResponse = await fetch('https://kandidatentekort.nl/.netlify/functions/email-delivery', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(claudeResult)
-            });
-            const emailResult = await emailResponse.json();
-            console.log('Email delivery result:', emailResult.status);
-          } catch (emailError) {
-            console.error('Email delivery failed:', emailError);
-          }
-        }, 2000); // 2 second delay for email
-      }
+      fetch('https://kandidatentekort.nl/.netlify/functions/crm-logging', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(crmData)
+      }).then(async (crmResponse) => {
+        const crmResult = await crmResponse.json();
+        console.log('CRM logging result:', crmResult.status);
+      }).catch(crmError => {
+        console.error('CRM logging failed:', crmError);
+      });
 
-    } catch (processingError) {
-      console.error('Claude processing failed:', processingError);
+    } catch (automationError) {
+      console.error('Automation pipeline error:', automationError);
     }
 
     // Process the vacancy analysis request
