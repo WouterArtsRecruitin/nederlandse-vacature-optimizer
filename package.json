@@ -48,6 +48,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.24.3",
     "@netlify/functions": "^2.4.1",
+    "formidable": "^3.5.1",
     "nodemailer": "^6.10.1"
   },
   "devDependencies": {
