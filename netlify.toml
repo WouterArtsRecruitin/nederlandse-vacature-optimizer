@@ -1,6 +1,6 @@
 [build]
   publish = "."
-  command = "echo 'Nederlandse Vacature Optimizer Ready'"
+  command = "echo 'Static site ready - no build needed'"
   functions = "netlify/functions"
 
 [build.environment]
@@ -17,16 +17,16 @@
     Permissions-Policy = "geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), microphone=(self), camera=(self)"
     Content-Security-Policy = """
       default-src 'self';
-      script-src 'self' 'unsafe-inline' *.typeform.com embed.typeform.com *.googletagmanager.com *.google-analytics.com;
-      style-src 'self' 'unsafe-inline' fonts.googleapis.com *.typeform.com;
-      font-src 'self' fonts.gstatic.com *.typeform.com;
-      img-src 'self' data: https: *.typeform.com;
-      frame-src *.typeform.com form.typeform.com https:;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' *.typeform.com embed.typeform.com form.jotform.com *.jotform.com *.googletagmanager.com *.google-analytics.com cdn.jsdelivr.net;
+      style-src 'self' 'unsafe-inline' fonts.googleapis.com *.typeform.com *.jotform.com;
+      font-src 'self' fonts.gstatic.com *.typeform.com *.jotform.com data:;
+      img-src 'self' data: https: *.typeform.com *.jotform.com;
+      frame-src *.typeform.com form.typeform.com form.jotform.com *.jotform.com https:;
       frame-ancestors 'self';
-      connect-src 'self' api.anthropic.com api.pdfmonkey.io *.typeform.com *.google-analytics.com *.googletagmanager.com https:;
+      connect-src 'self' api.anthropic.com api.pdfmonkey.io *.typeform.com *.jotform.com *.google-analytics.com *.googletagmanager.com https:;
       object-src 'none';
       base-uri 'self';
-      form-action 'self' *.typeform.com https:;
+      form-action 'self' *.typeform.com *.jotform.com https:;
     """
 
 # Performance Headers
