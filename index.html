@@ -1127,111 +1127,289 @@ Stuur je CV en motivatie naar jobs@techstart.nl of bel 020-1234567 voor meer inf
         // Make function immediately available
         window.analyzeVacature = analyzeVacature;
 
-        // Generate analysis results
+        // Generate analysis results - IMPROVED CRITICAL ALGORITHM
         function generateAnalysis(text) {
-            const wordCount = text.split(' ').length;
-            const hasCompany = text.toLowerCase().includes('wij') || text.toLowerCase().includes('bedrijf');
-            const hasSalary = text.match(/€|salaris|loon/i);
-            const hasLocation = text.match(/amsterdam|rotterdam|den haag|utrecht|eindhoven|groningen|tilburg/i);
-            const hasContact = text.includes('@') || text.match(/\d{2,3}[-\s]?\d{7,8}/);
-            
-            let score = 5;
+            const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const textLower = text.toLowerCase();
+
+            let score = 0; // Start at 0, not 5!
             const points = [];
             const recommendations = [];
-            
-            // Length analysis
-            if (wordCount > 200) {
-                score += 1;
+
+            // === 1. LENGTH ANALYSIS (Max 1.5 punten) ===
+            if (wordCount >= 250 && wordCount <= 600) {
+                score += 1.5;
                 points.push({
                     icon: '✅',
-                    title: 'Goede lengte',
-                    description: `Je vacature heeft ${wordCount} woorden. Dit is een goede lengte voor kandidaten om alle belangrijke informatie te vinden.`
+                    title: 'Optimale lengte',
+                    description: `Je vacature heeft ${wordCount} woorden - dit is een ideale lengte voor kandidaten.`
                 });
-            } else {
-                score -= 1;
+            } else if (wordCount >= 150 && wordCount < 250) {
+                score += 0.8;
                 points.push({
                     icon: '⚠️',
-                    title: 'Te kort',
-                    description: `Je vacature heeft slechts ${wordCount} woorden. Uitgebreidere vacatures trekken 30% meer sollicitaties.`
+                    title: 'Aan de korte kant',
+                    description: `Je vacature heeft ${wordCount} woorden. Overweeg meer details toe te voegen over taken en bedrijfscultuur.`
                 });
                 recommendations.push({
                     icon: '📝',
-                    text: 'Voeg meer details toe over de functie, het bedrijf en wat jullie bieden aan werknemers.'
+                    text: 'Voeg meer context toe: wat maakt deze functie uniek? Wat is jullie bedrijfscultuur?'
                 });
-            }
-            
-            // Company info
-            if (hasCompany) {
-                score += 1;
+            } else if (wordCount > 600) {
+                score += 0.8;
                 points.push({
-                    icon: '✅',
-                    title: 'Bedrijfsinformatie',
-                    description: 'Je vacature bevat informatie over het bedrijf, wat vertrouwen opbouwt bij kandidaten.'
+                    icon: '⚠️',
+                    title: 'Vrij lang',
+                    description: `Je vacature heeft ${wordCount} woorden. Kandidaten haken af bij te lange teksten. Maak het compacter.`
+                });
+                recommendations.push({
+                    icon: '✂️',
+                    text: 'Schrap overbodige informatie en focus op de key selling points van de functie.'
                 });
             } else {
-                score -= 1;
+                score += 0.3;
+                points.push({
+                    icon: '❌',
+                    title: 'Te kort',
+                    description: `Je vacature heeft slechts ${wordCount} woorden. Dit is te weinig om kandidaten te overtuigen.`
+                });
                 recommendations.push({
-                    icon: '🏢',
-                    text: 'Voeg meer informatie toe over je bedrijf, cultuur en missie om kandidaten te enthousiasmeren.'
+                    icon: '📝',
+                    text: 'Breidt uit met: taken, bedrijfsinfo, wat je biedt, groeimogelijkheden en sollicitatieproces.'
                 });
             }
-            
-            // Salary transparency
-            if (hasSalary) {
+
+            // === 2. SALARY TRANSPARENCY (Max 2 punten) ===
+            const hasSalaryRange = text.match(/€\s*\d{1,3}[.,]?\d{0,3}\s*[-–]\s*€?\s*\d{1,3}[.,]?\d{0,3}/);
+            const hasSalaryMention = text.match(/€|salaris|loon|marktconform|cao/i);
+
+            if (hasSalaryRange) {
                 score += 2;
                 points.push({
                     icon: '✅',
-                    title: 'Salaris transparantie',
-                    description: 'Salarisinformatie is vermeld. Dit verhoogt de kans op sollicitaties met 65%.'
+                    title: 'Salaris transparantie: Uitstekend',
+                    description: 'Concrete salarisrange vermeld - dit verhoogt sollicitaties met 65%!'
                 });
-            } else {
-                score -= 2;
+            } else if (hasSalaryMention) {
+                score += 0.8;
                 points.push({
-                    icon: '❌',
-                    title: 'Geen salarisindicatie',
-                    description: 'Er is geen salaris of salarisindicatie vermeld. Dit is een gemiste kans.'
+                    icon: '⚠️',
+                    title: 'Salaris transparantie: Kan beter',
+                    description: 'Salaris wordt genoemd maar geen concrete range. Kandidaten willen duidelijkheid.'
                 });
                 recommendations.push({
                     icon: '💰',
-                    text: 'Voeg een salarisindicatie toe. Vacatures met salaris krijgen 65% meer reacties.'
-                });
-            }
-            
-            // Location
-            if (hasLocation) {
-                score += 1;
-                points.push({
-                    icon: '✅',
-                    title: 'Locatie duidelijk',
-                    description: 'De werklocatie is duidelijk vermeld, wat praktisch is voor kandidaten.'
+                    text: 'Voeg een concrete salarisrange toe (bijv. €3.000 - €4.200 bruto). Vacatures met range krijgen 65% meer sollicitaties.'
                 });
             } else {
+                points.push({
+                    icon: '❌',
+                    title: 'Geen salarisinformatie',
+                    description: 'Geen salaris vermeld - dit is de #1 reden dat kandidaten niet solliciteren.'
+                });
+                recommendations.push({
+                    icon: '💰',
+                    text: 'Cruciale toevoeging: vermeld een salarisrange of indicatie. 78% van kandidaten wil dit zien voor ze solliciteren.'
+                });
+            }
+
+            // === 3. LOCATION & REMOTE (Max 1.5 punten) ===
+            const hasLocation = text.match(/amsterdam|rotterdam|den haag|utrecht|eindhoven|groningen|tilburg|maastricht|arnhem|haarlem|leiden|almere|breda|nijmegen|apeldoorn|enschede|'s-hertogenbosch|zwolle|leeuwarden/i);
+            const hasRemote = text.match(/thuiswerk|remote|hybride|flexibel/i);
+
+            if (hasLocation && hasRemote) {
+                score += 1.5;
+                points.push({
+                    icon: '✅',
+                    title: 'Locatie & flexibiliteit helder',
+                    description: 'Werklocatie en remote mogelijkheden zijn duidelijk - dit is belangrijk voor kandidaten.'
+                });
+            } else if (hasLocation) {
+                score += 1;
+                points.push({
+                    icon: '⚠️',
+                    title: 'Locatie vermeld',
+                    description: 'Werklocatie is duidelijk, maar remote/hybride werkopties niet genoemd.'
+                });
                 recommendations.push({
                     icon: '📍',
-                    text: 'Vermeld duidelijk de werklocatie en eventuele thuiswerkmogelijkheden.'
+                    text: 'Vermeld of thuiswerken mogelijk is - 67% van kandidaten vindt dit belangrijk bij hun keuze.'
+                });
+            } else {
+                points.push({
+                    icon: '❌',
+                    title: 'Locatie onduidelijk',
+                    description: 'Geen werklocatie vermeld - kandidaten willen weten waar ze gaan werken.'
+                });
+                recommendations.push({
+                    icon: '📍',
+                    text: 'Vermeld de werklocatie en eventuele hybride/remote mogelijkheden.'
                 });
             }
-            
-            // Contact information
-            if (hasContact) {
+
+            // === 4. CONTACT & CALL-TO-ACTION (Max 1.5 punten) ===
+            const hasEmail = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+            const hasPhone = text.match(/\d{2,3}[-\s]?\d{7,8}|06[-\s]?\d{8}/);
+            const hasCTA = text.match(/solliciteer|reageer|interesse|stuur|mail|bel/i);
+
+            if ((hasEmail || hasPhone) && hasCTA) {
+                score += 1.5;
+                points.push({
+                    icon: '✅',
+                    title: 'Duidelijke call-to-action',
+                    description: 'Contactgegevens en sollicitatieoproep zijn aanwezig.'
+                });
+            } else if (hasEmail || hasPhone) {
+                score += 0.8;
+                points.push({
+                    icon: '⚠️',
+                    title: 'Contact aanwezig, CTA kan beter',
+                    description: 'Contactinfo staat erin, maar de sollicitatieoproep kan duidelijker.'
+                });
+                recommendations.push({
+                    icon: '📞',
+                    text: 'Voeg een krachtige call-to-action toe: "Solliciteer direct!" of "Bel voor meer info!"'
+                });
+            } else {
+                points.push({
+                    icon: '❌',
+                    title: 'Geen contactinformatie',
+                    description: 'Geen email of telefoonnummer - hoe kunnen kandidaten solliciteren?'
+                });
+                recommendations.push({
+                    icon: '📞',
+                    text: 'Essentieel: voeg contactgegevens toe zodat kandidaten kunnen reageren.'
+                });
+            }
+
+            // === 5. BENEFITS & WHAT WE OFFER (Max 1.5 punten) ===
+            const benefitsKeywords = ['vakantiedagen', 'pensioen', 'reiskostenvergoeding', 'leaseauto', 'laptop', 'ontwikkeling', 'opleiding', 'cursus', 'bonus', 'dertiende maand', 'winstdeling', 'verzekering'];
+            const benefitsCount = benefitsKeywords.filter(kw => textLower.includes(kw)).length;
+            const hasWhatWeOffer = text.match(/wat (wij |we )?(bieden|aanbieden)|benefits|secundaire voorwaarden/i);
+
+            if (benefitsCount >= 4 || hasWhatWeOffer) {
+                score += 1.5;
+                points.push({
+                    icon: '✅',
+                    title: 'Goede benefits beschrijving',
+                    description: `${benefitsCount} benefits vermeld - dit maakt de functie aantrekkelijker.`
+                });
+            } else if (benefitsCount >= 2) {
+                score += 0.8;
+                points.push({
+                    icon: '⚠️',
+                    title: 'Enkele benefits vermeld',
+                    description: `Slechts ${benefitsCount} benefits genoemd. Kandidaten willen weten wat je biedt.`
+                });
+                recommendations.push({
+                    icon: '🎁',
+                    text: 'Voeg meer benefits toe: vakantiedagen, opleidingsbudget, pensioenregeling, reiskosten, etc.'
+                });
+            } else {
+                points.push({
+                    icon: '❌',
+                    title: 'Benefits ontbreken',
+                    description: 'Geen duidelijke benefits beschreven - wat krijgt de kandidaat?'
+                });
+                recommendations.push({
+                    icon: '🎁',
+                    text: 'Belangrijk: beschrijf wat je biedt (salaris, vakantie, pensioen, ontwikkeling, auto, etc.)'
+                });
+            }
+
+            // === 6. COMPANY INFO (Max 1 punt) ===
+            const hasCompanyInfo = textLower.includes('over ons') || textLower.includes('over het bedrijf') || textLower.includes('wie zijn wij');
+            const hasCompanyMention = textLower.includes('wij') || textLower.includes('ons bedrijf') || textLower.includes('ons team');
+
+            if (hasCompanyInfo || (hasCompanyMention && wordCount > 300)) {
                 score += 1;
                 points.push({
                     icon: '✅',
-                    title: 'Contactgegevens',
-                    description: 'Contactinformatie is beschikbaar voor vragen van kandidaten.'
+                    title: 'Bedrijfsinfo aanwezig',
+                    description: 'Je vertelt over het bedrijf - dit bouwt vertrouwen op.'
+                });
+            } else if (hasCompanyMention) {
+                score += 0.5;
+                points.push({
+                    icon: '⚠️',
+                    title: 'Weinig bedrijfscontext',
+                    description: 'Het bedrijf wordt genoemd maar er is weinig context.'
+                });
+                recommendations.push({
+                    icon: '🏢',
+                    text: 'Vertel meer over jullie bedrijf: wat doen jullie, hoe groot is het team, wat is jullie missie?'
                 });
             } else {
                 recommendations.push({
-                    icon: '📞',
-                    text: 'Voeg contactgegevens toe zodat kandidaten hun vragen direct kunnen stellen.'
+                    icon: '🏢',
+                    text: 'Voeg een "Over ons" sectie toe - kandidaten willen weten bij wie ze komen werken.'
                 });
             }
-            
-            // Cap score at 10
-            score = Math.min(score, 10);
-            
+
+            // === 7. VAGE BUZZWORDS CHECK (Aftrek!) ===
+            const buzzwords = ['dynamisch', 'gedreven', 'enthousiast', 'gemotiveerd', 'uitdagend', 'ambitieus', 'leuk', 'gezellig'];
+            const buzzwordCount = buzzwords.filter(bw => textLower.includes(bw)).length;
+
+            if (buzzwordCount >= 3) {
+                score -= 0.5;
+                points.push({
+                    icon: '⚠️',
+                    title: 'Teveel vage buzzwords',
+                    description: `${buzzwordCount} vage termen zoals "dynamisch" en "gedreven" gebruikt. Wees specifieker!`
+                });
+                recommendations.push({
+                    icon: '🎯',
+                    text: 'Vervang vage termen door concrete omschrijvingen van de functie en verantwoordelijkheden.'
+                });
+            }
+
+            // === 8. READABILITY CHECK (Aftrek bij te lange zinnen) ===
+            const avgWordsPerSentence = wordCount / sentences.length;
+            if (avgWordsPerSentence > 25) {
+                score -= 0.3;
+                points.push({
+                    icon: '⚠️',
+                    title: 'Zinnen zijn te lang',
+                    description: `Gemiddeld ${Math.round(avgWordsPerSentence)} woorden per zin - dit maakt de tekst moeilijk leesbaar.`
+                });
+                recommendations.push({
+                    icon: '✂️',
+                    text: 'Splits lange zinnen op in kortere zinnen voor betere leesbaarheid.'
+                });
+            }
+
+            // === 9. DISCRIMINATIE CHECK (Aftrek!) ===
+            const discriminatoryWords = ['jong', 'jonge', 'moedertaal', 'nederlands sprekend', 'man/vrouw', 'mannelijk', 'vrouwelijk'];
+            const hasDiscriminatory = discriminatoryWords.some(word => textLower.includes(word));
+
+            if (hasDiscriminatory) {
+                score -= 1;
+                points.push({
+                    icon: '❌',
+                    title: 'Mogelijk discriminerende taal',
+                    description: 'De vacature bevat mogelijk discriminerende woorden (leeftijd, geslacht, afkomst).'
+                });
+                recommendations.push({
+                    icon: '⚖️',
+                    text: 'BELANGRIJK: Verwijder discriminerende termen zoals leeftijd, geslacht of afkomst. Dit is wettelijk niet toegestaan.'
+                });
+            }
+
+            // === FINAL SCORE CALCULATION ===
+            // Cap at 0-10
+            score = Math.max(0, Math.min(10, score));
+
+            // Add overall recommendations if score is low
+            if (score < 6) {
+                recommendations.push({
+                    icon: '💡',
+                    text: 'Focus op de top 3 verbeterpunten: salaris transparantie, benefits beschrijven en bedrijfsinfo toevoegen.'
+                });
+            }
+
             return {
-                score,
+                score: Math.round(score * 10) / 10, // Round to 1 decimal
                 points,
                 recommendations,
                 wordCount
