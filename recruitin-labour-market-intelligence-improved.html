@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Recruitin Labour Market Intelligence - Ontvang binnen 24 uur een uitgebreid arbeidsmarktrapport voor de industriële sector + 15 minuten gratis adviesgesprek.">
+    <title>Labour Market Intelligence | Recruitin - The Right People, Right Now</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           RECRUITIN HUISSTIJL - PREMIUM ENHANCED VERSION
+           Kleuren: #f59a1d (oranje), #494444 (grijs)
+           ============================================ */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --recruitin-oranje: #f59a1d;
+            --recruitin-grijs: #494444;
+            --recruitin-wit: #ffffff;
+            --recruitin-light-grey: #f5f5f5;
+            --recruitin-dark: #2d2929;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--recruitin-wit);
+            color: var(--recruitin-grijs);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* === ANIMATIONS === */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Stagger animations */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+        .delay-6 { animation-delay: 1.2s; }
+
+        /* === HEADER === */
+        .header {
+            background: var(--recruitin-wit);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-dot {
+            color: var(--recruitin-oranje);
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .header-cta {
+            display: none;
+        }
+
+        .header.scrolled .header-cta {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .header-cta .btn {
+            padding: 12px 24px;
+            font-size: 14px;
+        }
+
+        /* === HERO === */
+        .hero {
+            background: linear-gradient(135deg, var(--recruitin-grijs) 0%, var(--recruitin-dark) 100%);
+            color: var(--recruitin-wit);
+            padding: 100px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: var(--recruitin-oranje);
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -100px;
+            width: 400px;
+            height: 400px;
+            background: var(--recruitin-oranje);
+            opacity: 0.08;
+            border-radius: 50%;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        .hero-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(245, 154, 29, 0.2);
+            color: var(--recruitin-oranje);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border: 2px solid rgba(245, 154, 29, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 25px;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+        }
+
+        .hero-highlight {
+            color: var(--recruitin-oranje);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: var(--recruitin-oranje);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .typewriter {
+            border-right: 3px solid var(--recruitin-oranje);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .hero-subtitle {
+            font-size: 22px;
+            color: #e8e8e8;
+            margin-bottom: 40px;
+            line-height: 1.7;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--recruitin-oranje);
+            color: var(--recruitin-wit);
+            box-shadow: 0 8px 25px rgba(245, 154, 29, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: #ff9f00;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(245, 154, 29, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--recruitin-wit);
+            border: 2px solid var(--recruitin-wit);
+        }
+
+        .btn-secondary:hover {
+            background: var(--recruitin-wit);
+            color: var(--recruitin-grijs);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Trust Stats */
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--recruitin-oranje);
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #e8e8e8;
+            font-weight: 500;
+        }
+
+        /* === TRUST BADGES === */
+        .trust-section {
+            background: var(--recruitin-wit);
+            padding: 50px 20px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .trust-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .trust-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .trust-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            opacity: 0.6;
+        }
+
+        .trust-logo {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--recruitin-grijs);
+            padding: 15px 30px;
+            background: var(--recruitin-light-grey);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .trust-logo:hover {
+            opacity: 1;
+            transform: translateY(-3px);
+        }
+
+        /* === DEMO RAPPORT SECTION === */
+        .demo-section {
+            background: linear-gradient(135deg, #fef9f3 0%, var(--recruitin-wit) 100%);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .demo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--recruitin-oranje), transparent);
+        }
+
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .demo-card {
+            background: var(--recruitin-wit);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            border: 2px solid var(--recruitin-oranje);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: var(--recruitin-oranje);
+            opacity: 0.05;
+            border-radius: 50%;
+        }
+
+        .demo-icon {
+            font-size: 72px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .demo-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 15px;
+        }
+
+        .demo-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .demo-preview {
+            background: var(--recruitin-light-grey);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .demo-preview h4 {
+            color: var(--recruitin-grijs);
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .demo-preview ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .demo-preview li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 15px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .demo-preview li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--recruitin-oranje);
+            font-weight: 700;
+        }
+
+        /* === FEATURES === */
+        .features {
+            padding: 100px 20px;
+            background: var(--recruitin-wit);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 25px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--recruitin-oranje), #ffb84d);
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: #666;
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 70px;
+            line-height: 1.7;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: var(--recruitin-wit);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+            transition: all 0.4s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--recruitin-oranje), #ffb84d);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
+            border-color: var(--recruitin-oranje);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, var(--recruitin-oranje), #ffb84d);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 35px;
+            box-shadow: 0 8px 20px rgba(245, 154, 29, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-title {
+            font-size: 23px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 15px;
+            letter-spacing: -0.3px;
+        }
+
+        .card-text {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* === TESTIMONIALS === */
+        .testimonials {
+            background: var(--recruitin-light-grey);
+            padding: 100px 20px;
+        }
+
+        .testimonials-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
+        }
+
+        .testimonial-card {
+            background: var(--recruitin-wit);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.06);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-quote {
+            font-size: 60px;
+            color: var(--recruitin-oranje);
+            opacity: 0.2;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .testimonial-text {
+            font-size: 16px;
+            color: var(--recruitin-grijs);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .testimonial-avatar {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--recruitin-oranje), #ffb84d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .testimonial-info {
+            flex: 1;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            color: var(--recruitin-grijs);
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .testimonial-role {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .testimonial-stars {
+            color: var(--recruitin-oranje);
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* === HOW IT WORKS === */
+        .how-it-works {
+            background: var(--recruitin-wit);
+            padding: 100px 20px;
+        }
+
+        .steps-container {
+            max-width: 1000px;
+            margin: 60px auto 0;
+            display: grid;
+            gap: 40px;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 30px;
+            align-items: start;
+            position: relative;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 50px;
+            top: 100px;
+            width: 2px;
+            height: calc(100% - 60px);
+            background: linear-gradient(180deg, var(--recruitin-oranje), transparent);
+        }
+
+        .step-number {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--recruitin-oranje), #ffb84d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 10px 30px rgba(245, 154, 29, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-content {
+            padding-top: 10px;
+        }
+
+        .step-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 12px;
+        }
+
+        .step-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        /* === FORM SECTION === */
+        .form-section {
+            background: linear-gradient(135deg, var(--recruitin-light-grey) 0%, var(--recruitin-wit) 100%);
+            padding: 100px 20px;
+        }
+
+        .form-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-intro {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .form-intro h2 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 15px;
+        }
+
+        .form-intro p {
+            font-size: 20px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+        }
+
+        .benefits-list {
+            background: var(--recruitin-wit);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            max-width: 650px;
+            margin: 0 auto 40px;
+            border: 2px solid var(--recruitin-oranje);
+        }
+
+        .benefits-list h3 {
+            color: var(--recruitin-grijs);
+            font-size: 22px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .benefits-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .benefits-list li {
+            padding: 14px 0;
+            color: #666;
+            font-size: 16px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 35px;
+            line-height: 1.6;
+        }
+
+        .benefits-list li:last-child {
+            border-bottom: none;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--recruitin-oranje);
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        /* Jotform styling */
+        .jotform-container {
+            background: var(--recruitin-wit);
+            border-radius: 16px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 50px;
+        }
+
+        .custom-form-questions {
+            margin-bottom: 30px;
+        }
+
+        .form-question {
+            margin-bottom: 30px;
+        }
+
+        .form-question label {
+            display: block;
+            font-weight: 700;
+            color: var(--recruitin-grijs);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .form-question textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: var(--recruitin-grijs);
+            resize: vertical;
+            min-height: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .form-question textarea:focus {
+            border-color: var(--recruitin-oranje);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(245, 154, 29, 0.1);
+        }
+
+        .privacy-checkbox {
+            margin: 30px 0;
+            padding: 25px;
+            background: #fef9f3;
+            border-radius: 10px;
+            border: 2px solid var(--recruitin-oranje);
+        }
+
+        .privacy-checkbox label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--recruitin-grijs);
+            line-height: 1.7;
+        }
+
+        .privacy-checkbox input[type="checkbox"] {
+            margin-right: 12px;
+            margin-top: 4px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: var(--recruitin-oranje);
+        }
+
+        .privacy-checkbox a {
+            color: var(--recruitin-oranje);
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        /* === FAQ SECTION === */
+        .faq-section {
+            background: var(--recruitin-wit);
+            padding: 100px 20px;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-list {
+            margin-top: 50px;
+        }
+
+        .faq-item {
+            background: var(--recruitin-wit);
+            border: 2px solid #e5e5e5;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--recruitin-oranje);
+        }
+
+        .faq-item.active {
+            border-color: var(--recruitin-oranje);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--recruitin-grijs);
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: var(--recruitin-oranje);
+        }
+
+        .faq-icon {
+            font-size: 24px;
+            color: var(--recruitin-oranje);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 30px 25px 30px;
+            color: #666;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+
+        /* === SUCCESS POPUP === */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            animation: fadeIn 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup {
+            background: var(--recruitin-wit);
+            padding: 50px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.5s ease;
+            position: relative;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 30px;
+            color: #999;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .popup-close:hover {
+            color: var(--recruitin-grijs);
+            background: var(--recruitin-light-grey);
+        }
+
+        .popup-icon {
+            font-size: 90px;
+            margin-bottom: 20px;
+        }
+
+        .popup-title {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 20px;
+        }
+
+        .popup-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .popup-benefits {
+            background: var(--recruitin-light-grey);
+            padding: 35px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .popup-benefits h3 {
+            font-size: 22px;
+            color: var(--recruitin-grijs);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .popup-benefits ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .popup-benefits li {
+            padding: 12px 0;
+            color: #666;
+            font-size: 16px;
+            position: relative;
+            padding-left: 35px;
+        }
+
+        .popup-benefits li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--recruitin-oranje);
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        /* === STICKY CTA === */
+        .sticky-cta {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            right: 0;
+            background: var(--recruitin-wit);
+            box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.15);
+            padding: 20px;
+            z-index: 999;
+            transition: bottom 0.4s ease;
+        }
+
+        .sticky-cta.visible {
+            bottom: 0;
+        }
+
+        .sticky-cta-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .sticky-cta-text h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--recruitin-grijs);
+            margin-bottom: 5px;
+        }
+
+        .sticky-cta-text p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .sticky-cta .btn {
+            padding: 15px 35px;
+        }
+
+        /* === FOOTER === */
+        .footer {
+            background: var(--recruitin-grijs);
+            color: var(--recruitin-wit);
+            padding: 80px 20px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 25px;
+            color: var(--recruitin-oranje);
+            font-weight: 800;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #e8e8e8;
+            text-decoration: none;
+            font-size: 15px;
+            line-height: 2.2;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--recruitin-oranje);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            color: #e8e8e8;
+            font-size: 14px;
+        }
+
+        /* === MOBILE === */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 80px 20px 60px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                gap: 30px;
+            }
+
+            .step {
+                grid-template-columns: 70px 1fr;
+                gap: 20px;
+            }
+
+            .step-number {
+                width: 70px;
+                height: 70px;
+                font-size: 32px;
+            }
+
+            .step:not(:last-child)::after {
+                left: 35px;
+                top: 70px;
+            }
+
+            .tagline {
+                display: none;
+            }
+
+            .demo-card {
+                padding: 30px 20px;
+            }
+
+            .popup {
+                padding: 30px 20px;
+            }
+
+            .jotform-container {
+                padding: 30px 20px;
+            }
+
+            .sticky-cta-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .sticky-cta .btn {
+                width: 100%;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-logos {
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="#" class="logo-text">recruit<span class="logo-dot">.</span>in</a>
+                <span class="tagline">the right people, right now</span>
+            </div>
+            <div class="header-cta">
+                <a href="#form" class="btn btn-primary">Vraag rapport aan →</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-badge fade-in-up">✓ Binnen 24 uur geleverd</div>
+            <h1 class="hero-title fade-in-up delay-1">
+                <span class="hero-highlight">Labour Market Intelligence</span><br>voor Industriële Vacatures
+            </h1>
+            <p class="hero-subtitle fade-in-up delay-2">
+                Ontvang binnen 24 uur een uitgebreid rapport met arbeidsmarkttrends, kandidaat beschikbaarheid en praktisch wervingsadvies. Data-gedreven inzichten voor slimme recruitment in de industrie.
+            </p>
+            <div class="hero-cta fade-in-up delay-3">
+                <a href="#form" class="btn btn-primary">Vraag je rapport aan 📊</a>
+                <a href="#demo" class="btn btn-secondary">Bekijk demo rapport</a>
+            </div>
+
+            <!-- Trust Stats -->
+            <div class="hero-stats fade-in-up delay-4">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Rapporten geleverd</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24u</div>
+                    <div class="stat-label">Gemiddelde levertijd</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">4.9/5</div>
+                    <div class="stat-label">Klant tevredenheid</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TRUST BADGES -->
+    <section class="trust-section">
+        <div class="trust-container">
+            <div class="trust-title">Vertrouwd door toonaangevende bedrijven</div>
+            <div class="trust-logos">
+                <div class="trust-logo">Heineken</div>
+                <div class="trust-logo">ASML</div>
+                <div class="trust-logo">DSM</div>
+                <div class="trust-logo">Philips</div>
+                <div class="trust-logo">Tata Steel</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEMO RAPPORT SECTION -->
+    <section id="demo" class="demo-section">
+        <div class="demo-container">
+            <div class="demo-card fade-in-up">
+                <div class="demo-icon">📊</div>
+                <h2 class="demo-title">Bekijk een Voorbeeld Rapport</h2>
+                <p class="demo-text">
+                    Download een demo arbeidsmarktrapport om te zien welke inzichten je ontvangt. Compleet met markttrends, kandidaat beschikbaarheid en concrete wervingsadvies.
+                </p>
+
+                <div class="demo-preview">
+                    <h4>📄 Dit staat in je rapport:</h4>
+                    <ul>
+                        <li>Actuele arbeidsmarkt status en schaarste-index</li>
+                        <li>Vraag/aanbod ratio voor jouw functie en regio</li>
+                        <li>Typisch kandidaat profiel met skills en certificaten</li>
+                        <li>Time-to-hire prognose en sollicitatie verwachtingen</li>
+                        <li>Top 3 meest effectieve wervingskanalen</li>
+                        <li>Competitie analyse met andere bedrijven in je regio</li>
+                        <li>Salarisbandbreedte en arbeidsvoorwaarden benchmark</li>
+                        <li>Praktische tips voor vacaturetekst optimalisatie</li>
+                    </ul>
+                </div>
+
+                <a href="#form" class="btn btn-primary">Download Demo Rapport (PDF)</a>
+                <p style="margin-top: 20px; font-size: 14px; color: #999;">
+                    * Demo rapport toont voorbeelddata. Je eigen rapport bevat actuele gegevens voor jouw specifieke vacature.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div class="features-container">
+            <h2 class="section-title fade-in-up">Wat je ontvangt</h2>
+            <p class="section-subtitle fade-in-up delay-1">
+                Een compleet arbeidsmarktrapport op maat, gebaseerd op actuele data uit jouw regio en sector
+            </p>
+
+            <div class="cards-grid">
+                <div class="card fade-in-up delay-1">
+                    <div class="card-icon">📊</div>
+                    <h3 class="card-title">Arbeidsmarkt Status</h3>
+                    <p class="card-text">
+                        Actuele vraag/aanbod ratio voor jouw functie en locatie. Schaarste-index en markttrends in de industriële sector met historische data.
+                    </p>
+                </div>
+
+                <div class="card fade-in-up delay-2">
+                    <div class="card-icon">👥</div>
+                    <h3 class="card-title">Kandidaat Profiel</h3>
+                    <p class="card-text">
+                        Typische skills, certificaten (VCA, heftruckcertificaat) en ervaring van kandidaten voor deze functie in jouw regio. Inclusief salarisbandbreedte.
+                    </p>
+                </div>
+
+                <div class="card fade-in-up delay-3">
+                    <div class="card-icon">⏱️</div>
+                    <h3 class="card-title">Time-to-Hire Prognose</h3>
+                    <p class="card-text">
+                        Gemiddelde wervingsduur voor vergelijkbare functies. Verwachte aantal sollicitaties en kwaliteit van kandidaten op basis van marktdata.
+                    </p>
+                </div>
+
+                <div class="card fade-in-up delay-4">
+                    <div class="card-icon">🎯</div>
+                    <h3 class="card-title">Wervingskanalen Advies</h3>
+                    <p class="card-text">
+                        Top 3 effectiefste wervingskanalen voor jouw vacature. Praktische tips voor bereik en aantrekken kandidaten met ROI indicaties.
+                    </p>
+                </div>
+
+                <div class="card fade-in-up delay-5">
+                    <div class="card-icon">🏢</div>
+                    <h3 class="card-title">Competitie Analyse</h3>
+                    <p class="card-text">
+                        Overzicht van andere bedrijven in je regio die dezelfde profielen zoeken. Marktpositie en differentiatiekansen voor jouw vacature.
+                    </p>
+                </div>
+
+                <div class="card fade-in-up delay-6">
+                    <div class="card-icon">💡</div>
+                    <h3 class="card-title">15 Min Gratis Adviesgesprek</h3>
+                    <p class="card-text">
+                        Na je rapport ontvang je de mogelijkheid voor een gratis 15 minuten adviesgesprek met onze recruitment expert om je strategie te bespreken.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <h2 class="section-title fade-in-up">Wat klanten zeggen</h2>
+            <p class="section-subtitle fade-in-up delay-1">
+                Ontdek waarom 500+ bedrijven ons vertrouwen voor arbeidsmarkt intelligence
+            </p>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card fade-in-up delay-1">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">
+                        "Het rapport gaf ons direct inzicht in waarom we moeite hadden met het vinden van productiemedewerkers. De aanbevelingen waren super praktisch en binnen 2 weken hadden we 3x meer sollicitaties!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MV</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Marieke van der Berg</div>
+                            <div class="testimonial-role">HR Manager, Productie bedrijf (450 FTE)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in-up delay-2">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">
+                        "Eindelijk data-gedreven recruitment! Het rapport toonde precies waar onze concurrenten actief waren en welke kanalen we misten. Game changer voor onze wervingsstrategie."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">PJ</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Peter Janssen</div>
+                            <div class="testimonial-role">Operations Director, Logistiek</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card fade-in-up delay-3">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-quote">"</div>
+                    <p class="testimonial-text">
+                        "Het adviesgesprek na het rapport was goud waard. De expert begreep onze uitdagingen direct en gaf concrete stappen. Binnen 24 uur complete analyse, fantastisch!"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SK</div>
+                        <div class="testimonial-info">
+                            <div class="testimonial-name">Sophie Koster</div>
+                            <div class="testimonial-role">Recruitment Lead, Food Industry</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+        <div class="features-container">
+            <h2 class="section-title fade-in-up">Hoe het werkt</h2>
+            <p class="section-subtitle fade-in-up delay-1">
+                Van aanvraag tot actionable insights in 3 eenvoudige stappen
+            </p>
+
+            <div class="steps-container">
+                <div class="step fade-in-up delay-1">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Vul het formulier in</h3>
+                        <p class="step-description">
+                            Geef ons informatie over je vacature, locatie en specifieke uitdagingen. Hoe meer details, hoe beter we je rapport kunnen personaliseren.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step fade-in-up delay-2">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Wij analyseren de data</h3>
+                        <p class="step-description">
+                            Ons team analyseert actuele arbeidsmarktdata, trends en competitor activiteiten. We gebruiken AI en real-time data voor de meest accurate inzichten.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="step fade-in-up delay-3">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Ontvang je rapport + adviesgesprek</h3>
+                        <p class="step-description">
+                            Binnen 24 uur ontvang je een uitgebreid PDF rapport met concrete aanbevelingen. Daarna plannen we een gratis 15 minuten adviesgesprek om je strategie door te nemen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORM SECTION -->
+    <section id="form" class="form-section">
+        <div class="form-container">
+            <div class="form-intro fade-in-up">
+                <h2>Vraag je arbeidsmarktrapport aan</h2>
+                <p>Vul onderstaand formulier in en ontvang binnen 24 uur je uitgebreide analyse</p>
+
+                <div class="benefits-list">
+                    <h3>✨ Dit ontvang je:</h3>
+                    <ul>
+                        <li>Uitgebreid arbeidsmarktrapport (PDF) binnen 24 uur</li>
+                        <li>Data-gedreven inzichten voor jouw specifieke vacature</li>
+                        <li>Concrete aanbevelingen voor je wervingsstrategie</li>
+                        <li>15 minuten gratis adviesgesprek met expert</li>
+                        <li>Toegang tot arbeidsmarkt trends dashboard (optioneel)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="jotform-container fade-in-up delay-1">
+                <!-- Extra vragen voor analyse -->
+                <div class="custom-form-questions">
+                    <h3 style="color: var(--recruitin-grijs); margin-bottom: 25px; text-align: center; font-weight: 800;">
+                        Help ons je rapport te personaliseren
+                    </h3>
+
+                    <div class="form-question">
+                        <label for="challenge">Wat is je grootste uitdaging bij het werven voor deze functie? *</label>
+                        <textarea id="challenge" name="challenge" placeholder="bijv. Weinig kandidaten, hoge salariseis, specifieke certificaten vereist..."></textarea>
+                    </div>
+
+                    <div class="form-question">
+                        <label for="goals">Wat wil je specifiek weten over de arbeidsmarkt? *</label>
+                        <textarea id="goals" name="goals" placeholder="bijv. Gemiddelde salarissen, beste wervingskanalen, concurrentie analyse..."></textarea>
+                    </div>
+
+                    <div class="form-question">
+                        <label for="timeline">Wat is je timeline voor het invullen van deze vacature? *</label>
+                        <textarea id="timeline" name="timeline" placeholder="bijv. Direct, binnen 1 maand, binnen 3 maanden..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Jotform Embed -->
+                <script type="text/javascript" src="https://form.jotform.com/jsform/252886697577079"></script>
+
+                <!-- Privacy Checkbox -->
+                <div class="privacy-checkbox">
+                    <label>
+                        <input type="checkbox" id="privacy-accept" required>
+                        <span>
+                            Ik ga akkoord met het <a href="#" target="_blank">privacy statement</a> en geef toestemming voor het verwerken van mijn gegevens voor het opstellen van een arbeidsmarktrapport. Recruitin bewaart je gegevens veilig en deelt deze niet met derden.
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <h2 class="section-title fade-in-up">Veelgestelde vragen</h2>
+            <p class="section-subtitle fade-in-up delay-1">
+                Alles wat je moet weten over onze Labour Market Intelligence service
+            </p>
+
+            <div class="faq-list">
+                <div class="faq-item fade-in-up delay-1">
+                    <div class="faq-question">
+                        <span>Hoe snel ontvang ik mijn rapport?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Je ontvangt je uitgebreide arbeidsmarktrapport binnen 24 uur na het invullen van het formulier. In 95% van de gevallen leveren we zelfs binnen 12 uur. Je krijgt direct na aanvraag een bevestigingsmail met een indicatie van de verwachte levertijd.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in-up delay-2">
+                    <div class="faq-question">
+                        <span>Wat zijn de kosten voor dit rapport?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            De eerste aanvraag is volledig gratis, inclusief het 15 minuten adviesgesprek. Voor vervolgrapporteren hanteren we een transparante pricing structuur vanaf €495,- per rapport. Neem contact op voor enterprise oplossingen en volume kortingen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in-up delay-3">
+                    <div class="faq-question">
+                        <span>Voor welke sectoren is dit geschikt?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Onze focus ligt op de industriële sector: productie, logistiek, techniek, bouw, food & beverage, automotive en chemie. We hebben uitgebreide data voor deze sectoren en begrijpen de specifieke uitdagingen zoals certificaten (VCA, heftruckcertificaat) en ploegendiensten.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in-up delay-4">
+                    <div class="faq-question">
+                        <span>Hoe actueel is de data in het rapport?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            We gebruiken real-time data van multiple bronnen: vacaturebanken, LinkedIn, CBS, UWV en onze eigen recruitment database. Alle data is maximaal 30 dagen oud en wordt dagelijks geüpdatet. Je krijgt dus altijd de meest actuele arbeidsmarkt insights.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in-up delay-5">
+                    <div class="faq-question">
+                        <span>Wat gebeurt er in het 15 minuten adviesgesprek?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Na ontvangst van je rapport plannen we een kort gesprek met één van onze recruitment experts. We bespreken de belangrijkste bevindingen, beantwoorden je vragen en geven praktische tips voor directe implementatie. Dit gesprek is volledig vrijblijvend en zonder verplichtingen.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item fade-in-up delay-6">
+                    <div class="faq-question">
+                        <span>Kan ik meerdere rapporten aanvragen?</span>
+                        <span class="faq-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <div class="faq-answer-content">
+                            Ja, zeker! Na je eerste gratis rapport kun je voor alle vacatures rapporten aanvragen. We bieden ook subscription modellen voor bedrijven die regelmatig werven. Neem contact op voor een op maat gemaakt pakket met volume voordeel.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SUCCESS POPUP -->
+    <div class="popup-overlay" id="successPopup">
+        <div class="popup">
+            <button class="popup-close" onclick="closePopup()">&times;</button>
+            <div class="popup-icon">🎉</div>
+            <h2 class="popup-title">Aanvraag Ontvangen!</h2>
+            <p class="popup-text">
+                Bedankt voor je aanvraag! We gaan direct aan de slag met je arbeidsmarktrapport.
+            </p>
+
+            <div class="popup-benefits">
+                <h3>📅 Wat gebeurt er nu?</h3>
+                <ul>
+                    <li><strong>Direct:</strong> Bevestigingsmail ontvangen</li>
+                    <li><strong>Binnen 24 uur:</strong> Uitgebreid rapport in je inbox</li>
+                    <li><strong>Na rapport:</strong> Uitnodiging voor 15 min gratis adviesgesprek</li>
+                    <li><strong>Optioneel:</strong> Toegang tot trends dashboard</li>
+                </ul>
+            </div>
+
+            <a href="#" class="btn btn-primary" onclick="closePopup()">Sluiten</a>
+        </div>
+    </div>
+
+    <!-- STICKY CTA -->
+    <div class="sticky-cta" id="stickyCta">
+        <div class="sticky-cta-container">
+            <div class="sticky-cta-text">
+                <h3>Klaar om data-gedreven te werven?</h3>
+                <p>Ontvang je arbeidsmarktrapport binnen 24 uur</p>
+            </div>
+            <a href="#form" class="btn btn-primary">Vraag rapport aan →</a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Recruitin</h3>
+                <p>The right people, right now</p>
+                <p style="margin-top: 15px;">Specialist in industriële recruitment en labour market intelligence. Data-gedreven inzichten voor slimme wervingsstrategieën.</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Diensten</h3>
+                <a href="#">Labour Market Intelligence</a>
+                <a href="#">Recruitment Services</a>
+                <a href="#">Interim Management</a>
+                <a href="#">HR Consulting</a>
+                <a href="#">Training & Development</a>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: info@recruitin.nl</p>
+                <p>Tel: +31 (0)20 123 4567</p>
+                <p>LinkedIn: /company/recruitin</p>
+                <p style="margin-top: 15px;">Kantoor: Amsterdam, Nederland</p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="#">Privacy Statement</a>
+                <a href="#">Algemene Voorwaarden</a>
+                <a href="#">Cookie Policy</a>
+                <a href="#">GDPR Compliance</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Recruitin. All rights reserved. | KvK: 12345678 | BTW: NL123456789B01</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Sticky CTA visibility
+        window.addEventListener('scroll', function() {
+            const stickyCta = document.getElementById('stickyCta');
+            const formSection = document.getElementById('form');
+            const formPosition = formSection.offsetTop;
+            const scrollPosition = window.scrollY + window.innerHeight;
+
+            // Show sticky CTA when scrolled past hero, hide when at form
+            if (window.scrollY > 800 && scrollPosition < formPosition) {
+                stickyCta.classList.add('visible');
+            } else {
+                stickyCta.classList.remove('visible');
+            }
+        });
+
+        // Trigger animations on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in-up, .slide-in-left, .slide-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.parentElement;
+                const isActive = faqItem.classList.contains('active');
+
+                // Close all FAQ items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Open clicked item if it wasn't active
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Form submission handler
+        document.addEventListener('DOMContentLoaded', function() {
+            // Demo: show popup button for testing
+            const testButton = document.createElement('button');
+            testButton.textContent = '🧪 Test Success Popup';
+            testButton.style.cssText = 'position: fixed; bottom: 80px; right: 20px; padding: 15px 25px; background: var(--recruitin-oranje); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; z-index: 1000; box-shadow: 0 8px 25px rgba(245, 154, 29, 0.4); transition: all 0.3s ease;';
+            testButton.onmouseover = function() {
+                this.style.transform = 'translateY(-3px)';
+                this.style.boxShadow = '0 12px 35px rgba(245, 154, 29, 0.5)';
+            };
+            testButton.onmouseout = function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 8px 25px rgba(245, 154, 29, 0.4)';
+            };
+            testButton.onclick = showPopup;
+            document.body.appendChild(testButton);
+        });
+
+        function showPopup() {
+            document.getElementById('successPopup').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup() {
+            document.getElementById('successPopup').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close popup on overlay click
+        document.getElementById('successPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // Close popup on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+
+        // Typewriter effect voor hero title (optioneel - kan weg als te complex)
+        const typewriterElement = document.querySelector('.typewriter');
+        if (typewriterElement) {
+            const text = typewriterElement.textContent;
+            typewriterElement.textContent = '';
+            let i = 0;
+
+            function typeWriter() {
+                if (i < text.length) {
+                    typewriterElement.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+
+            setTimeout(typeWriter, 1000);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const headerOffset = 80;
+                    const elementPosition = target.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
