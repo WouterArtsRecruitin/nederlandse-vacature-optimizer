@@ -643,7 +643,7 @@
             <div class="ticker-content">
                 <span class="ticker-icon">🎉</span>
                 <span class="ticker-text">
-                    <strong id="tickerName">Marloes van TechCorp</strong> <span id="tickerAction">ontving zojuist haar geoptimaliseerde vacature</span>
+                    <strong id="tickerName">Marloes van TechStartup</strong> <span id="tickerAction">ontving zojuist haar geoptimaliseerde DevOps vacature</span>
                 </span>
                 <span class="ticker-time" id="tickerTime">2 min geleden</span>
             </div>
@@ -701,9 +701,9 @@
                     placeholder="Plak hier je volledige vacaturetekst...
 
 Voorbeeld:
-Senior Marketing Manager - Amsterdam
+Senior Full-Stack Developer - Amsterdam
 
-Ben jij een ervaren marketing professional...
+We zoeken een ervaren developer met 4+ jaar ervaring in React en Node.js. Je werkt aan ons SaaS-platform voor de financiële sector en bouwt features die door 100K+ gebruikers worden gebruikt. Wij zijn een groeiende scale-up met 45 medewerkers...
 
 Minimaal 100 karakters voor een betrouwbare analyse."
                     maxlength="8000"
@@ -1158,31 +1158,95 @@ REGELS:
             }
         }
 
-        // Mock quick analysis
+        // Mock quick analysis (VERBETERDE VERSIE - Realistisch & Kritisch)
         function generateMockQuickAnalysis(text) {
+            const textLower = text.toLowerCase();
+
+            // Analyze multiple factors
             const hasSalary = /€|euro|salaris|loon/i.test(text);
-            const hasLocation = /amsterdam|rotterdam|utrecht|eindhoven/i.test(text);
-            const score = hasSalary ? 7 : 5;
+            const hasLocation = /amsterdam|rotterdam|utrecht|eindhoven|den haag|groningen|brabant/i.test(text);
+            const hasHybrid = /hybride|remote|thuiswerk|thuis werken/i.test(textLower);
+            const hasVacation = /vakantie|vrij|dagen|adv/i.test(textLower);
+            const hasDevelopment = /ontwikkel|training|groei|carri[eë]re|opleiding/i.test(textLower);
+            const hasBenefits = /bonus|pensioen|lease|laptop|telefoon/i.test(textLower);
+            const wordCount = text.split(/\s+/).length;
+
+            // Calculate realistic score (max 7, meestal 4-6)
+            let score = 3; // Start laag
+
+            if (hasSalary) score += 1.5;
+            if (hasHybrid) score += 1;
+            if (wordCount > 100) score += 0.5;
+            if (wordCount > 200) score += 0.5;
+            if (hasDevelopment) score += 0.5;
+            if (hasBenefits) score += 0.5;
+
+            // Cap at 7 (never perfect!)
+            score = Math.min(Math.round(score * 10) / 10, 7);
+
+            // ALWAYS find improvements (altijd kritisch!)
+            const insights = [];
+
+            // Insight 1: Salaris (altijd verbetering mogelijk)
+            if (!hasSalary) {
+                insights.push({
+                    icon: "💰",
+                    title: "Geen salaris vermeld ✗",
+                    text: "Voeg concrete salaris range toe (€X-€X) voor 65% meer sollicitaties"
+                });
+            } else {
+                insights.push({
+                    icon: "💰",
+                    title: "Salaris aanwezig",
+                    text: "Goed! Zet het ook in de titel voor 40% meer klikken: 'Senior Dev | €60K-75K'"
+                });
+            }
+
+            // Insight 2: Hybride werken (bijna altijd missing of kan beter)
+            if (!hasHybrid) {
+                insights.push({
+                    icon: "🏠",
+                    title: "Hybride ontbreekt",
+                    text: "Vermeld hybride/remote mogelijkheden - 70% kandidaten verwacht dit in 2025"
+                });
+            } else {
+                insights.push({
+                    icon: "🏠",
+                    title: "Hybride vermeld",
+                    text: "Wees specifieker: '3 dagen thuis, 2 dagen kantoor' werkt beter dan 'hybride'"
+                });
+            }
+
+            // Insight 3: Altijd een kritisch punt
+            if (wordCount < 100) {
+                insights.push({
+                    icon: "📊",
+                    title: "Vacature te kort",
+                    text: "Nu ${wordCount} woorden - verhoog naar 150-300 voor betere conversie"
+                });
+            } else if (!hasDevelopment) {
+                insights.push({
+                    icon: "🚀",
+                    title: "Ontwikkeling ontbreekt",
+                    text: "Vermeld ontwikkelbudget/trainingen - dit trekt 43% meer talent aan"
+                });
+            } else if (!hasBenefits) {
+                insights.push({
+                    icon: "🎁",
+                    title: "Benefits onduidelijk",
+                    text: "Noem specifieke benefits: pensioen %, laptop merk, bonus structuur"
+                });
+            } else {
+                insights.push({
+                    icon: "📱",
+                    title: "Moderniseer format",
+                    text: "Gebruik bullets (•), emoji's en witruimte - 73% leest op mobiel"
+                });
+            }
 
             return {
                 score: score,
-                insights: [
-                    {
-                        icon: "💰",
-                        title: hasSalary ? "Salaris vermeld ✓" : "Geen salaris ✗",
-                        text: hasSalary ? "Goed! Vacatures met salaris krijgen 65% meer reacties." : "Voeg salaris toe voor 40-60% meer sollicitaties."
-                    },
-                    {
-                        icon: "📊",
-                        title: "Vacature lengte",
-                        text: text.length > 500 ? "Goede lengte voor alle details." : "Te kort - voeg meer informatie toe."
-                    },
-                    {
-                        icon: "🎯",
-                        title: hasLocation ? "Locatie duidelijk ✓" : "Locatie onduidelijk",
-                        text: hasLocation ? "Werklocatie is vermeld." : "Vermeld de werklocatie en thuiswerkmogelijkheden."
-                    }
-                ]
+                insights: insights
             };
         }
 
@@ -1273,11 +1337,11 @@ REGELS:
 
         // FEATURE 2: Social Proof Ticker (rotate every 8 seconds)
         const socialProofData = [
-            { name: 'Marloes van TechCorp', action: 'ontving zojuist haar geoptimaliseerde vacature', time: '2 min geleden' },
-            { name: 'Pieter bij ScaleUp BV', action: 'analyseerde een Senior Developer vacature', time: '5 min geleden' },
-            { name: 'Sophie van HealthTech', action: 'kreeg een score van 8.5/10', time: '12 min geleden' },
-            { name: 'Thomas bij LogisticsPro', action: 'uploadde een logistiek vacature', time: '18 min geleden' },
-            { name: 'Emma van FinTech Solutions', action: 'ontving een volledige analyse', time: '23 min geleden' }
+            { name: 'Marloes van TechStartup', action: 'ontving zojuist haar geoptimaliseerde DevOps vacature', time: '2 min geleden' },
+            { name: 'Pieter bij ScaleUp BV', action: 'analyseerde een Senior Full-Stack Developer vacature', time: '5 min geleden' },
+            { name: 'Sophie van CloudSolutions', action: 'kreeg een score van 6.5/10 voor haar Backend Developer rol', time: '12 min geleden' },
+            { name: 'Thomas bij DataTech', action: 'uploadde een Data Engineer vacature', time: '18 min geleden' },
+            { name: 'Emma van AI Innovate', action: 'ontving een volledige analyse voor Python Developer', time: '23 min geleden' }
         ];
 
         let currentProofIndex = 0;
