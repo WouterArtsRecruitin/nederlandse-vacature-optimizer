@@ -836,61 +836,22 @@ Minimaal 100 karakters voor een betrouwbare analyse."
             }
         }
 
-        // Character counter for text input + Live Suggestions
-        let suggestionTimeout;
+        // Character counter for text input
         document.getElementById('vacatureText').addEventListener('input', function() {
             const charCount = document.getElementById('charCount');
             const analyzeBtn = document.getElementById('analyzeBtn');
             const btnText = document.getElementById('btnText');
-            const text = this.value;
 
-            charCount.textContent = text.length;
+            charCount.textContent = this.value.length;
 
-            if (text.trim().length >= 100) {
+            if (this.value.trim().length >= 100) {
                 analyzeBtn.disabled = false;
                 btnText.textContent = 'Analyseer Vacature';
             } else {
                 analyzeBtn.disabled = true;
                 btnText.textContent = 'Minimaal 100 karakters vereist';
             }
-
-            // FEATURE 5: Live Typing Suggestions
-            clearTimeout(suggestionTimeout);
-            suggestionTimeout = setTimeout(() => {
-                showLiveSuggestion(text);
-            }, 1500);
         });
-
-        // Live typing suggestions
-        function showLiveSuggestion(text) {
-            const suggestion = document.getElementById('typingSuggestion');
-            const suggestionText = document.getElementById('suggestionText');
-
-            if (text.length < 100) return;
-
-            let tip = '';
-
-            // Check for common missing elements
-            if (!text.match(/€|euro|salaris|loon/i)) {
-                tip = '💡 <strong>Tip:</strong> Voeg een salarisindicatie toe voor 65% meer reacties';
-            } else if (text.length > 200 && !text.match(/hybride|remote|thuiswerk/i)) {
-                tip = '💡 <strong>Tip:</strong> Vermeld hybride/remote mogelijkheden - dit verhoogt sollicitaties met 43%';
-            } else if (!text.match(/vakantie|vrij|dagen/i)) {
-                tip = '💡 <strong>Tip:</strong> Noem het aantal vakantiedagen - transparantie vergroot vertrouwen';
-            } else if (!text.match(/ontwikkel|training|groei|carri[eë]re/i)) {
-                tip = '💡 <strong>Tip:</strong> Benadruk ontwikkelmogelijkheden - dit is cruciaal voor talent';
-            }
-
-            if (tip) {
-                suggestionText.innerHTML = tip;
-                suggestion.classList.add('show');
-
-                // Auto hide after 10 seconds
-                setTimeout(() => {
-                    suggestion.classList.remove('show');
-                }, 10000);
-            }
-        }
 
         // File handling
         function handleFileSelect(event) {
@@ -975,7 +936,7 @@ Minimaal 100 karakters voor een betrouwbare analyse."
             }
         });
 
-        // Start Analysis with Progress States
+        // Start Analysis
         async function startAnalysis() {
             const uploadTab = document.getElementById('uploadTab');
             const isFileMode = uploadTab.classList.contains('active');
@@ -986,6 +947,7 @@ Minimaal 100 karakters voor een betrouwbare analyse."
                 if (uploadedFile.type === 'text/plain') {
                     textToAnalyze = vacatureContent;
                 } else {
+                    // For PDF/DOC, we need server-side processing
                     alert('⚠️ PDF/DOC parsing wordt momenteel geïmplementeerd. Gebruik voorlopig de "Plak Tekst" optie.');
                     switchTab('text');
                     return;
@@ -1008,9 +970,6 @@ Minimaal 100 karakters voor een betrouwbare analyse."
             btnIcon.innerHTML = '<div class="spinner"></div>';
             btnText.textContent = 'Analyseren...';
 
-            // FEATURE 1: Show Progress States
-            showProgressStates();
-
             try {
                 // Call Claude API for quick analysis
                 const analysis = await performQuickAnalysis(textToAnalyze);
@@ -1025,7 +984,6 @@ Minimaal 100 karakters voor een betrouwbare analyse."
             } catch (error) {
                 console.error('Analysis error:', error);
                 alert('❌ Er ging iets mis bij de analyse. Probeer het opnieuw.');
-                hideProgressStates();
             } finally {
                 // Reset button
                 analyzeBtn.disabled = false;
@@ -1034,102 +992,22 @@ Minimaal 100 karakters voor een betrouwbare analyse."
             }
         }
 
-        // FEATURE 1: Progress Loading States
-        async function showProgressStates() {
-            const progress = document.getElementById('analysisProgress');
-            const step1 = document.getElementById('step1');
-            const step2 = document.getElementById('step2');
-            const step3 = document.getElementById('step3');
-
-            progress.classList.add('show');
-
-            // Step 1: Reading
-            step1.classList.add('active');
-            await delay(800);
-            step1.classList.remove('active');
-            step1.classList.add('completed');
-            step1.querySelector('.step-check').textContent = '✓';
-
-            // Step 2: Analyzing
-            step2.classList.add('active');
-            await delay(1500);
-            step2.classList.remove('active');
-            step2.classList.add('completed');
-            step2.querySelector('.step-check').textContent = '✓';
-
-            // Step 3: Preparing
-            step3.classList.add('active');
-            await delay(800);
-            step3.classList.remove('active');
-            step3.classList.add('completed');
-            step3.querySelector('.step-check').textContent = '✓';
-
-            // Hide progress after delay
-            setTimeout(() => {
-                hideProgressStates();
-            }, 1000);
-        }
-
-        function hideProgressStates() {
-            const progress = document.getElementById('analysisProgress');
-            progress.classList.remove('show');
-
-            // Reset states
-            const steps = [document.getElementById('step1'), document.getElementById('step2'), document.getElementById('step3')];
-            steps.forEach(step => {
-                step.classList.remove('active', 'completed');
-                step.querySelector('.step-check').textContent = '';
-            });
-        }
-
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        // Perform Quick Analysis (VERBETERDE PROMPT V2)
+        // Perform Quick Analysis (shortened version for lead gen)
         async function performQuickAnalysis(text) {
-            const quickPrompt = `Je bent een Nederlandse recruitment AI gespecialiseerd in vacature optimalisatie.
+            const quickPrompt = `Analyseer deze Nederlandse vacaturetekst en geef een BEKNOPTE analyse:
 
-ANALYSE OPDRACHT:
-Geef een KORTE, PAKKENDE analyse van deze vacature.
-
-VACATURE TEKST:
+VACATURE:
 ${text.substring(0, 2000)}
 
-NEDERLANDSE MARKT CONTEXT 2025:
-- Kandidaten eisen salaris transparantie (65% meer respons)
-- Hybride werken is standaard (70% kandidaten verwacht dit)
-- Werk-privé balans > salaris voor veel kandidaten
-- Gemiddelde Time-to-Hire: 45-60 dagen
-- 73% sollicitanten leest vacature op mobiel
-
-RETURN FORMAT (JSON only):
+Geef ALLEEN dit JSON format terug (kort en krachtig):
 {
-  "score": X,
+  "score": X (cijfer 1-10),
   "insights": [
-    {
-      "icon": "💰",
-      "title": "Pakkende 2-4 woorden titel",
-      "text": "Concrete 1-zin feedback met % impact. Bijv: Voeg salaris toe voor 65% meer sollicitaties."
-    },
-    {
-      "icon": "📊",
-      "title": "Pakkende 2-4 woorden titel",
-      "text": "Concrete actie met business impact"
-    },
-    {
-      "icon": "🎯",
-      "title": "Pakkende 2-4 woorden titel",
-      "text": "Specifieke verbetering met resultaat"
-    }
+    {"icon": "💰", "title": "Korte titel", "text": "1 zin feedback"},
+    {"icon": "📊", "title": "Korte titel", "text": "1 zin feedback"},
+    {"icon": "🎯", "title": "Korte titel", "text": "1 zin feedback"}
   ]
-}
-
-REGELS:
-- Score 1-10 (wees eerlijk, niet te aardig)
-- Insights MOETEN actionable zijn met concrete cijfers
-- Focus op hoogste impact items (salaris, hybride, cultuur)
-- Nederlandse taal, professioneel maar toegankelijk`;
+}`;
 
             try {
                 const response = await fetch('/.netlify/functions/claude-analyze', {
@@ -1186,15 +1064,15 @@ REGELS:
             };
         }
 
-        // Display quick results with Animated Score
+        // Display quick results
         function displayQuickResults(analysis) {
             const scoreBadge = document.getElementById('scoreBadge');
             const scoreLabel = document.getElementById('scoreLabel');
             const insightsGrid = document.getElementById('insightsGrid');
             const quickResults = document.getElementById('quickResults');
 
-            // FEATURE 3: Animated Score Reveal
-            animateScore(analysis.score, scoreBadge);
+            // Update score
+            scoreBadge.textContent = analysis.score + '/10';
 
             const scoreText = analysis.score >= 8 ? 'Uitstekend!' :
                             analysis.score >= 6 ? 'Goed' :
@@ -1213,106 +1091,6 @@ REGELS:
             // Show results
             quickResults.classList.add('show');
         }
-
-        // FEATURE 3: Animated Score Counter
-        function animateScore(targetScore, element) {
-            let currentScore = 0;
-            const duration = 1500;
-            const increment = targetScore / (duration / 16);
-
-            const timer = setInterval(() => {
-                currentScore += increment;
-                if (currentScore >= targetScore) {
-                    element.textContent = targetScore + '/10';
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(currentScore) + '/10';
-                }
-            }, 16);
-        }
-
-        // FEATURE 4: Exit Intent Detection
-        let exitIntentTriggered = false;
-
-        document.addEventListener('mouseleave', (e) => {
-            // Only trigger when mouse leaves top of viewport
-            if (e.clientY < 50 && !exitIntentTriggered && !exitModalShown) {
-                const vacText = document.getElementById('vacatureText').value.trim();
-                // Only show if user hasn't uploaded/typed yet
-                if (vacText.length < 50 && !uploadedFile) {
-                    showExitModal();
-                    exitIntentTriggered = true;
-                }
-            }
-        });
-
-        function showExitModal() {
-            const modal = document.getElementById('exitModal');
-            modal.classList.add('show');
-            exitModalShown = true;
-        }
-
-        function closeExitModal() {
-            const modal = document.getElementById('exitModal');
-            modal.classList.remove('show');
-        }
-
-        function scrollToUpload() {
-            const uploadSection = document.querySelector('.upload-section');
-            uploadSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            // Focus on text input
-            const textTab = document.getElementById('textTab');
-            if (!textTab.classList.contains('active')) {
-                switchTab('text');
-            }
-            setTimeout(() => {
-                document.getElementById('vacatureText').focus();
-            }, 500);
-        }
-
-        // FEATURE 2: Social Proof Ticker (rotate every 8 seconds)
-        const socialProofData = [
-            { name: 'Marloes van TechCorp', action: 'ontving zojuist haar geoptimaliseerde vacature', time: '2 min geleden' },
-            { name: 'Pieter bij ScaleUp BV', action: 'analyseerde een Senior Developer vacature', time: '5 min geleden' },
-            { name: 'Sophie van HealthTech', action: 'kreeg een score van 8.5/10', time: '12 min geleden' },
-            { name: 'Thomas bij LogisticsPro', action: 'uploadde een logistiek vacature', time: '18 min geleden' },
-            { name: 'Emma van FinTech Solutions', action: 'ontving een volledige analyse', time: '23 min geleden' }
-        ];
-
-        let currentProofIndex = 0;
-
-        function rotateSocialProof() {
-            const ticker = document.getElementById('socialProofTicker');
-            const tickerName = document.getElementById('tickerName');
-            const tickerAction = document.getElementById('tickerAction');
-            const tickerTime = document.getElementById('tickerTime');
-
-            // Fade out
-            ticker.style.opacity = '0';
-            ticker.style.transform = 'translateX(-20px)';
-
-            setTimeout(() => {
-                // Update content
-                currentProofIndex = (currentProofIndex + 1) % socialProofData.length;
-                const proof = socialProofData[currentProofIndex];
-
-                tickerName.textContent = proof.name;
-                tickerAction.textContent = proof.action;
-                tickerTime.textContent = proof.time;
-
-                // Fade in
-                ticker.style.opacity = '1';
-                ticker.style.transform = 'translateX(0)';
-            }, 300);
-        }
-
-        // Start ticker rotation
-        setInterval(rotateSocialProof, 8000);
-
-        // Add transition styles
-        const ticker = document.getElementById('socialProofTicker');
-        ticker.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
     </script>
 </body>
 </html>
