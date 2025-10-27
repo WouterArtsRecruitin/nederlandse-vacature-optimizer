@@ -23,12 +23,26 @@
         }
 
         :root {
-            --orange: #FF6B35;
-            --orange-light: #FF8555;
-            --orange-dark: #E85A25;
-            --blue: #1E3A8A;
-            --blue-light: #3B5BA5;
+            /* Recruitin Brand Colors */
+            --recruitin-orange: #ff6b35;
+            --recruitin-orange-light: #ff8a5e;
+            --recruitin-orange-dark: #e55a2b;
+            --recruitin-blue: #2c3e50;
+            --recruitin-blue-light: #34495e;
+            --recruitin-blue-dark: #1a252f;
+
+            /* Legacy aliases (voor backwards compatibility) */
+            --orange: var(--recruitin-orange);
+            --orange-light: var(--recruitin-orange-light);
+            --orange-dark: var(--recruitin-orange-dark);
+            --blue: var(--recruitin-blue);
+            --blue-light: var(--recruitin-blue-light);
+
+            /* Supporting Colors */
             --green: #10b981;
+            --yellow: #f59e0b;
+
+            /* Grays */
             --gray-50: #f9fafb;
             --gray-100: #f3f4f6;
             --gray-200: #e5e7eb;
@@ -41,7 +55,8 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: var(--gray-900);
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #fff5f2 0%, #e8f4f8 100%);
+            /* Recruitin branded gradient: orange tint to blue tint */
             min-height: 100vh;
         }
 
@@ -634,6 +649,9 @@
         <!-- Header -->
         <header class="header">
             <div class="logo">Kandidaten<span class="accent">Tekort</span>.nl</div>
+            <div style="color: var(--recruitin-orange); font-size: 0.875rem; font-weight: 600; margin-top: -5px; margin-bottom: 15px;">
+                Powered by Recruitin
+            </div>
             <h1 class="tagline">🎯 Verhoog Response Rate met 40-60%</h1>
             <p class="subtitle">Upload je vacature en ontvang direct een gratis AI-analyse. Vraag daarna je volledig geoptimaliseerde versie op!</p>
         </header>
@@ -754,6 +772,16 @@ Minimaal 100 karakters voor een betrouwbare analyse."
                 </p>
             </div>
         </section>
+
+        <!-- Footer -->
+        <footer style="text-align: center; padding: 40px 20px; color: var(--gray-600);">
+            <p style="font-size: 0.875rem; margin-bottom: 10px;">
+                Powered by <a href="https://recruitin.nl" target="_blank" style="color: var(--recruitin-orange); text-decoration: none; font-weight: 600;">Recruitin</a>
+            </p>
+            <p style="font-size: 0.75rem; opacity: 0.7;">
+                © 2025 Recruitin • AI-powered recruitment oplossingen
+            </p>
+        </footer>
     </div>
 
     <!-- Exit Intent Modal -->
