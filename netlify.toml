@@ -15,19 +15,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), microphone=(self), camera=(self)"
-    Content-Security-Policy = """
-      default-src 'self';
-      script-src 'self' 'unsafe-inline' *.typeform.com embed.typeform.com *.googletagmanager.com *.google-analytics.com;
-      style-src 'self' 'unsafe-inline' fonts.googleapis.com *.typeform.com;
-      font-src 'self' fonts.gstatic.com *.typeform.com;
-      img-src 'self' data: https: *.typeform.com;
-      frame-src *.typeform.com form.typeform.com https:;
-      frame-ancestors 'self';
-      connect-src 'self' api.anthropic.com api.pdfmonkey.io *.typeform.com *.google-analytics.com *.googletagmanager.com https:;
-      object-src 'none';
-      base-uri 'self';
-      form-action 'self' *.typeform.com https:;
-    """
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' *.typeform.com embed.typeform.com *.googletagmanager.com *.google-analytics.com; style-src 'self' 'unsafe-inline' fonts.googleapis.com *.typeform.com; font-src 'self' fonts.gstatic.com *.typeform.com; img-src 'self' data: https: *.typeform.com; frame-src *.typeform.com form.typeform.com https:; connect-src 'self' api.anthropic.com api.pdfmonkey.io *.typeform.com *.google-analytics.com *.googletagmanager.com https:; object-src 'none'; base-uri 'self'; form-action 'self' *.typeform.com https:;"
 
 # Performance Headers
 [[headers]]
