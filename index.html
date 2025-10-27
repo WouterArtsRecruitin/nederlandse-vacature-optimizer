@@ -671,30 +671,11 @@
 
         <!-- Upload Section -->
         <section class="upload-section">
-            <h2 class="section-title">📄 Upload Je Vacature</h2>
-            <p class="section-subtitle">Upload een bestand of plak je vacaturetekst hieronder</p>
-
-            <!-- Tab Switcher -->
-            <div class="tab-switcher">
-                <button class="tab-btn active" onclick="switchTab('upload')" id="uploadTab">
-                    📁 Upload Bestand
-                </button>
-                <button class="tab-btn" onclick="switchTab('text')" id="textTab">
-                    ✍️ Plak Tekst
-                </button>
-            </div>
-
-            <!-- File Upload Zone -->
-            <div class="upload-zone active" id="uploadZone" onclick="document.getElementById('fileInput').click()">
-                <div class="upload-icon">📤</div>
-                <div class="upload-text">Sleep je bestand hier of klik om te uploaden</div>
-                <div class="upload-hint">Ondersteunt: PDF, DOC, DOCX, TXT (max 5MB)</div>
-                <input type="file" id="fileInput" class="file-input" accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelect(event)">
-            </div>
-            <div class="file-info" id="fileInfo"></div>
+            <h2 class="section-title">📄 Plak Je Vacature</h2>
+            <p class="section-subtitle">Plak je vacaturetekst hieronder voor een directe AI-analyse</p>
 
             <!-- Text Input Container -->
-            <div class="text-input-container" id="textInputContainer">
+            <div class="text-input-container" style="display: block;">
                 <textarea
                     id="vacatureText"
                     class="text-input"
@@ -740,7 +721,7 @@ Minimaal 100 karakters voor een betrouwbare analyse."
             <!-- Analyze Button -->
             <button class="analyze-btn" id="analyzeBtn" onclick="startAnalysis()" disabled>
                 <span id="btnIcon">🚀</span>
-                <span id="btnText">Upload eerst een bestand of plak tekst</span>
+                <span id="btnText">Plak tekst om te beginnen</span>
             </button>
         </section>
 
@@ -794,47 +775,7 @@ Minimaal 100 karakters voor een betrouwbare analyse."
 
     <script>
         let uploadedFile = null;
-        let vacatureContent = '';
         let exitModalShown = false;
-
-        // Tab switching
-        function switchTab(tab) {
-            const uploadZone = document.getElementById('uploadZone');
-            const textContainer = document.getElementById('textInputContainer');
-            const uploadTab = document.getElementById('uploadTab');
-            const textTab = document.getElementById('textTab');
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const btnText = document.getElementById('btnText');
-
-            if (tab === 'upload') {
-                uploadZone.classList.add('active');
-                textContainer.classList.remove('active');
-                uploadTab.classList.add('active');
-                textTab.classList.remove('active');
-
-                if (uploadedFile) {
-                    analyzeBtn.disabled = false;
-                    btnText.textContent = 'Analyseer Vacature';
-                } else {
-                    analyzeBtn.disabled = true;
-                    btnText.textContent = 'Upload eerst een bestand';
-                }
-            } else {
-                uploadZone.classList.remove('active');
-                textContainer.classList.add('active');
-                uploadTab.classList.remove('active');
-                textTab.classList.add('active');
-
-                const text = document.getElementById('vacatureText').value.trim();
-                if (text.length >= 100) {
-                    analyzeBtn.disabled = false;
-                    btnText.textContent = 'Analyseer Vacature';
-                } else {
-                    analyzeBtn.disabled = true;
-                    btnText.textContent = 'Minimaal 100 karakters vereist';
-                }
-            }
-        }
 
         // Character counter for text input + Live Suggestions
         let suggestionTimeout;
@@ -977,22 +918,8 @@ Minimaal 100 karakters voor een betrouwbare analyse."
 
         // Start Analysis with Progress States
         async function startAnalysis() {
-            const uploadTab = document.getElementById('uploadTab');
-            const isFileMode = uploadTab.classList.contains('active');
-
-            let textToAnalyze = '';
-
-            if (isFileMode && uploadedFile) {
-                if (uploadedFile.type === 'text/plain') {
-                    textToAnalyze = vacatureContent;
-                } else {
-                    alert('⚠️ PDF/DOC parsing wordt momenteel geïmplementeerd. Gebruik voorlopig de "Plak Tekst" optie.');
-                    switchTab('text');
-                    return;
-                }
-            } else {
-                textToAnalyze = document.getElementById('vacatureText').value.trim();
-            }
+            // Get text from textarea
+            const textToAnalyze = document.getElementById('vacatureText').value.trim();
 
             if (!textToAnalyze || textToAnalyze.length < 100) {
                 alert('⚠️ Voer minimaal 100 karakters in voor een betrouwbare analyse.');
