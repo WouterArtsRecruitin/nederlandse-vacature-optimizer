@@ -2,7 +2,9 @@
 // Supports: PDF, DOCX, TXT files
 // Returns extracted text for analysis
 
-const formidable = require('formidable');
+// NOTE: formidable, pdf-parse, and mammoth are not yet installed
+// This is a placeholder implementation that handles text input only
+// See bottom of file for production implementation guide
 
 exports.handler = async (event, context) => {
     const headers = {
